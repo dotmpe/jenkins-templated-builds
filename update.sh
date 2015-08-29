@@ -3,7 +3,7 @@
 scriptname=update
 version=0.0.0 # jtb
 
-source util.sh
+. util.sh
 
 test -n "$files" || files=tpl/base.yaml:jtb.yaml
 test -n "$test_err" || test_err=$HOME/tmp/jtb-test.err
