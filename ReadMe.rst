@@ -140,4 +140,15 @@ Status
 
 - To run, find a shell: ``./update``.
 
+
+.. |date| date:: %h %d. %Y
+.. |time| date:: %H:%M
+
+.. |copy| unicode:: 0xA9 .. copyright sign
+.. |tm| unicode:: U+02122 .. trademark sign
+
+.. |---| unicode:: U+02014 .. em dash
+   :trim:
+
+
 .. Id: jtb
