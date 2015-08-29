@@ -44,11 +44,20 @@ jenkins-jobs test $files 2> $test_err > $test_out && {
     log "OK: Update complete"
   } || {
     log "XXX: need to scan stdout for test_out results, instead of test -s. And then fail:"
+    echo ---------------------------------------------------------------------------
     err "FAIL: nothing generated" 1
   }
 } || {
+  echo ---------------------------------------------------------------------------
   err "ERROR: building $files" 1
   debug
+
+  echo Test output: --------------------------------------------------------------
+  cat $test_out | fold -w 80
+
+  echo Test errors: --------------------------------------------------------------
+  cat $test_err | fold -w 80
+  echo ---------------------------------------------------------------------------
 }
 
 
