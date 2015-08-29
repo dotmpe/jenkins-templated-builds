@@ -40,6 +40,27 @@
 
 
 - publisher:
+     name: jtb-checkstyle
+     publishers:
+     - checkstyle:
+         pattern: 'build/checkstyle-result.xml'
+
+
+- publisher:
+     name: jtb-inline-tasks-parser
+     publishers:
+     - task-scanner:
+         pattern: '{project-src}'
+         health-threshold: low
+         can-run-on-failed: true
+         use-stable-build-as-reference: false
+         use-delta-values: false
+         should-detect-modules: false
+         do-not-resolve-relative-paths: true
+         dont-compute-new: true
+
+
+- publisher:
     name: jtb-log-parser
     publishers:
     # hudson.plugins.logparser.LogParserPublisher

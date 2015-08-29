@@ -3,7 +3,6 @@
 # JTB dep installer for travis
 # Id: jtb install-dependencies.sh
 
-mkdir -vp $HOME/build/
 
 install_jjb()
 {

@@ -1,7 +1,7 @@
 
 - defaults:
-  name: jenkins-build-templates
-  version: 0.0.0
+    name: jenkins-build-templates
+    version: 0.0.0
 
 
 # Group several jobs together. Can also nest job-groups.
