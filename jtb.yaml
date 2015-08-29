@@ -23,6 +23,7 @@
         title: 'template JTB 0 for {title}'
         vendor-repo: github
         vendor-path: dotmpe/jenkins-templated-builds
+        branch: test
         ## Builder vars
         ## Publisher vars
         # jtb-inline-tasks-parser
