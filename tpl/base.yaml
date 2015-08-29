@@ -137,7 +137,7 @@
         email-individuals: '{email-individuals}'
         email-to: '{email-to}'
     - jtb-inline-tasks-parser:
-        tasks-file-pattern: '{project-src}'
+        project-src: '{project-src}'
     #- jtb-html
     #- jtb-summary
     #- jtb-checkstyle$
