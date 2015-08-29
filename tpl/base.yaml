@@ -15,14 +15,22 @@
     ## Builder vars
 
     ## Publisher vars
+    # jtb-checkstyle
+    # jtb-inline-tasks-parser
+    project-src:
     # jtb-std-log-parser
     log-parser-rules: /var/lib/jenkins/log-rules.txt
     unstable-on-warning: false
     fail-on-error: false
-    # jtd-std-email
-    notify-every-unstable-build: false
-    send-to-individuals: '{email-individuals}'
-    recipients: '{email-to}'
+    # jtb-std-email
+    email-every-unstable: false
+    email-individuals: false
+    email-to:
+    # jenkins-html
+    report-files:
+    # jenkins-summary
+    # jtb-junit
+
 
 
 ### JJB Action macros for job parts
