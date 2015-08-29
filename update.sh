@@ -10,9 +10,8 @@ test -n "$files" || files=tpl/base.yaml:jtb.yaml
 test -n "$test_out" || test_out=$HOME/tmp/jtb-test.out
 test -n "$test_err" || test_err=$HOME/tmp/jtb-test.err
 
-test -d "$(dirname test_out)" || err "No such dir for $test_out" 1
-test -d "$(dirname test_err)" || err "No such dir for $test_err" 1
-
+test -d "$(dirname $test_out)" || err "No such dir for $test_out" 1
+test -d "$(dirname $test_err)" || err "No such dir for $test_err" 1
 
 debug()
 {
