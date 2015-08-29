@@ -1,0 +1,121 @@
+
+#
+# The initial base file, split this up later.
+#
+
+
+- defaults:
+    name: base
+
+    # Job template vars
+    title: 'Job Template Builder'
+    build-summary-image: /userContent/jenkins-build-templates.png
+    disabled: true
+
+    ## Builder vars
+
+    ## Publisher vars
+    # jtb-std-log-parser
+    log-parser-rules: /var/lib/jenkins/log-rules.txt
+    unstable-on-warning: false
+    fail-on-error: false
+    # jtd-std-email
+    notify-every-unstable-build: false
+    send-to-individuals: '{email-individuals}'
+    recipients: '{email-to}'
+
+
+### JJB Action macros for job parts
+
+
+## Builder macros
+
+- builder:
+    name: jtb-1-builder
+    builders:
+    - shell: 'jenkins-jobs test'
+
+
+## Publisher macros
+
+
+- publisher:
+    name: jtb-log-parser
+    publishers:
+    # hudson.plugins.logparser.LogParserPublisher
+    - logparser:
+        parse-rules: '{log-parser-rules}'
+        unstable-on-warning: '{unstable-on-warning}'
+        fail-on-error: '{fail-on-error}'
+
+
+- publisher:
+    name: jtb-std-email
+    publishers:
+    # use hudson.tasks.Mailer, see also hudson.maven.reporters.Mailer
+    - email:
+        notify-every-unstable-build: '{email-every-unstable}'
+        send-to-individuals: '{email-individuals}'
+        recipients: '{email-to}'
+
+
+- publisher:
+    name: jenkins-html
+    publishers:
+    - html-publisher:
+        name: 'JTB Build Report'
+        dir: build/ci-html-report/
+        files: '{report-files}'
+        keep-all: true
+        allow-missing: true
+
+
+- publisher:
+    name: jenkins-summary
+    publishers:
+    - xml-summary:
+        files: 'test_summary.xml'
+
+
+- publisher:
+    name: jtb-junit
+    publishers:
+    - junit:
+        results: 'build/logs/*.xml'
+        keep-long-stdio: true
+        test-stability: false
+        claim-build: false
+
+
+
+# JJB template
+
+- job-template:
+
+    name: '{name}-jtb-1'
+    project-type: freestyle
+
+    display-name: '{title}'
+    disabled: '{obj:disabled}'
+    description: 'TODO'
+
+    builders:
+    - jtb-1-builder
+
+    publishers:
+    - jtb-inline-tasks-parser:
+        tasks-file-pattern: '{project-src}'
+    - jtb-log-parser:
+        unstable-on-warning: '{unstable-on-warning}'
+        fail-on-error: '{fail-on-error}'
+    #- jtb-html
+    #- jtb-summary
+    #- jtb-checkstyle$
+    - jtb-junit
+    - jtb-std-email:
+        email-every-unstable: '{email-every-unstable}'
+        email-individuals: '{email-individuals}'
+        email-to: '{email-to}'
+
+# Id: jtb
+

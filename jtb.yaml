@@ -1,0 +1,20 @@
+
+- defaults:
+  name: jenkins-build-templates
+  version: 0.0.0
+
+
+# Group several jobs together. Can also nest job-groups.
+- project:
+    name: '{name}'
+    git: 'git@github.com:dotmpe/jenkins-build-templates.git'
+
+    # here JJB can refer jobs or job templates
+    jobs:
+      # Using a job-template instead of a job allows for variable expansion
+      # on the paramters
+    - '{name}-jtb-1':
+
+
+# Id: jtb
+
