@@ -136,15 +136,12 @@
         email-every-unstable: '{email-every-unstable}'
         email-individuals: '{email-individuals}'
         email-to: '{email-to}'
-    - jtb-inline-tasks-parser:
-        project-src: '{project-src}'
-    #- jtb-html
-    #- jtb-summary
-    #- jtb-checkstyle$
 #    - jtb-log-parser:
 #        log-parser-rules: '{log-parser-rules}'
 #        unstable-on-warning: '{unstable-on-warning}'
 #        fail-on-error: '{fail-on-error}'
+#    - jtb-inline-tasks-parser:
+#        project-src: '{project-src}'
 
 # Id: jtb
 
