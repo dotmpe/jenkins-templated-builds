@@ -128,7 +128,10 @@ Also on the wishlist: pip, npm, bower, docker, arduino, docs (python docutils, o
 
 Status
 ------
-- No tests. It either runs, or its gone. (Keep cruft elsewhere).
+- No tests. It either runs, or its gone
+    AKA Keep cruft elsewhere.
+    Well there is a test branch now.
+
 - To run ``./update``.
 
 .. Id: jtb
