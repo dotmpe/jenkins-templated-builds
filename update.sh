@@ -49,7 +49,7 @@ jenkins-jobs test $files 2> $test_err > $test_out && {
   }
 } || {
   echo ---------------------------------------------------------------------------
-  err "ERROR: building $files" 1
+  err "ERROR: building $files"
   debug
 
   echo Test output: --------------------------------------------------------------
@@ -58,6 +58,8 @@ jenkins-jobs test $files 2> $test_err > $test_out && {
   echo Test errors: --------------------------------------------------------------
   cat $test_err | fold -w 80
   echo ---------------------------------------------------------------------------
+
+  exit 1
 }
 
 
