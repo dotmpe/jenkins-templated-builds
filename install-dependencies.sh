@@ -12,5 +12,7 @@ install_jjb()
   #sudo python setup.py install
   python setup.py install --user
   popd
+
+  jenkins-jobs --version
 }
 
