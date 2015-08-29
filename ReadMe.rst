@@ -1,5 +1,5 @@
-Job Template Builder
-====================
+Jenkins Templated Builds
+========================
 :Version: 0.0.0
 :Date: |date|
 :Description:

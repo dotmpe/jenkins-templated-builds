@@ -1,0 +1,21 @@
+
+# container based build at travis-ci.org
+
+sudo: false
+
+install:
+- source ./install-dependencies.sh && install_jjb
+
+before_script:
+
+script: ./update.sh
+
+branches:
+  only:
+  - master
+  - '/^[0-9]*\.[0-9]*\.[0-9]*/'
+
+env:
+- ENV=
+
+
