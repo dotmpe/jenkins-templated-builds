@@ -19,12 +19,15 @@
     name: 'jtb-A'
 
     jobs:
-    - '{name}-jtb-1':
+    - '{name}-jtb-0':
         disabled: true
-        title: 'job 1 for {title}'
+        title: 'template JTB 0 for {title}'
         ## Builder vars
         ## Publisher vars
-        # jtb-std-log-parser
+        # jtb-inline-tasks-parser
+        project-src: '*.{rst,sh,yaml},tpl/*.yaml,.travis.yml'
+
+        # jtb-std-log-parser -- missing in official JJB dist.
         unstable-on-warning: false
         fail-on-error: false
         # jtd-std-email
