@@ -124,19 +124,19 @@
     - jtb-1-builder
 
     publishers:
-    - jtb-inline-tasks-parser:
-        tasks-file-pattern: '{project-src}'
     - jtb-log-parser:
         unstable-on-warning: '{unstable-on-warning}'
         fail-on-error: '{fail-on-error}'
-    #- jtb-html
-    #- jtb-summary
-    #- jtb-checkstyle$
     - jtb-junit
     - jtb-std-email:
         email-every-unstable: '{email-every-unstable}'
         email-individuals: '{email-individuals}'
         email-to: '{email-to}'
+    #- jtb-inline-tasks-parser:
+    #    tasks-file-pattern: '{project-src}'
+    #- jtb-html
+    #- jtb-summary
+    #- jtb-checkstyle$
 
 # Id: jtb
 
