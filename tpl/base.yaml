@@ -135,7 +135,6 @@
     - jtb-log-parser:
         unstable-on-warning: '{unstable-on-warning}'
         fail-on-error: '{fail-on-error}'
-    - jtb-junit
     - jtb-std-email:
         email-every-unstable: '{email-every-unstable}'
         email-individuals: '{email-individuals}'
