@@ -132,6 +132,6 @@ Status
     AKA Keep cruft elsewhere.
     Well there is a test branch now.
 
-- To run ``./update``.
+- To run, find a shell: ``./update``.
 
 .. Id: jtb
