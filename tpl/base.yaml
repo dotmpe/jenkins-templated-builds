@@ -132,14 +132,14 @@
     - jtb-1-builder
 
     publishers:
-    - jtb-log-parser:
-        log-parser-rules: '{log-parser-rules}'
-        unstable-on-warning: '{unstable-on-warning}'
-        fail-on-error: '{fail-on-error}'
     - jtb-std-email:
         email-every-unstable: '{email-every-unstable}'
         email-individuals: '{email-individuals}'
         email-to: '{email-to}'
+#    - jtb-log-parser:
+#        log-parser-rules: '{log-parser-rules}'
+#        unstable-on-warning: '{unstable-on-warning}'
+#        fail-on-error: '{fail-on-error}'
     #- jtb-inline-tasks-parser:
     #    tasks-file-pattern: '{project-src}'
     #- jtb-html

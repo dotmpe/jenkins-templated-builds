@@ -9,7 +9,7 @@
     build-summary-image: /userContent/jenkins-build-templates.png
 
     # jtb-std-log-parser
-    log-parser-rules: /var/lib/jenkins/log-rules.txt
+    #log-parser-rules: /var/lib/jenkins/log-rules.txt
 
     git: 'git@github.com:dotmpe/jenkins-build-templates.git'
 
