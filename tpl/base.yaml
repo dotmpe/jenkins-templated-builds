@@ -41,7 +41,13 @@
 - builder:
     name: jtb-0-builder
     builders:
-    - shell: 'jenkins-jobs test'
+    - shell: 'jenkins-jobs test ${JJB_Files}'
+
+
+- builder:
+    name: jtb-1-builder
+    builders:
+    - shell: 'jtb ${JTB_File}'
 
 
 ## Publisher macros
@@ -116,6 +122,81 @@
         claim-build: false
 
 
+# YAML aliases
+
+- default_console_output_job: &default_console_output_job
+    name: 'default_console_output_job'
+
+    wrappers:
+    - timestamps
+    - ansicolor:
+        colormap: vga
+
+
+- default_analysis_report: &default_analysis_report
+    name: default_analysis_report
+
+    raw:
+        xml: |
+          <hudson.plugins.analysis.collector.AnalysisPublisher>
+            <healthy></healthy>
+            <unHealthy></unHealthy>
+            <thresholdLimit>low</thresholdLimit>
+            <pluginName>[ANALYSIS-COLLECTOR] </pluginName>
+            <defaultEncoding></defaultEncoding>
+            <canRunOnFailed>false</canRunOnFailed>
+            <usePreviousBuildAsReference>false</usePreviousBuildAsReference>
+            <useStableBuildAsReference>false</useStableBuildAsReference>
+            <useDeltaValues>false</useDeltaValues>
+            <thresholds>
+              <unstableTotalAll></unstableTotalAll>
+              <unstableTotalHigh></unstableTotalHigh>
+              <unstableTotalNormal></unstableTotalNormal>
+              <unstableTotalLow></unstableTotalLow>
+              <failedTotalAll></failedTotalAll>
+              <failedTotalHigh></failedTotalHigh>
+              <failedTotalNormal></failedTotalNormal>
+              <failedTotalLow></failedTotalLow>
+            </thresholds>
+            <shouldDetectModules>false</shouldDetectModules>
+            <dontComputeNew>true</dontComputeNew>
+            <doNotResolveRelativePaths>true</doNotResolveRelativePaths>
+            <isCheckStyleDeactivated>false</isCheckStyleDeactivated>
+            <isDryDeactivated>true</isDryDeactivated>
+            <isFindBugsDeactivated>true</isFindBugsDeactivated>
+            <isPmdDeactivated>true</isPmdDeactivated>
+            <isOpenTasksDeactivated>false</isOpenTasksDeactivated>
+            <isWarningsDeactivated>true</isWarningsDeactivated>
+          </hudson.plugins.analysis.collector.AnalysisPublisher>
+
+
+- default_github_co: &default_github_co
+    name: 'default_github_co'
+
+    scm:
+    - git:
+        url: 'git@github.com:{vendor-path}.git'
+        branches:
+        - 'origin/{branch}'
+        local-branch: '{branch}'
+        submodule:
+          recursive: true
+        skip-tag: true
+        wipe-workspace: false
+        prune: true
+        skip-tag: true
+        wipe-workspace: false
+        prune: true
+        browser: githubweb
+        browser-url: 'https://github.com/'
+
+
+- scm:
+    #name: '{vendor-repo}-jtb-0'
+    name: 'github-jtb-0'
+
+    <<: *default_github_co
+
 
 # JJB template
 
@@ -123,13 +204,25 @@
 
     name: '{name}-jtb-0'
     project-type: freestyle
+    <<: *default_console_output_job
+
+    scm:
+    - '{vendor-repo}-jtb-0':
+        vendor-path: '{vendor-path}'
 
     display-name: '{title}'
     disabled: '{obj:disabled}'
     description: 'TODO'
 
+    parameters:
+    - choice:
+        name: JTB_File
+        choices:
+        - jtb.yaml:var/base.yaml
+
     builders:
-    - jtb-0-builder
+    - jtb-0-builder:
+        JJB_Files: '{JJB_Files}'
 
     publishers:
     - jtb-std-email:
@@ -142,6 +235,37 @@
 #        fail-on-error: '{fail-on-error}'
 #    - jtb-inline-tasks-parser:
 #        project-src: '{project-src}'
+
+
+- job-template:
+
+    name: '{name}-jtb-1'
+    project-type: freestyle
+    <<: *default_console_output_job
+
+    display-name: '{title}'
+    disabled: '{obj:disabled}'
+    description: 'TODO'
+
+    parameters:
+    - choice:
+        name: JTB_File
+        choices:
+        - jtb.yml
+        - jtb.yaml
+        - .jtb.yml
+        - .jtb.yaml
+
+    builders:
+    - jtb-1-builder:
+        JTB_File: '{JTB_File}'
+
+    publishers:
+    - jtb-std-email:
+        email-every-unstable: '{email-every-unstable}'
+        email-individuals: '{email-individuals}'
+        email-to: '{email-to}'
+
 
 # Id: jtb
 

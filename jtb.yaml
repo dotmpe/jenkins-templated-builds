@@ -11,8 +11,7 @@
     # jtb-std-log-parser
     #log-parser-rules: /var/lib/jenkins/log-rules.txt
 
-    git: 'git@github.com:dotmpe/jenkins-build-templates.git'
-
+    #git: 'git@github.com:dotmpe/jenkins-build-templates.git'
 
 
 - project:
@@ -22,6 +21,8 @@
     - '{name}-jtb-0':
         disabled: true
         title: 'template JTB 0 for {title}'
+        vendor-repo: github
+        vendor-path: dotmpe/jenkins-templated-builds
         ## Builder vars
         ## Publisher vars
         # jtb-inline-tasks-parser
