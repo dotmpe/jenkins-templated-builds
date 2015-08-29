@@ -4,6 +4,8 @@
     version: 0.0.0
 
 
+    # jtb-std-log-parser
+    log-parser-rules: /var/lib/jenkins/log-rules.txt
 
 
 - project:
@@ -21,7 +23,6 @@
         ## Builder vars
         ## Publisher vars
         # jtb-std-log-parser
-        log-parser-rules: /var/lib/jenkins/log-rules.txt
         unstable-on-warning: false
         fail-on-error: false
         # jtd-std-email
