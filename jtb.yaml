@@ -10,15 +10,6 @@
 
     ## Builder vars
 
-    ## Publisher vars
-    # jtb-std-log-parser
-    log-parser-rules: /var/lib/jenkins/log-rules.txt
-    unstable-on-warning: false
-    fail-on-error: false
-    # jtd-std-email
-    notify-every-unstable-build: false
-    send-to-individuals: '{email-individuals}'
-    recipients: '{email-to}'
 
 
 - project:
@@ -26,7 +17,16 @@
     git: 'git@github.com:dotmpe/jenkins-build-templates.git'
 
     jobs:
-    - '{name}-jtb-1': {}
+    - '{name}-jtb-1':
+        ## Publisher vars
+        # jtb-std-log-parser
+        log-parser-rules: /var/lib/jenkins/log-rules.txt
+        unstable-on-warning: false
+        fail-on-error: false
+        # jtd-std-email
+        notify-every-unstable-build: false
+        send-to-individuals: '{email-individuals}'
+        recipients: '{email-to}'
 
 
 # Id: jtb
