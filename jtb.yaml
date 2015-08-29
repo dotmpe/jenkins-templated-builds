@@ -4,9 +4,6 @@
     version: 0.0.0
 
 
-    # jtb-std-log-parser
-    log-parser-rules: /var/lib/jenkins/log-rules.txt
-
 
 - project:
     name: 'jtb-A'
@@ -14,6 +11,9 @@
     # Job template vars
     title: 'Job Template Builder'
     build-summary-image: /userContent/jenkins-build-templates.png
+
+    # jtb-std-log-parser
+    log-parser-rules: /var/lib/jenkins/log-rules.txt
 
     git: 'git@github.com:dotmpe/jenkins-build-templates.git'
 
