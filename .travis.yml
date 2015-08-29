@@ -5,7 +5,7 @@ sudo: false
 
 install:
 - mkdir -vp $HOME/{tmp,build}
-- . ./install-dependencies.sh && install_jjb
+- source ./install-dependencies.sh && install_jjb
 
 before_script:
 
