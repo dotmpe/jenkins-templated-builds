@@ -207,6 +207,7 @@
     scm:
     - '{vendor-repo}-jtb-0':
         vendor-path: '{vendor-path}'
+        branch: 'test'
 
     display-name: '{title}'
     disabled: '{obj:disabled}'
