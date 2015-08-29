@@ -24,9 +24,9 @@ test -n "$JENKINS_HOME" && {
   jjb_update="echo jenkins-jobs update"
 }
 
-jenkins-jobs test $files 2> $err_out > $test_out && {
-  test -s $err_out && {
-    err "WARNING: errors during test ($err_out)"
+jenkins-jobs test $files 2> $test_err > $test_out && {
+  test -s $test_err && {
+    err "WARNING: errors during test ($test_err)"
   }
   test -s $test_out && {
     log "OK: Test output in $test_out."
