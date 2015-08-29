@@ -3,6 +3,23 @@
     name: jenkins-build-templates
     version: 0.0.0
 
+    # Job template vars
+    title: 'Job Template Builder'
+    build-summary-image: /userContent/jenkins-build-templates.png
+    disabled: true
+
+    ## Builder vars
+
+    ## Publisher vars
+    # jtb-std-log-parser
+    log-parser-rules: /var/lib/jenkins/log-rules.txt
+    unstable-on-warning: false
+    fail-on-error: false
+    # jtd-std-email
+    notify-every-unstable-build: false
+    send-to-individuals: '{email-individuals}'
+    recipients: '{email-to}'
+
 
 - project:
     name: 'jtb-A'
