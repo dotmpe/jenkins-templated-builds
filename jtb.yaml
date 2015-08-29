@@ -25,11 +25,10 @@
         ## Builder vars
         ## Publisher vars
         # jtb-inline-tasks-parser
-        project-src: '*.{rst,sh,yaml},tpl/*.yaml,.travis.yml'
-
+        project-src: '*.{{rst,sh,yaml}},tpl/*.yaml,.travis.yml'
         # jtb-std-log-parser -- missing in official JJB dist.
-        unstable-on-warning: false
-        fail-on-error: false
+        #unstable-on-warning: false
+        #fail-on-error: false
         # jtd-std-email
         email-every-unstable: false
         email-individuals: false
