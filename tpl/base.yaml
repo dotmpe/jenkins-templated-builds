@@ -1,6 +1,4 @@
-
-#
-# The initial base file, split this up later.
+# # The initial base file, split this up later.
 #
 
 
@@ -41,13 +39,13 @@
 - builder:
     name: jtb-0-builder
     builders:
-    - shell: 'jenkins-jobs test ${JJB_Files}'
+    - shell: 'jenkins-jobs test ${jjb-files}'
 
 
 - builder:
     name: jtb-1-builder
     builders:
-    - shell: 'jtb ${JTB_File}'
+    - shell: 'jtb ${jtb-file}'
 
 
 ## Publisher macros
@@ -216,13 +214,13 @@
 
     parameters:
     - choice:
-        name: JTB_File
+        name: JJB_Files
         choices:
         - jtb.yaml:var/base.yaml
 
     builders:
     - jtb-0-builder:
-        JJB_Files: '{JJB_Files}'
+        jjb-files: '$JJB_Files'
 
     publishers:
     - jtb-std-email:
@@ -258,7 +256,7 @@
 
     builders:
     - jtb-1-builder:
-        JTB_File: '{JTB_File}'
+        jtb-file: '$JTB_File'
 
     publishers:
     - jtb-std-email:
