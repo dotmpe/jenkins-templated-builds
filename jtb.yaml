@@ -3,15 +3,16 @@
     name: jenkins-build-templates
     version: 0.0.0
 
-    # Job template vars
-    title: 'Job Template Builder'
-    build-summary-image: /userContent/jenkins-build-templates.png
-
 
 
 
 - project:
     name: 'jtb-A'
+
+    # Job template vars
+    title: 'Job Template Builder'
+    build-summary-image: /userContent/jenkins-build-templates.png
+
     git: 'git@github.com:dotmpe/jenkins-build-templates.git'
 
     jobs:
