@@ -3,6 +3,7 @@
 scriptname=update
 version=0.0.0 # jtb
 
+
 . ./util.sh
 
 test -n "$files" || files=tpl/base.yaml:jtb.yaml
@@ -23,7 +24,7 @@ debug()
 
 # Main
 
-test -n "$JENKINS_HOME" && {
+test -n "$JJB_CONFIGURED" && {
   log "Running actual update"
   jjb_update="jenkins-jobs update"
 } || {
@@ -63,3 +64,4 @@ jenkins-jobs test $files 2> $test_err > $test_out && {
 }
 
 
+# Id: jtb update.sh
