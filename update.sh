@@ -6,12 +6,19 @@ version=0.0.0 # jtb
 . ./util.sh
 
 test -n "$files" || files=tpl/base.yaml:jtb.yaml
-test -n "$test_err" || test_err=$HOME/tmp/jtb-test.err
 test -n "$test_out" || test_out=$HOME/tmp/jtb-test.out
+test -n "$test_err" || test_err=$HOME/tmp/jtb-test.err
 
 test -d "$(dirname test_out)" || err "No such dir for $test_out" 1
-test -d "$(dirname test_out)" || err "No such dir for $test_err" 1
+test -d "$(dirname test_err)" || err "No such dir for $test_err" 1
 
+
+debug()
+{
+  err files=$files
+  err test_out=$test_out
+  err test_err=$test_err
+}
 
 
 # Main
@@ -22,6 +29,8 @@ test -n "$JENKINS_HOME" && {
 } || {
   log "Not a jenkins env. Not running update"
   jjb_update="echo jenkins-jobs update"
+
+  debug
 }
 
 jenkins-jobs test $files 2> $test_err > $test_out && {
@@ -39,6 +48,7 @@ jenkins-jobs test $files 2> $test_err > $test_out && {
   }
 } || {
   err "ERROR: building $files" 1
+  debug
 }
 
 
