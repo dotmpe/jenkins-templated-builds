@@ -1,6 +1,6 @@
 Jenkins Templated Builds
 ========================
-:Version: 0.0.1-master
+:Version: 0.0.2-master
 :Date: |date|
 :Description:
   JJB Templates for Jenkins
@@ -134,11 +134,16 @@ Also on the wishlist: pip, npm, bower, docker, arduino, docs (python docutils, o
 
 Status
 ------
+
 - No tests. It either runs, or its gone
     AKA Keep cruft elsewhere.
     Well there is a test branch now.
 
 - To run, find a shell: ``./update``.
+
+- Using with dockerized jenkins (git@github.com:dotmpe/docker-jenkins.git v0.0.1).
+
+
 
 
 .. |date| date:: %h %d. %Y
@@ -151,4 +156,4 @@ Status
    :trim:
 
 
-.. Id: jtb/0.0.1-master ReadMe.rst
+.. Id: jtb/0.0.2-master ReadMe.rst

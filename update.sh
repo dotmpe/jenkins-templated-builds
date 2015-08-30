@@ -1,7 +1,7 @@
 #!/bin/sh
 
 scriptname=update
-version=0.0.1-master # jtb
+version=0.0.2-master # jtb
 
 
 . ./util.sh
@@ -63,4 +63,4 @@ jenkins-jobs test $files 2> $test_err > $test_out && {
 }
 
 
-# Id: jtb/0.0.1-master update.sh
+# Id: jtb/0.0.2-master update.sh
