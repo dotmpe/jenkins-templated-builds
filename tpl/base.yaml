@@ -1,6 +1,4 @@
-
-#
-# The initial base file, split this up later.
+# # The initial base file, split this up later.
 #
 
 
@@ -8,21 +6,30 @@
     name: base
 
     # Job template vars
-    title: 'Job Template Builder'
+    project-title: 'Job Template Builder'
     build-summary-image: /userContent/jenkins-build-templates.png
     disabled: true
+    htmlDescription: ''
 
     ## Builder vars
 
     ## Publisher vars
+    # jtb-checkstyle
+    # jtb-inline-tasks-parser
+    project-src:
     # jtb-std-log-parser
-    log-parser-rules: /var/lib/jenkins/log-rules.txt
+    log-parser-rules: $JENKINS_HOME/log-parser-rules.txt
     unstable-on-warning: false
     fail-on-error: false
-    # jtd-std-email
-    notify-every-unstable-build: false
-    send-to-individuals: '{email-individuals}'
-    recipients: '{email-to}'
+    # jtb-std-email
+    email-every-unstable: false
+    email-individuals: false
+    email-to:
+    # jenkins-html
+    report-files:
+    # jenkins-summary
+    # jtb-junit
+
 
 
 ### JJB Action macros for job parts
@@ -31,9 +38,15 @@
 ## Builder macros
 
 - builder:
+    name: jtb-0-builder
+    builders:
+    - shell: 'jenkins-jobs test {jjb-files}'
+
+
+- builder:
     name: jtb-1-builder
     builders:
-    - shell: 'jenkins-jobs test'
+    - shell: 'jtb ${jtb-file}'
 
 
 ## Publisher macros
@@ -108,35 +121,178 @@
         claim-build: false
 
 
+# YAML aliases
+
+- default_console_output_job: &default_console_output_job
+    name: 'default_console_output_job'
+
+    wrappers:
+    - timestamps
+    - ansicolor:
+        colormap: vga
+
+
+- default_analysis_report: &default_analysis_report
+    name: default_analysis_report
+
+    raw:
+        xml: |
+          <hudson.plugins.analysis.collector.AnalysisPublisher>
+            <healthy></healthy>
+            <unHealthy></unHealthy>
+            <thresholdLimit>low</thresholdLimit>
+            <pluginName>[ANALYSIS-COLLECTOR] </pluginName>
+            <defaultEncoding></defaultEncoding>
+            <canRunOnFailed>false</canRunOnFailed>
+            <usePreviousBuildAsReference>false</usePreviousBuildAsReference>
+            <useStableBuildAsReference>false</useStableBuildAsReference>
+            <useDeltaValues>false</useDeltaValues>
+            <thresholds>
+              <unstableTotalAll></unstableTotalAll>
+              <unstableTotalHigh></unstableTotalHigh>
+              <unstableTotalNormal></unstableTotalNormal>
+              <unstableTotalLow></unstableTotalLow>
+              <failedTotalAll></failedTotalAll>
+              <failedTotalHigh></failedTotalHigh>
+              <failedTotalNormal></failedTotalNormal>
+              <failedTotalLow></failedTotalLow>
+            </thresholds>
+            <shouldDetectModules>false</shouldDetectModules>
+            <dontComputeNew>true</dontComputeNew>
+            <doNotResolveRelativePaths>true</doNotResolveRelativePaths>
+            <isCheckStyleDeactivated>false</isCheckStyleDeactivated>
+            <isDryDeactivated>true</isDryDeactivated>
+            <isFindBugsDeactivated>true</isFindBugsDeactivated>
+            <isPmdDeactivated>true</isPmdDeactivated>
+            <isOpenTasksDeactivated>false</isOpenTasksDeactivated>
+            <isWarningsDeactivated>true</isWarningsDeactivated>
+          </hudson.plugins.analysis.collector.AnalysisPublisher>
+
+
+- default_github_co: &default_github_co
+    name: 'default_github_co'
+
+    scm:
+    - git:
+        url: 'git@github.com:{vendor-path}.git'
+        branches:
+        - 'origin/{branch}'
+        local-branch: '{branch}'
+        submodule:
+          recursive: true
+        skip-tag: true
+        wipe-workspace: false
+        prune: true
+        skip-tag: true
+        wipe-workspace: false
+        prune: true
+        browser: githubweb
+        browser-url: 'https://github.com/'
+
+
+- scm:
+    #name: '{vendor-repo}-jtb-0'
+    name: 'github-jtb-0'
+
+    <<: *default_github_co
+
 
 # JJB template
 
 - job-template:
 
-    name: '{name}-jtb-1'
+    name: '{name}-jtb-0'
     project-type: freestyle
+    <<: *default_console_output_job
+
+    scm:
+    - '{vendor-repo}-jtb-0':
+        vendor-path: '{vendor-path}'
+        branch: '{branch}'
 
     display-name: '{title}'
     disabled: '{obj:disabled}'
     description: 'TODO'
 
+    parameters:
+    - choice:
+        name: JJB_Files
+        choices:
+        - jtb.yaml:tpl/base.yaml
+
     builders:
-    - jtb-1-builder
+    - jtb-0-builder:
+        jjb-files: '$JJB_Files'
 
     publishers:
-    - jtb-inline-tasks-parser:
-        tasks-file-pattern: '{project-src}'
-    - jtb-log-parser:
-        unstable-on-warning: '{unstable-on-warning}'
-        fail-on-error: '{fail-on-error}'
-    #- jtb-html
-    #- jtb-summary
-    #- jtb-checkstyle$
-    - jtb-junit
+    - jtb-std-email:
+        email-every-unstable: '{email-every-unstable}'
+        email-individuals: '{email-individuals}'
+        email-to: '{email-to}'
+#    - jtb-log-parser:
+#        log-parser-rules: '{log-parser-rules}'
+#        unstable-on-warning: '{unstable-on-warning}'
+#        fail-on-error: '{fail-on-error}'
+#    - jtb-inline-tasks-parser:
+#        project-src: '{project-src}'
+
+
+- job-template:
+
+    name: '{name}-jtb-1'
+    project-type: freestyle
+    <<: *default_console_output_job
+
+    display-name: '{title}'
+    disabled: '{obj:disabled}'
+
+    parameters:
+    - choice:
+        name: JTB_File
+        choices:
+        - jtb.yml
+        - jtb.yaml
+        - .jtb.yml
+        - .jtb.yaml
+
+    builders:
+    - jtb-1-builder:
+        jtb-file: '$JTB_File'
+
+    publishers:
     - jtb-std-email:
         email-every-unstable: '{email-every-unstable}'
         email-individuals: '{email-individuals}'
         email-to: '{email-to}'
 
-# Id: jtb
+    description: '
+<div id="brixadmin-ci-description" class="well">
+  <div class="row">
+
+    <div class="col-md-3" style="width:15%"><img width="100%" src="{build-summary-image}" /></div>
+    <div class="col-md-5" style="width:40%"> {htmlDescription} </div> 
+    <div class="col-md-4" style="width:45%">
+
+      <table class="table table-condensed">
+
+        <tr>
+          <th> Vendor # branch </th> <td> <code class="muted">{vendor-repo}</code>:<code>{vendor-path}#{branch}</code> </td>
+          <th> Project source </th> <td> {project-src} </td>
+          <th> E-mail developers </th> <td> {email-individuals} </td>
+          <th> Additional Subscribers </th> <td> {email-to} </td>
+        </tr>
+
+      </table>
+
+    </div> 
+  </div>
+</div>
+
+<div class="alert alert-info center" role="alert">
+  <span class="glyphicon glyphicon-exclamation-sign"
+      aria-hidden="true"></span>
+  <div> Do not edit this job through the web! </div>
+</div> '
+
+# Id: jtb/0.0.1-master tpl/base.yaml
 

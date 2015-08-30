@@ -1,27 +1,36 @@
 #!/bin/sh
 
 scriptname=update
-version=0.0.0 # jtb
+version=0.0.1-master # jtb
+
 
 . ./util.sh
 
 test -n "$files" || files=tpl/base.yaml:jtb.yaml
-test -n "$test_err" || test_err=$HOME/tmp/jtb-test.err
 test -n "$test_out" || test_out=$HOME/tmp/jtb-test.out
+test -n "$test_err" || test_err=$HOME/tmp/jtb-test.err
 
-test -d "$(dirname test_out)" || err "No such dir for $test_out" 1
-test -d "$(dirname test_out)" || err "No such dir for $test_err" 1
+test -d "$(dirname $test_out)" || err "No such dir for $test_out" 1
+test -d "$(dirname $test_err)" || err "No such dir for $test_err" 1
 
+debug()
+{
+  err files=$files
+  err test_out=$test_out
+  err test_err=$test_err
+}
 
 
 # Main
 
-test -n "$JENKINS_HOME" && {
+test -n "$JJB_CONFIGURED" && {
   log "Running actual update"
   jjb_update="jenkins-jobs update"
 } || {
   log "Not a jenkins env. Not running update"
   jjb_update="echo jenkins-jobs update"
+
+  debug
 }
 
 jenkins-jobs test $files 2> $test_err > $test_out && {
@@ -35,10 +44,23 @@ jenkins-jobs test $files 2> $test_err > $test_out && {
     log "OK: Update complete"
   } || {
     log "XXX: need to scan stdout for test_out results, instead of test -s. And then fail:"
+    echo ---------------------------------------------------------------------------
     err "FAIL: nothing generated" 1
   }
 } || {
-  err "ERROR: building $files" 1
+  echo ---------------------------------------------------------------------------
+  err "ERROR: building $files"
+  debug
+
+  echo Test output: --------------------------------------------------------------
+  cat $test_out | fold -w 80
+
+  echo Test errors: --------------------------------------------------------------
+  cat $test_err | fold -w 80
+  echo ---------------------------------------------------------------------------
+
+  exit 1
 }
 
 
+# Id: jtb/0.0.1-master update.sh

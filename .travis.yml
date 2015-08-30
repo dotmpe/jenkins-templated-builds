@@ -1,5 +1,5 @@
 
-# container based build at travis-ci.org
+# container based test build at travis-ci.org
 
 sudo: false
 
@@ -11,7 +11,7 @@ install:
 
 before_script:
 
-script: ./update.sh
+script: ./test.sh && ./update.sh
 
 branches:
   only:
