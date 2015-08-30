@@ -1,6 +1,6 @@
 Jenkins Templated Builds
 ========================
-:Version: 0.0.1-master
+:Version: 0.0.1
 :Date: |date|
 :Description:
   JJB Templates for Jenkins
@@ -151,4 +151,4 @@ Status
    :trim:
 
 
-.. Id: jtb/0.0.1-master ReadMe.rst
+.. Id: jtb/0.0.1 ReadMe.rst
