@@ -6,9 +6,10 @@
     name: base
 
     # Job template vars
-    title: 'Job Template Builder'
+    project-title: 'Job Template Builder'
     build-summary-image: /userContent/jenkins-build-templates.png
     disabled: true
+    htmlDescription: ''
 
     ## Builder vars
 
@@ -17,7 +18,7 @@
     # jtb-inline-tasks-parser
     project-src:
     # jtb-std-log-parser
-    log-parser-rules: /var/lib/jenkins/log-rules.txt
+    log-parser-rules: $JENKINS_HOME/log-parser-rules.txt
     unstable-on-warning: false
     fail-on-error: false
     # jtb-std-email
@@ -39,7 +40,7 @@
 - builder:
     name: jtb-0-builder
     builders:
-    - shell: 'jenkins-jobs test ${jjb-files}'
+    - shell: 'jenkins-jobs test {jjb-files}'
 
 
 - builder:
@@ -217,7 +218,7 @@
     - choice:
         name: JJB_Files
         choices:
-        - jtb.yaml:var/base.yaml
+        - jtb.yaml:tpl/base.yaml
 
     builders:
     - jtb-0-builder:
@@ -244,7 +245,6 @@
 
     display-name: '{title}'
     disabled: '{obj:disabled}'
-    description: 'TODO'
 
     parameters:
     - choice:
@@ -265,6 +265,34 @@
         email-individuals: '{email-individuals}'
         email-to: '{email-to}'
 
+    description: '
+<div id="brixadmin-ci-description" class="well">
+  <div class="row">
+
+    <div class="col-md-3" style="width:15%"><img width="100%" src="{build-summary-image}" /></div>
+    <div class="col-md-5" style="width:40%"> {htmlDescription} </div> 
+    <div class="col-md-4" style="width:45%">
+
+      <table class="table table-condensed">
+
+        <tr>
+          <th> Vendor # branch </th> <td> <code class="muted">{vendor-repo}</code>:<code>{vendor-path}#{branch}</code> </td>
+          <th> Project source </th> <td> {project-src} </td>
+          <th> E-mail developers </th> <td> {email-individuals} </td>
+          <th> Additional Subscribers </th> <td> {email-to} </td>
+        </tr>
+
+      </table>
+
+    </div> 
+  </div>
+</div>
+
+<div class="alert alert-info center" role="alert">
+  <span class="glyphicon glyphicon-exclamation-sign"
+      aria-hidden="true"></span>
+  <div> Do not edit this job through the web! </div>
+</div> '
 
 # Id: jtb
 

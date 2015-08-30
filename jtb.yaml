@@ -2,10 +2,13 @@
 - defaults:
     name: jenkins-build-templates
 
-    # Job template vars
-    title: 'Job Template Builder'
-    version: 0.0.0
 
+- project:
+    name: 'jtb-A'
+
+    # Job template vars
+    project-title: 'Job Template Builder'
+    version: 0.0.0
     build-summary-image: /userContent/jenkins-build-templates.png
 
     # jtb-std-log-parser
@@ -14,13 +17,11 @@
     #git: 'git@github.com:dotmpe/jenkins-build-templates.git'
 
 
-- project:
-    name: 'jtb-A'
-
     jobs:
     - '{name}-jtb-0':
-        disabled: true
-        title: 'template JTB 0 for {title}'
+        disabled: false
+        title: 'template JTB 0 for {project-title}'
+
         vendor-repo: github
         vendor-path: dotmpe/jenkins-templated-builds
         branch: test
