@@ -3,7 +3,7 @@
 # JTB dep installer for travis
 # Id: jtb/0.0.2-master install-dependencies.sh
 
-source ./util.sh
+. ./util.sh
 
 test -n "$JJB_HOME" || {
     # default checkout dir at travis
@@ -13,7 +13,10 @@ test -n "$JJB_HOME" || {
 install_jjb()
 {
 
-  test -d "$JJB_HOME" || {
+  test -d "$JJB_HOME" && {
+
+    log "JJb_HOME exists: $JJb_HOME"
+  } || {
 
       log "Cloning JJB.."
       git clone https://git.openstack.org/openstack-infra/jenkins-job-builder $JJB_HOME \
