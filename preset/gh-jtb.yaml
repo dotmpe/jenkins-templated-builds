@@ -1,14 +1,18 @@
 
+# TODO: want to set an ENV
+
 - '{name}-gh-travis':
-    name: gh-jtb
+
+    name: jtb
     disabled: false
     title: 'GH JTB user (re)install'
     build-summary-image: 'ws/logo.png'
     htmlDescription: "Clone JTB and (re)install"
     vendor-repo: github
     vendor-path: dotmpe/jenkins-templated-build
-    branch: master
+    branch: test
     project-src: '*.sh,*.yaml,tpl/*.yaml,preset/*.yaml,*.py'
     email-individuals: false
     email-to:
+
 

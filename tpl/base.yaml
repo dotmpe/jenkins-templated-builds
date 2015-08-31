@@ -574,6 +574,17 @@
 
 
 - job-template:
+    name: '{name}-jjb-local'
+
+    project-type: freestyle
+    <<: *default_console_output_job
+
+    display-name: '{title}'
+    disabled: '{obj:disabled}'
+    <<: *description
+
+
+- job-template:
     name: '{name}-jtb-install-local'
 
     project-type: freestyle

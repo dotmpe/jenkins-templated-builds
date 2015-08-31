@@ -127,20 +127,20 @@ def format_job(jjb_template_id, seed):
     templated jobs.
     """
 
-    obj = '\n    '.join([
+    obj = '\n        '.join([
         "%s: %s" % (k, repr(v)) for k,v in seed.items()
     ])
     name = seed['name']
     del seed['name']
     return """
 - project:
-    name: '$s'
+    name: '%s'
 
     jobs:
     - '%s':
         %s
 
-""" % ( name, obj, jjb_template_id )
+""" % ( name, jjb_template_id, obj )
 
 
 def find_template(jjb_template_id, *template_files):

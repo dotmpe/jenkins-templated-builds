@@ -37,6 +37,7 @@ jenkins-jobs --version && {
   debug
 }
 
+# Naive routines for testing
 jenkins-jobs test $files 2> $test_err > $test_out && {
   test -s $test_err && {
     err "WARNING: errors during test ($test_err)"

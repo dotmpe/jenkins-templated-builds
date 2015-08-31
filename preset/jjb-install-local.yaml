@@ -1,5 +1,6 @@
 
-- {name}-jjb-local:
+- '{name}-jjb-local':
+
     name: latest
     disabled: false
     title: 'JJB'
