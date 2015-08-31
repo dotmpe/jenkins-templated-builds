@@ -3,7 +3,7 @@
 
 
 - defaults:
-    name: base
+    name: global
 
     # Job template vars
     project-title: 'Job Template Builder'
