@@ -143,8 +143,14 @@ Status
 
 - Using with dockerized jenkins (git@github.com:dotmpe/docker-jenkins.git v0.0.1).
 
+  This job will actually update itself right now.
+  
 
+TODO: make better use of groovy extensions. https://wiki.jenkins-ci.org/display/JENKINS/Jenkins+Script+Console
 
+Scriptler? https://wiki.jenkins-ci.org/display/JENKINS/Scriptler+Plugin
+
+- .jenkins.yml research and thoughts [2014] https://gist.github.com/christianchristensen/5519757
 
 .. |date| date:: %h %d. %Y
 .. |time| date:: %H:%M

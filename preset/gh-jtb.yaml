@@ -1,0 +1,14 @@
+
+- '{name}-gh-travis':
+    name: gh-jtb
+    disabled: false
+    title: 'GH JTB user (re)install'
+    build-summary-image: 'ws/logo.png'
+    htmlDescription: "Clone JTB and (re)install"
+    vendor-repo: github
+    vendor-path: dotmpe/jenkins-templated-build
+    branch: master
+    project-src: '*.sh,*.yaml,tpl/*.yaml,preset/*.yaml,*.py'
+    email-individuals: false
+    email-to:
+

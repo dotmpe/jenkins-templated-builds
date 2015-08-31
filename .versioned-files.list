@@ -1,4 +1,8 @@
 ReadMe.rst
 jtb.yaml
-update.sh
 tpl/base.yaml
+edit.sh
+test.sh
+update.sh
+install-dependencies.sh
+jenkins-template-build.py

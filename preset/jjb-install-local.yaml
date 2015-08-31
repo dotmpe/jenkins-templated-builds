@@ -1,0 +1,14 @@
+
+- {name}-jjb-local:
+    name: latest
+    disabled: false
+    title: 'JJB'
+    build-summary-image: 'ws/logo.png'
+    htmlDescription: "Clone JJB and (re)install"
+    vendor-repo: github
+    vendor-path: dotmpe/jenkins-templated-build
+    branch: master
+    project-src:
+    email-individuals: false
+    email-to:
+
