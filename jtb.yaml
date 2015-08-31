@@ -1,4 +1,10 @@
 
+- defaults:
+    name: global
+
+    jjb-files:
+
+
 - project:
     name: 'jtb-A'
 
