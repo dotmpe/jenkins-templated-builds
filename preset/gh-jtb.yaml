@@ -9,7 +9,7 @@
     build-summary-image: 'ws/logo.png'
     htmlDescription: "Clone JTB and (re)install"
     vendor-repo: github
-    vendor-path: dotmpe/jenkins-templated-build
+    vendor-path: dotmpe/jenkins-templated-builds
     branch: test
     project-src: '*.sh,*.yaml,tpl/*.yaml,preset/*.yaml,*.py'
     email-individuals: false
