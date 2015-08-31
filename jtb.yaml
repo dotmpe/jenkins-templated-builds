@@ -1,6 +1,6 @@
 
 - defaults:
-    name: global
+    name: base
 
     jjb-files:
 
