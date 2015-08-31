@@ -7,7 +7,7 @@ install:
 - mkdir -vp $HOME/{tmp,build}
 # JJB deps and then JJB itself
 - pip install --user ordereddict 'six>=1.5.2' PyYAML 'python-jenkins>=0.4.1' 'pbr>=0.8.2,<2.0'
-- . ./install-dependencies.sh && install_jjb
+- '. ./install-dependencies.sh && install_jjb'
 
 before_script:
 
