@@ -15,7 +15,7 @@ install_jjb()
 
   test -d "$JJB_HOME" && {
 
-    log "JJb_HOME exists: $JJb_HOME"
+    log "JJB_HOME exists: $JJB_HOME"
   } || {
 
       log "Cloning JJB.."
