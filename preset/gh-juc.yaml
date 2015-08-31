@@ -1,0 +1,16 @@
+
+- '{name}-gh-travis':
+
+    name: jenkins-userContent
+    disabled: false
+    title: 'Jenkins JS/CSS'
+    build-summary-image: 'ws/logo.png'
+    htmlDescription: ""
+    vendor-repo: github
+    vendor-path: dotmpe/jenkins-userContent
+    branch: master
+    project-src: ''
+    email-individuals: false
+    email-to:
+
+

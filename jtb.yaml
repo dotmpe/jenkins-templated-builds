@@ -16,7 +16,7 @@
     ## Builder vars
     ## Publisher vars
     # jtb-inline-tasks-parser
-    #project-src: '*.{{rst,sh,yaml}},tpl/*.yaml,.travis.yml'
+    project-src: '*.{{rst,sh,yaml}},tpl/*.yaml,.travis.yml'
     # jtb-std-log-parser
     log-parser-rules: $JENKINS_HOME/log-parser-rules.txt
     unstable-on-warning: true
