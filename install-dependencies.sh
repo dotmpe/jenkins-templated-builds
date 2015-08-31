@@ -16,7 +16,10 @@ install_jjb()
   test -d "$JJB_HOME" && {
 
     log "JJB_HOME exists: $JJB_HOME"
+
   } || {
+
+    mkdir -vp $(dirname $JJB_HOME)
 
     log "Cloning JJB.."
     git clone https://git.openstack.org/openstack-infra/jenkins-job-builder $JJB_HOME \
