@@ -11,6 +11,8 @@ then
   JJB_HOME=$HOME/build/jjb
 fi
 
+test -n "$JJB_HOME" || exit 42
+
 install_jjb()
 {
   test -d "$JJB_HOME" && {
