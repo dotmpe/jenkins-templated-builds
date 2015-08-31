@@ -45,3 +45,9 @@ install_jjb()
   }
 }
 
+test -n "$1" && type $1 &> /dev/null && {
+  cmd=$1
+  shift 1
+  $cmd $@
+}
+
