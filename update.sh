@@ -23,10 +23,13 @@ debug()
 
 # Main
 
-test -n "$JJB_Dry_Yun" && {
+jenkins-jobs version && {
+
   log "Running actual update"
   jjb_update="jenkins-jobs update"
+
 } || {
+
   log "Not a jenkins env. Not running update"
   jjb_update="echo jenkins-jobs update"
 

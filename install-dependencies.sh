@@ -5,11 +5,10 @@
 
 . ./util.sh
 
-if test -n "$JJB_HOME"
-then
+test -n "$JJB_HOME" || {
   # default checkout dir at travis
   JJB_HOME=$HOME/build/jjb
-fi
+}
 
 test -n "$JJB_HOME" || {
     err "No JJB_HOME var $JJB_HOME" 1
