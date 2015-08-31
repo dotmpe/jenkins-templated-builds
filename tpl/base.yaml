@@ -9,7 +9,7 @@
     project-title: 'Job Template Builder'
     build-summary-image: /userContent/jenkins-build-templates.png
     disabled: true
-    htmlDescription: ''
+    htmlDescription:
 
     ## Parameter vars
     # none
@@ -39,6 +39,8 @@
 
     ## Wrapper vars
     # none
+
+    jjb-files:
 
 
 ### JJB Action macros for job parts
