@@ -23,7 +23,7 @@ debug()
 
 # Main
 
-jenkins-jobs version && {
+jenkins-jobs --version && {
 
   log "Running actual update"
   jjb_update="jenkins-jobs update"
