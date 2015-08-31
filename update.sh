@@ -1,14 +1,15 @@
 #!/bin/sh
 
 scriptname=update
-version=0.0.0 # jtb
+version=0.0.2-test # jtb
+
 
 
 . ./util.sh
 
 test -n "$files" || files=tpl/base.yaml:jtb.yaml
-test -n "$test_out" || test_out=$HOME/tmp/jtb-test.out
-test -n "$test_err" || test_err=$HOME/tmp/jtb-test.err
+test -n "$test_out" || test_out=/tmp/jtb-test.out
+test -n "$test_err" || test_err=/tmp/jtb-test.err
 
 test -d "$(dirname $test_out)" || err "No such dir for $test_out" 1
 test -d "$(dirname $test_err)" || err "No such dir for $test_err" 1
@@ -23,10 +24,13 @@ debug()
 
 # Main
 
-test -n "$JJB_CONFIGURED" && {
+jenkins-jobs --version && {
+
   log "Running actual update"
   jjb_update="jenkins-jobs update"
+
 } || {
+
   log "Not a jenkins env. Not running update"
   jjb_update="echo jenkins-jobs update"
 
@@ -63,4 +67,4 @@ jenkins-jobs test $files 2> $test_err > $test_out && {
 }
 
 
-# Id: jtb update.sh
+# Id: jtb/0.0.2-test update.sh

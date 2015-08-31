@@ -11,7 +11,14 @@
     disabled: true
     htmlDescription: ''
 
+    ## Parameter vars
+    # none
+
+    ## Trigger vars
+    # none
+
     ## Builder vars
+    # none
 
     ## Publisher vars
     # jtb-checkstyle
@@ -30,6 +37,8 @@
     # jenkins-summary
     # jtb-junit
 
+    ## Wrapper vars
+    # none
 
 
 ### JJB Action macros for job parts
@@ -46,7 +55,37 @@
 - builder:
     name: jtb-1-builder
     builders:
-    - shell: 'jtb ${jtb-file}'
+    - shell: 'files={jjb-files} ./update.sh'
+    #- shell: 'jtb ${jtb-file}'
+
+
+- builder:
+    name: jtb-2-builder
+    builders:
+    - shell: 'echo version={version}'
+
+
+- builder:
+    name: jtb-travis-builder-0
+    builders:
+    - raw:
+        xml: |
+
+          <ruby-proxy-object>
+            <ruby-object ruby-class="Jenkins::Tasks::BuilderProxy" pluginid="travis-yml">
+              <object ruby-class="TravisYmlBuilder" pluginid="travis-yml"/>
+              <pluginid pluginid="travis-yml" ruby-class="String">travis-yml</pluginid>
+            </ruby-object>
+          </ruby-proxy-object>
+
+
+- builder:
+    name: jtb-automake-builder-0
+    builders:
+    - shell: |
+        for x in configure configure.sh; do test -e ./$x && ./$x || echo -n; done
+    - shell: |
+        test -e Makefile && {{ make && make install; }} || echo 'Warning: Nothing to do'
 
 
 ## Publisher macros
@@ -74,7 +113,7 @@
 
 
 - publisher:
-    name: jtb-log-parser
+    name: jtb-std-log-parser
     publishers:
     # hudson.plugins.logparser.LogParserPublisher
     - logparser:
@@ -191,13 +230,83 @@
 
 
 - scm:
-    #name: '{vendor-repo}-jtb-0'
-    name: 'github-jtb-0'
+    name: 'scm-github-jtb-0'
 
     <<: *default_github_co
 
 
+- description: &description
+    name: description
+    description: |
+        <div id="jtb-ci-description" class="well">
+          <div class="row">
+
+            <div class="col-md-3" style="width:15%"><img width="100%" src="{build-summary-image}" /></div>
+            <div class="col-md-5" style="width:40%"> {htmlDescription} </div> 
+            <div class="col-md-4" style="width:45%">
+
+              <table class="table table-condensed">
+
+                <tr>
+                  <th> Vendor # branch </th> <td> <code class="muted">{vendor-repo}</code>:<code>{vendor-path}#{branch}</code> </td>
+                </tr> <tr>
+                  <th> Project source </th> <td> {project-src} </td>
+                </tr> <tr>
+                  <th> E-mail developers </th> <td> {email-individuals} </td>
+                </tr> <tr>
+                  <th> Additional Subscribers </th> <td> {email-to} </td>
+                </tr>
+
+              </table>
+
+            </div> 
+          </div>
+        </div>
+
+        <div class="alert alert-info center" role="alert">
+          <span class="glyphicon glyphicon-exclamation-sign"
+              aria-hidden="true"></span>
+          <div> Do not edit this job through the web! </div>
+        </div> 
+
+
+- default_email_publisher: &default_email_publisher
+    name: default_email_publisher
+    jtb-std-email:
+        email-every-unstable: '{email-every-unstable}'
+        email-individuals: '{email-individuals}'
+        email-to: '{email-to}'
+
+
+- default_log_parser: &default_log_parser
+    name: default_log_parser
+    jtb-std-log-parser:
+        log-parser-rules: '{log-parser-rules}'
+        unstable-on-warning: '{unstable-on-warning}'
+        fail-on-error: '{fail-on-error}'
+
+
 # JJB template
+
+
+- job-template:
+
+    name: '{name}-base-0'
+    project-type: freestyle
+    <<: *default_console_output_job
+
+    display-name: '{title}'
+    disabled: '{obj:disabled}'
+    <<: *description
+
+    builders: '{obj:builders}'
+
+    publishers:
+    - <<: *default_email_publisher
+    - <<: *default_log_parser
+#    - jtb-inline-tasks-parser: 
+#        project-src: '{project-src}'
+
 
 - job-template:
 
@@ -205,16 +314,19 @@
     project-type: freestyle
     <<: *default_console_output_job
 
+    display-name: '{title}'
+    disabled: '{obj:disabled}'
+    <<: *description
+
     scm:
-    - '{vendor-repo}-jtb-0':
+    - 'scm-{vendor-repo}-jtb-0':
         vendor-path: '{vendor-path}'
         branch: '{branch}'
 
-    display-name: '{title}'
-    disabled: '{obj:disabled}'
-    description: 'TODO'
-
     parameters:
+    - bool:
+        name: JJB_Dry_Run
+        default: true
     - choice:
         name: JJB_Files
         choices:
@@ -225,15 +337,9 @@
         jjb-files: '$JJB_Files'
 
     publishers:
-    - jtb-std-email:
-        email-every-unstable: '{email-every-unstable}'
-        email-individuals: '{email-individuals}'
-        email-to: '{email-to}'
-#    - jtb-log-parser:
-#        log-parser-rules: '{log-parser-rules}'
-#        unstable-on-warning: '{unstable-on-warning}'
-#        fail-on-error: '{fail-on-error}'
-#    - jtb-inline-tasks-parser:
+    - <<: *default_email_publisher
+    - <<: *default_log_parser
+#    - jtb-inline-tasks-parser: 
 #        project-src: '{project-src}'
 
 
@@ -245,6 +351,7 @@
 
     display-name: '{title}'
     disabled: '{obj:disabled}'
+    <<: *description
 
     parameters:
     - choice:
@@ -260,39 +367,221 @@
         jtb-file: '$JTB_File'
 
     publishers:
-    - jtb-std-email:
-        email-every-unstable: '{email-every-unstable}'
-        email-individuals: '{email-individuals}'
-        email-to: '{email-to}'
+    - <<: *default_email_publisher
+    - <<: *default_log_parser
 
-    description: '
-<div id="brixadmin-ci-description" class="well">
-  <div class="row">
 
-    <div class="col-md-3" style="width:15%"><img width="100%" src="{build-summary-image}" /></div>
-    <div class="col-md-5" style="width:40%"> {htmlDescription} </div> 
-    <div class="col-md-4" style="width:45%">
+- job-template:
 
-      <table class="table table-condensed">
+    name: '{name}-jtb-2'
+    project-type: freestyle
+    <<: *default_console_output_job
 
-        <tr>
-          <th> Vendor # branch </th> <td> <code class="muted">{vendor-repo}</code>:<code>{vendor-path}#{branch}</code> </td>
-          <th> Project source </th> <td> {project-src} </td>
-          <th> E-mail developers </th> <td> {email-individuals} </td>
-          <th> Additional Subscribers </th> <td> {email-to} </td>
-        </tr>
+    display-name: '{title}'
+    disabled: '{obj:disabled}'
+    <<: *description
 
-      </table>
+    # TODO: build project for github
+    #
+    builders:
+    - jtb-2-builder
 
-    </div> 
-  </div>
-</div>
+    publishers:
+    - <<: *default_email_publisher
+    - <<: *default_log_parser
 
-<div class="alert alert-info center" role="alert">
-  <span class="glyphicon glyphicon-exclamation-sign"
-      aria-hidden="true"></span>
-  <div> Do not edit this job through the web! </div>
-</div> '
 
-# Id: jtb
 
+# Provision and start, then stop a docker container
+# Requires a global choice list definition 'Docker_Cloud_Name_List'.
+# TODO: Not sure how to use the create/start exec commands in jenkins.
+- job-template:
+    name: '{name}-docker-0'
+    project-type: freestyle
+    <<: *default_console_output_job
+
+    display-name: '{title}'
+    disabled: '{obj:disabled}'
+    <<: *description
+
+    parameters:
+    - string:
+        name: Docker_Image
+        default: evarga/jenkins-slave
+    - string:
+        name: Docker_CID
+        default: jenkins-docker-$JOB_NAME-$BUILD_NUMBER
+
+    builders:
+    - raw:
+        xml: |
+          <org.jenkinsci.plugins.dockerbuildstep.DockerBuilder plugin="docker-build-step@1.30">
+            <dockerCmd class="org.jenkinsci.plugins.dockerbuildstep.cmd.CreateContainerCommand">
+              <image>$Docker_Image</image>
+              <command/>
+              <hostName/>
+              <containerName>$Docker_CID</containerName>
+              <envVars/>
+              <links/>
+              <exposedPorts/>
+              <cpuShares/>
+              <memoryLimit/>
+            </dockerCmd>
+          </org.jenkinsci.plugins.dockerbuildstep.DockerBuilder>
+
+#    - raw:
+#        xml: |
+#          <org.jenkinsci.plugins.dockerbuildstep.DockerBuilder plugin="docker-build-step@1.30">
+#            <dockerCmd class="org.jenkinsci.plugins.dockerbuildstep.cmd.KillCommand">
+#              <containerIds>$Docker_CID</containerIds>
+#            </dockerCmd>
+#          </org.jenkinsci.plugins.dockerbuildstep.DockerBuilder>
+#
+#    - raw:
+#        xml: |
+#          <org.jenkinsci.plugins.dockerbuildstep.DockerBuilder plugin="docker-build-step@1.30">
+#            <dockerCmd class="org.jenkinsci.plugins.dockerbuildstep.cmd.RemoveCommand">
+#              <containerIds>$Docker_CID</containerIds>
+#              <ignoreIfNotFound>false</ignoreIfNotFound>
+#              <removeVolumes>false</removeVolumes>
+#            </dockerCmd>
+#          </org.jenkinsci.plugins.dockerbuildstep.DockerBuilder>
+
+
+    publishers:
+    - <<: *default_email_publisher
+    - <<: *default_log_parser
+
+
+# These I cannot get to work as expected
+- job-template:
+    name: '{name}-docker-1'
+    project-type: freestyle
+    <<: *default_console_output_job
+
+    display-name: '{title}'
+    disabled: '{obj:disabled}'
+    <<: *description
+
+
+    parameters:
+    - string:
+        name: Docker_Image
+        default: evarga/jenkins-slave
+    - string:
+        name: Docker_CID
+        default: jenkins-docker-$JOB_NAME-$BUILD_NUMBER
+    - raw:
+        xml: |
+          <jp.ikedam.jenkins.plugins.extensible__choice__parameter.ExtensibleChoiceParameterDefinition plugin="extensible-choice-parameter@1.3.2">
+            <name>Docker_Cloud_Name</name>
+            <description/>
+            <editable>false</editable>
+            <choiceListProvider class="jp.ikedam.jenkins.plugins.extensible_choice_parameter.GlobalTextareaChoiceListProvider">
+              <name>Docker_Cloud_Name_List</name>
+            </choiceListProvider>
+          </jp.ikedam.jenkins.plugins.extensible__choice__parameter.ExtensibleChoiceParameterDefinition>
+
+
+    builders:
+    - shell: |
+        echo Docker_Cloud_Name=$Docker_Cloud_Name
+        echo Docker_Image=$Docker_Image
+        echo Docker_CID=$Docker_CID
+    - raw:
+        xml: |
+          <com.nirima.jenkins.plugins.docker.builder.DockerBuilderControl plugin="docker-plugin@0.12.1">
+            <option class="com.nirima.jenkins.plugins.docker.builder.DockerBuilderControlOptionRun">
+              <cloudName>$Docker_Cloud_Name</cloudName>
+              <image>$Docker_Image</image>
+              <dnsString/>
+              <dockerCommand/>
+              <volumesString/>
+              <volumesFrom/>
+              <environmentsString/>
+              <lxcConfString/>
+              <privileged>false</privileged>
+              <tty>false</tty>
+              <hostname/>
+              <bindPorts/>
+              <bindAllPorts>false</bindAllPorts>
+              <macAddress/>
+            </option>
+          </com.nirima.jenkins.plugins.docker.builder.DockerBuilderControl>
+
+    - raw:
+        xml: |
+          <com.nirima.jenkins.plugins.docker.builder.DockerBuilderControl plugin="docker-plugin@0.12.1">
+            <option class="com.nirima.jenkins.plugins.docker.builder.DockerBuilderControlOptionProvisionAndStart">
+              <cloudName>$Docker_Cloud_Name</cloudName>
+              <templateId>$Docker_Image</templateId>
+            </option>
+          </com.nirima.jenkins.plugins.docker.builder.DockerBuilderControl>
+
+#    - raw:
+#        xml: |
+#          <com.nirima.jenkins.plugins.docker.builder.DockerBuilderControl plugin="docker-plugin@0.12.1">
+#            <option class="com.nirima.jenkins.plugins.docker.builder.DockerBuilderControlOptionStop">
+#              <cloudName>$Docker_Cloud_Name</cloudName>
+#              <containerId>$Docker_CID</containerId>
+#              <remove>true</remove>
+#            </option>
+#          </com.nirima.jenkins.plugins.docker.builder.DockerBuilderControl>
+
+
+- job-template:
+    name: '{name}-gh-automake'
+
+    project-type: freestyle
+    <<: *default_console_output_job
+
+    display-name: '{title}'
+    disabled: '{obj:disabled}'
+    <<: *description
+
+    scm:
+    - 'scm-{vendor-repo}-jtb-0':
+        vendor-path: '{vendor-path}'
+        branch: '{branch}'
+
+    triggers:
+    - github
+
+    builders:
+    - jtb-automake-builder-0
+
+
+- job-template:
+    name: '{name}-gh-travis'
+
+    project-type: freestyle
+    <<: *default_console_output_job
+
+    display-name: '{title}'
+    disabled: '{obj:disabled}'
+    <<: *description
+
+    scm:
+    - 'scm-{vendor-repo}-jtb-0':
+        vendor-path: '{vendor-path}'
+        branch: '{branch}'
+
+    triggers:
+    - github
+
+    builders:
+    - jtb-travis-builder-0
+
+
+- job-template:
+    name: '{name}-jtb-install-local'
+
+    project-type: freestyle
+    <<: *default_console_output_job
+
+    display-name: '{title}'
+    disabled: '{obj:disabled}'
+    <<: *description
+
+
+# Id: jtb/0.0.2-test tpl/base.yaml

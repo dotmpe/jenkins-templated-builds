@@ -1,42 +1,63 @@
 
-- defaults:
-    name: jenkins-build-templates
-
-
 - project:
     name: 'jtb-A'
 
     # Job template vars
-    project-title: 'Job Template Builder'
+    project-title: 'Jenkins Templated Builds'
     version: 0.0.0
     build-summary-image: /userContent/jenkins-build-templates.png
 
-    # jtb-std-log-parser
-    #log-parser-rules: /var/lib/jenkins/log-rules.txt
-
     #git: 'git@github.com:dotmpe/jenkins-build-templates.git'
 
+    ## SCM vars
+    vendor-repo: github
+    vendor-path: dotmpe/jenkins-templated-builds
+    branch: test
+    ## Builder vars
+    ## Publisher vars
+    # jtb-inline-tasks-parser
+    #project-src: '*.{{rst,sh,yaml}},tpl/*.yaml,.travis.yml'
+    # jtb-std-log-parser
+    log-parser-rules: $JENKINS_HOME/log-parser-rules.txt
+    unstable-on-warning: true
+    fail-on-error: true
+    # jtd-std-email
+    email-every-unstable: false
+    email-individuals: false
+    email-to: dev@dotmpe.com
 
     jobs:
+    - '{name}-base-0':
+        disabled: false
+        title: 'Shell test'
+        htmlDescription: 'Shell Job {project-title} v{version}'
+        builders:
+        - shell: 'whoami && hostname'
+
     - '{name}-jtb-0':
         disabled: false
-        title: 'template JTB 0 for {project-title}'
+        title: 'JJB0 test'
+        htmlDescription: 'Testing JJB with {project-title} v{version}'
 
-        vendor-repo: github
-        vendor-path: dotmpe/jenkins-templated-builds
-        branch: test
-        ## Builder vars
-        ## Publisher vars
-        # jtb-inline-tasks-parser
-        project-src: '*.{{rst,sh,yaml}},tpl/*.yaml,.travis.yml'
-        # jtb-std-log-parser -- missing in official JJB dist.
-        #unstable-on-warning: false
-        #fail-on-error: false
-        # jtd-std-email
-        email-every-unstable: false
-        email-individuals: false
-        email-to:
+    - '{name}-jtb-1':
+        disabled: false
+        title: 'JTB1 upd'
+        htmlDescription: 'Running JTB? with {project-title} v{version}'
+
+    - '{name}-jtb-2':
+        disabled: false
+        title: 'JTB2 gen GH'
+        htmlDescription: 'Generate GitHub job with {project-title} v{version}'
+
+    - '{name}-docker-0':
+        disabled: false
+        title: 'Docker0 Test Create-Kill-Remove'
+        htmlDescription: 'with {project-title} v{version}'
+
+    - '{name}-docker-1':
+        disabled: false
+        title: 'Docker1 Test Run'
+        htmlDescription: 'with {project-title} v{version}'
 
 
-# Id: jtb
-
+# Id: jtb/0.0.2-test jtb.yaml

@@ -1,6 +1,6 @@
 Jenkins Templated Builds
 ========================
-:Version: 0.0.0
+:Version: 0.0.2-test
 :Date: |date|
 :Description:
   JJB Templates for Jenkins
@@ -134,11 +134,23 @@ Also on the wishlist: pip, npm, bower, docker, arduino, docs (python docutils, o
 
 Status
 ------
+
 - No tests. It either runs, or its gone
     AKA Keep cruft elsewhere.
     Well there is a test branch now.
 
 - To run, find a shell: ``./update``.
+
+- Using with dockerized jenkins (git@github.com:dotmpe/docker-jenkins.git v0.0.1).
+
+  This job will actually update itself right now.
+  
+
+TODO: make better use of groovy extensions. https://wiki.jenkins-ci.org/display/JENKINS/Jenkins+Script+Console
+
+Scriptler? https://wiki.jenkins-ci.org/display/JENKINS/Scriptler+Plugin
+
+- .jenkins.yml research and thoughts [2014] https://gist.github.com/christianchristensen/5519757
 
 
 .. |date| date:: %h %d. %Y
@@ -151,4 +163,4 @@ Status
    :trim:
 
 
-.. Id: jtb
+.. Id: jtb/0.0.2-test ReadMe.rst
