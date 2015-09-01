@@ -9,7 +9,7 @@
     vendor-repo: github
     vendor-path: dotmpe/jenkins-userContent
     branch: master
-    project-src: ''
+    project-src: '*.rst,*.styl,*.yaml,*.js'
     email-individuals: false
     email-to:
 

@@ -94,24 +94,59 @@
 
 
 - publisher:
-     name: jtb-checkstyle
-     publishers:
-     - checkstyle:
-         pattern: 'build/checkstyle-result.xml'
+    name: jtb-checkstyle
+    publishers:
+    - checkstyle:
+        pattern: 'build/checkstyle-result.xml'
 
 
 - publisher:
-     name: jtb-inline-tasks-parser
-     publishers:
-     - task-scanner:
-         pattern: '{project-src}'
-         health-threshold: low
-         can-run-on-failed: true
-         use-stable-build-as-reference: false
-         use-delta-values: false
-         should-detect-modules: false
-         do-not-resolve-relative-paths: true
-         dont-compute-new: true
+    name: jtb-inline-tasks-parser
+    publishers:
+    - raw:
+        xml: |
+
+          <hudson.plugins.tasks.TasksPublisher plugin="tasks@4.45">
+            <healthy/>
+            <unHealthy/>
+            <thresholdLimit>low</thresholdLimit>
+            <pluginName>[TASKS]</pluginName>
+            <defaultEncoding/>
+            <canRunOnFailed>true</canRunOnFailed>
+            <usePreviousBuildAsReference>false</usePreviousBuildAsReference>
+            <useStableBuildAsReference>false</useStableBuildAsReference>
+            <useDeltaValues>false</useDeltaValues>
+            <thresholds plugin="analysis-core@1.72">
+              <unstableTotalAll/>
+              <unstableTotalHigh/>
+              <unstableTotalNormal/>
+              <unstableTotalLow/>
+              <failedTotalAll/>
+              <failedTotalHigh/>
+              <failedTotalNormal/>
+              <failedTotalLow/>
+            </thresholds>
+            <shouldDetectModules>false</shouldDetectModules>
+            <dontComputeNew>true</dontComputeNew>
+            <doNotResolveRelativePaths>false</doNotResolveRelativePaths>
+            <high>FIXME</high>
+            <normal>TODO</normal>
+            <low>XXX</low>
+            <ignoreCase>false</ignoreCase>
+            <asRegexp>false</asRegexp>
+            <pattern>{project-src}</pattern>
+            <excludePattern/>
+          </hudson.plugins.tasks.TasksPublisher>
+
+#     - task-scanner:
+#         pattern: '{project-src}'
+#         health-threshold: low
+#         can-run-on-failed: true
+#         use-stable-build-as-reference: false
+#         use-delta-values: false
+#         should-detect-modules: false
+#         do-not-resolve-relative-paths: true
+#         dont-compute-new: true
 
 
 - publisher:
@@ -287,6 +322,12 @@
         unstable-on-warning: '{unstable-on-warning}'
         fail-on-error: '{fail-on-error}'
 
+- default_tasks_parser: &default_tasks_parser
+    name: default_tasks_parser
+    jtb-inline-tasks-parser:
+        project-src: '{project-src}'
+
+
 
 # JJB template
 
@@ -306,8 +347,7 @@
     publishers:
     - <<: *default_email_publisher
     - <<: *default_log_parser
-#    - jtb-inline-tasks-parser: 
-#        project-src: '{project-src}'
+    - <<: *default_tasks_parser
 
 
 - job-template:
@@ -341,8 +381,7 @@
     publishers:
     - <<: *default_email_publisher
     - <<: *default_log_parser
-#    - jtb-inline-tasks-parser: 
-#        project-src: '{project-src}'
+    - <<: *default_tasks_parser
 
 
 - job-template:
@@ -391,6 +430,7 @@
     publishers:
     - <<: *default_email_publisher
     - <<: *default_log_parser
+    - <<: *default_tasks_parser
 
 
 
@@ -453,6 +493,7 @@
     publishers:
     - <<: *default_email_publisher
     - <<: *default_log_parser
+    - <<: *default_tasks_parser
 
 
 # These I cannot get to work as expected
@@ -530,6 +571,10 @@
 #            </option>
 #          </com.nirima.jenkins.plugins.docker.builder.DockerBuilderControl>
 
+    publishers:
+    - jtb-inline-tasks-parser
+    - <<: *default_log_parser
+
 
 - job-template:
     name: '{name}-gh-automake'
@@ -551,6 +596,10 @@
 
     builders:
     - jtb-automake-builder-0
+
+    publishers:
+    - <<: *default_log_parser
+    - <<: *default_tasks_parser
 
 
 - job-template:
@@ -574,6 +623,10 @@
     builders:
     - jtb-travis-builder-0
 
+    publishers:
+    - <<: *default_log_parser
+    - <<: *default_tasks_parser
+
 
 - job-template:
     name: '{name}-jjb-local'
@@ -585,6 +638,10 @@
     disabled: '{obj:disabled}'
     <<: *description
 
+    publishers:
+    - <<: *default_log_parser
+    - <<: *default_tasks_parser
+
 
 - job-template:
     name: '{name}-jtb-install-local'
@@ -595,6 +652,10 @@
     display-name: '{title}'
     disabled: '{obj:disabled}'
     <<: *description
+
+    publishers:
+    - <<: *default_log_parser
+    - <<: *default_tasks_parser
 
 
 # Id: jtb/0.0.2-test tpl/base.yaml

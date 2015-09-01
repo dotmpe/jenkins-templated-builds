@@ -32,8 +32,6 @@
     email-individuals: false
     email-to: dev@dotmpe.com
 
-    jjb-files:
-
     jobs:
     - '{name}-base-0':
         disabled: false
