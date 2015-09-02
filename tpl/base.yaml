@@ -1,15 +1,17 @@
 # # The initial base file, split this up later.
 #
 
-
+# global defaults is special only? why not use something else. filename or argument or something.
+# XXX: can have only one defaults[name=global]
 - defaults:
-    name: global
+    name: base
 
     # Job template vars
     project-title: 'Job Template Builder'
     build-summary-image: /userContent/jenkins-build-templates.png
     disabled: true
     htmlDescription:
+    restrict-node:
 
     ## Parameter vars
     # none
@@ -26,7 +28,7 @@
     project-src:
     # jtb-std-log-parser
     log-parser-rules: $JENKINS_HOME/log-parser-rules.txt
-    unstable-on-warning: false
+    unstable-on-warning: true
     fail-on-error: false
     # jtb-std-email
     email-every-unstable: false
@@ -42,6 +44,8 @@
 
     jjb-files:
 
+    publish-on-error: true
+
 
 ### JJB Action macros for job parts
 
@@ -49,20 +53,20 @@
 ## Builder macros
 
 - builder:
-    name: jtb-0-builder
+    name: builder-jtb-0
     builders:
     - shell: 'jenkins-jobs test {jjb-files}'
 
 
 - builder:
-    name: jtb-1-builder
+    name: builder-jtb-1
     builders:
     - shell: 'files={jjb-files} ./update.sh'
     #- shell: 'jtb ${jtb-file}'
 
 
 - builder:
-    name: jtb-2-builder
+    name: builder-jtb-2
     builders:
     - shell: 'echo version={version}'
 
@@ -158,6 +162,42 @@
         unstable-on-warning: '{unstable-on-warning}'
         fail-on-error: '{fail-on-error}'
 
+- publisher:
+    name: jtb-std-warnings
+    publishers:
+    - raw:
+        xml: |
+          <hudson.plugins.analysis.collector.AnalysisPublisher plugin="analysis-collector@1.43">
+            <healthy/>
+            <unHealthy/>
+            <thresholdLimit>low</thresholdLimit>
+            <pluginName>[ANALYSIS-COLLECTOR]</pluginName>
+            <defaultEncoding/>
+            <canRunOnFailed>{publish-on-error}</canRunOnFailed>
+            <usePreviousBuildAsReference>false</usePreviousBuildAsReference>
+            <useStableBuildAsReference>false</useStableBuildAsReference>
+            <useDeltaValues>false</useDeltaValues>
+            <thresholds plugin="analysis-core@1.72">
+              <unstableTotalAll/>
+              <unstableTotalHigh/>
+              <unstableTotalNormal/>
+              <unstableTotalLow/>
+              <failedTotalAll/>
+              <failedTotalHigh/>
+              <failedTotalNormal/>
+              <failedTotalLow/>
+            </thresholds>
+            <shouldDetectModules>false</shouldDetectModules>
+            <dontComputeNew>true</dontComputeNew>
+            <doNotResolveRelativePaths>true</doNotResolveRelativePaths>
+            <isCheckStyleDeactivated>true</isCheckStyleDeactivated>
+            <isDryDeactivated>true</isDryDeactivated>
+            <isFindBugsDeactivated>true</isFindBugsDeactivated>
+            <isPmdDeactivated>true</isPmdDeactivated>
+            <isOpenTasksDeactivated>false</isOpenTasksDeactivated>
+            <isWarningsDeactivated>false</isWarningsDeactivated>
+          </hudson.plugins.analysis.collector.AnalysisPublisher>
+
 
 - publisher:
     name: jtb-std-email
@@ -197,7 +237,7 @@
         claim-build: false
 
 
-# YAML aliases
+### YAML aliases: generic job parts
 
 - default_console_output_job: &default_console_output_job
     name: 'default_console_output_job'
@@ -264,12 +304,7 @@
         prune: true
         browser: githubweb
         browser-url: 'https://github.com/'
-
-
-- scm:
-    name: 'scm-github-jtb-0'
-
-    <<: *default_github_co
+        credentials-id: '{credentials-id}'
 
 
 - description: &description
@@ -328,6 +363,75 @@
         project-src: '{project-src}'
 
 
+- restrict_node: &restrict_node
+    name: restrict_node
+    node: '{restrict-node}'
+
+
+
+### Soe more JJB Action macros
+
+## SCM macro
+
+- scm:
+    name: 'scm-github-0'
+
+    <<: *default_github_co
+
+
+
+### YAML aliases: job types
+
+- gh_job: &gh_job
+    name: gh_job
+
+    project-type: freestyle
+    display-name: '{title}'
+    disabled: '{obj:disabled}'
+    <<: *default_console_output_job
+    <<: *description
+
+    vendor-repo: 'github'
+
+    scm:
+    - 'scm-{vendor-repo}-0':
+        vendor-path: '{vendor-path}'
+        branch: '{branch}'
+        credentials-id: '{credentials-id}'
+
+    properties:
+    - raw:
+        xml: |
+          <com.coravy.hudson.plugins.github.GithubProjectProperty plugin="github@1.13.2">
+            <projectUrl>https://github.com/{vendor-path}/</projectUrl>
+          </com.coravy.hudson.plugins.github.GithubProjectProperty>
+
+    publishers:
+    - <<: *default_log_parser
+    - <<: *default_tasks_parser
+    - jtb-std-warnings:
+        publish-on-error: '{publish-on-error}'
+
+
+- gh_trigger: &gh_trigger
+    name: gh_trigger
+
+    triggers:
+    - github
+
+
+- default_pollscm: &default_pollscm
+    name: 'default_pollscm'
+
+    pollscm: "*/1 * * * *"
+
+
+- default_scm_trigger: &default_scm_trigger
+    name: 'default_scm_trigger'
+
+    triggers:
+    - <<: *default_pollscm
+
 
 # JJB template
 
@@ -361,9 +465,10 @@
     <<: *description
 
     scm:
-    - 'scm-{vendor-repo}-jtb-0':
+    - 'scm-{vendor-repo}-0':
         vendor-path: '{vendor-path}'
         branch: '{branch}'
+        credentials-id: '{credentials-id}'
 
     parameters:
     - bool:
@@ -375,7 +480,7 @@
         - jtb.yaml:tpl/base.yaml
 
     builders:
-    - jtb-0-builder:
+    - builder-jtb-0:
         jjb-files: '$JJB_Files'
 
     publishers:
@@ -404,7 +509,7 @@
         - .jtb.yaml
 
     builders:
-    - jtb-1-builder:
+    - builder-jtb-1:
         jtb-file: '$JTB_File'
 
     publishers:
@@ -425,7 +530,7 @@
     # TODO: build project for github
     #
     builders:
-    - jtb-2-builder
+    - builder-jtb-2
 
     publishers:
     - <<: *default_email_publisher
@@ -587,9 +692,10 @@
     <<: *description
 
     scm:
-    - 'scm-{vendor-repo}-jtb-0':
+    - 'scm-{vendor-repo}-0':
         vendor-path: '{vendor-path}'
         branch: '{branch}'
+        credentials-id: '{credentials-id}'
 
     triggers:
     - github
@@ -603,29 +709,22 @@
 
 
 - job-template:
+    name: '{name}-gh'
+    <<: *restrict_node
+    <<: *gh_job
+    <<: *gh_trigger
+
+
+- job-template:
     name: '{name}-gh-travis'
-
-    project-type: freestyle
-    <<: *default_console_output_job
-
-    display-name: '{title}'
-    disabled: '{obj:disabled}'
-    <<: *description
-
-    scm:
-    - 'scm-{vendor-repo}-jtb-0':
-        vendor-path: '{vendor-path}'
-        branch: '{branch}'
-
-    triggers:
-    - github
+    <<: *restrict_node
+    <<: *gh_job
+    # FIXME: this would only work with a public server
+    #<<: *gh_trigger
+    <<: *default_scm_trigger
 
     builders:
     - jtb-travis-builder-0
-
-    publishers:
-    - <<: *default_log_parser
-    - <<: *default_tasks_parser
 
 
 - job-template:
