@@ -1,0 +1,37 @@
+
+#
+# Travis compatible build file for jenkins travis-yml
+#
+
+# supported keys:
+#
+before_install:
+- echo before install 1
+- echo before install 2
+
+install:
+- echo Installing..
+- echo "FOO=$FOO BAR=$BAR"
+
+before_script:
+- echo Setup here
+- echo "FOO=$FOO BAR=$BAR"
+
+script:
+- echo OK, running build
+- echo "FOO=$FOO BAR=$BAR"
+
+after_script:
+- echo Done, wrap it up
+
+after_failure:
+- echo Oh-oh
+
+after_success:
+- echo Yeah
+
+# travis-yml does not support matrix builds,
+# only the last env item is build:
+env:
+- FOO=bar
+- FOO=el BAR=baz
