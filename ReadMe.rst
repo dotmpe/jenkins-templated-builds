@@ -5,7 +5,9 @@ Jenkins Templated Builds
 :Description:
   JJB Templates for Jenkins
 :Abstract:
-  YAML's minimalism makes it very interesting for concise, generic metadata. In this particular case, to define the recipe and parameters associated with continious integration of software |---| the contents of GIT repositories in specific. Presented here in this ReadMe is an short evaluation of Jenkins Job Builder [JJB] and Jenkins as a CI backend, followed by an overview of some initial work contained within this project.
+  YAML's minimalism makes it very interesting for concise, generic metadata. In this particular case, to define the recipe and parameters associated with continious integration of software |---| the contents of GIT repositories in specific. 
+  
+  Presented here in this ReadMe is an short evaluation of Jenkins Job Builder [JJB] and Jenkins as a CI backend, followed by an overview of some initial work contained within this project.
 
 :Build status:
 

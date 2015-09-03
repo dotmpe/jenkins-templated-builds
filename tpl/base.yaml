@@ -1,7 +1,8 @@
 # # The initial base file, split this up later.
 #
 
-# global defaults is special only? why not use something else. filename or argument or something.
+# global defaults is special only? why not use something else. filename or 
+# argument or something.
 # XXX: can have only one defaults[name=global]
 - defaults:
     name: base
@@ -10,6 +11,7 @@
     project-title: 'Job Template Builder'
     build-summary-image: /userContent/jenkins-build-templates.png
     disabled: true
+    concurrent: true
     htmlDescription:
     restrict-node:
 
@@ -45,6 +47,12 @@
     jjb-files:
 
     publish-on-error: true
+
+    git-browser: auto
+    git-browser-url:
+    credentials-id:
+
+    git-recursive-init: false
 
 
 ### JJB Action macros for job parts
@@ -239,8 +247,194 @@
 
 ### YAML aliases: generic job parts
 
-- default_console_output_job: &default_console_output_job
-    name: 'default_console_output_job'
+
+- restrict_node: &restrict_node
+    name: restrict_node
+    node: '{restrict-node}'
+
+
+- description: &description
+    name: description
+    description: |
+        <div id="jtb-ci-description" class="well">
+          <div class="row">
+
+            <div class="col-md-3" style="width:15%"><img width="100%" src="{build-summary-image}" /></div>
+            <div class="col-md-5" style="width:40%"> {htmlDescription} </div> 
+            <div class="col-md-4" style="width:45%">
+
+              <table class="table table-condensed">
+
+                <tr>
+                  <th> Vendor # branch </th> <td> <code class="muted">{vendor-repo}</code>:<code>{vendor-path}#{branch}</code> </td>
+                </tr> <tr>
+                  <th> Project source </th> <td> {project-src} </td>
+                </tr> <tr>
+                  <th> E-mail developers </th> <td> {email-individuals} </td>
+                </tr> <tr>
+                  <th> Additional Subscribers </th> <td> {email-to} </td>
+                </tr>
+
+              </table>
+
+            </div> 
+          </div>
+        </div>
+
+        <div class="alert alert-info center" role="alert">
+          <span class="glyphicon glyphicon-exclamation-sign"
+              aria-hidden="true"></span>
+          <div> This is a JJB managed configuration. </div>
+        </div> 
+
+
+## YAML aliases: Standard GIT SCM parts
+
+
+- git_co: &git_co
+    name: git_co
+
+    url: '{git-url}'
+    submodule:
+      recursive: '{git-recursive-init}'
+    skip-tag: true
+    wipe-workspace: false
+    prune: true
+    skip-tag: true
+    wipe-workspace: false
+    prune: true
+    credentials-id: '{credentials-id}'
+    browser: '{git-browser}'
+    browser-url: '{git-browser-url}'
+
+
+- git_branchless_co: &git_branchless_co
+    name: git_branchless_co
+
+    <<: *git_co
+    branches:
+    - '{branch}'
+
+
+# FIXME: git-branch-co stopped working at VS1?
+- git_branch_co: &git_branch_co
+    name: git_branch_co
+
+    <<: *git_co
+    branches:
+    - 'origin/{branch}'
+    local-branch: '{branch}'
+
+
+- std_git_co: &std_git_co
+    name: std_git_co
+
+    scm:
+    - git:
+        <<: *git_co
+
+
+- vnd_git_co: &vnd_git_co
+    name: 'vnd_git_co'
+
+    scm:
+    - git:
+        <<: *git_co
+        url: '{vendor-root}{vendor-path}.git'
+
+
+- gh_shared_parts: &gh_shared_parts
+    name: gh_shared_parts
+
+    properties:
+    - raw:
+        xml: |
+          <com.coravy.hudson.plugins.github.GithubProjectProperty plugin="github@1.13.2">
+            <projectUrl>https://github.com/{vendor-path}/</projectUrl>
+          </com.coravy.hudson.plugins.github.GithubProjectProperty>
+
+#    publishers:
+# Join trigger can only group projects (upstream?),
+# ant do parametrized build triggerss once group done as a whole
+#    - join-trigger:
+#        even-if-unstable: true
+#        projects: '{obj:upstream-group}'
+#        even-if-unstable: '{downstream-on-unstable}'
+#        publishers:
+#        - trigger:
+#            project: xxx
+#            threshold: unstable
+#        publishers: '{obj:downstream}'
+
+# Downstream is kind of backwards. Natural for build system to keep downstream
+# with upstream config. For real life projects not so much. Want
+# to append downstream projects later to existing jobs?
+    #- downstream-ext:
+    #    projects: '{obj:downstream}'
+    #    criteria: sucess
+    #    only-on-scm-change: false
+    #    only-on-local-scm-change: false
+    #    comparison: equal-or-over
+    #    #condition: 
+
+- private_gh_co: &private_gh_co
+    name: 'private_gh_co'
+
+    <<: *gh_shared_parts
+    git-browser: githubweb
+    git-browser-url: 'https://github.com/'
+    vendor-root: 'git@github.com:'
+    scm:
+    - git:
+        <<: *git_branchless_co
+        # git@github.com:<vendor-path>.mpe.git
+        url: '{vendor-root}{vendor-path}.git'
+        credentials-id: '{credentials-id}'
+
+
+- std_gh_co: &std_gh_co
+    name: 'std_gh_co'
+
+    <<: *gh_shared_parts
+    git-browser: githubweb
+    git-browser-url: 'https://github.com/'
+    vendor-root: 'https://github.com/'
+    scm:
+    - git:
+        <<: *git_branchless_co
+        # https://github.com/<vendor-path>.git
+        url: '{vendor-root}{vendor-path}.git'
+
+
+
+# YAML aliases: other scm related parts
+
+
+- gh_trigger: &gh_trigger
+    name: gh_trigger
+
+    triggers:
+    - github
+
+
+- std_pollscm: &std_pollscm
+    name: 'std_pollscm'
+
+    pollscm: "*/1 * * * *"
+
+
+- std_scm_trigger: &std_scm_trigger
+    name: 'std_scm_trigger'
+
+    triggers:
+    - <<: *std_pollscm
+
+
+# YAML aliases: Build wrapper part
+
+
+- std_console_output_job: &std_console_output_job
+    name: 'std_console_output_job'
 
     wrappers:
     - timestamps
@@ -248,8 +442,10 @@
         colormap: vga
 
 
-- default_analysis_report: &default_analysis_report
-    name: default_analysis_report
+## YAML aliases: Build publisher parts
+
+- std_analysis_report: &std_analysis_report
+    name: std_analysis_report
 
     raw:
         xml: |
@@ -285,184 +481,94 @@
           </hudson.plugins.analysis.collector.AnalysisPublisher>
 
 
-- default_github_co: &default_github_co
-    name: 'default_github_co'
-
-    scm:
-    - git:
-        url: 'git@github.com:{vendor-path}.git'
-        branches:
-        - 'origin/{branch}'
-        local-branch: '{branch}'
-        submodule:
-          recursive: true
-        skip-tag: true
-        wipe-workspace: false
-        prune: true
-        skip-tag: true
-        wipe-workspace: false
-        prune: true
-        browser: githubweb
-        browser-url: 'https://github.com/'
-        credentials-id: '{credentials-id}'
-
-
-- description: &description
-    name: description
-    description: |
-        <div id="jtb-ci-description" class="well">
-          <div class="row">
-
-            <div class="col-md-3" style="width:15%"><img width="100%" src="{build-summary-image}" /></div>
-            <div class="col-md-5" style="width:40%"> {htmlDescription} </div> 
-            <div class="col-md-4" style="width:45%">
-
-              <table class="table table-condensed">
-
-                <tr>
-                  <th> Vendor # branch </th> <td> <code class="muted">{vendor-repo}</code>:<code>{vendor-path}#{branch}</code> </td>
-                </tr> <tr>
-                  <th> Project source </th> <td> {project-src} </td>
-                </tr> <tr>
-                  <th> E-mail developers </th> <td> {email-individuals} </td>
-                </tr> <tr>
-                  <th> Additional Subscribers </th> <td> {email-to} </td>
-                </tr>
-
-              </table>
-
-            </div> 
-          </div>
-        </div>
-
-        <div class="alert alert-info center" role="alert">
-          <span class="glyphicon glyphicon-exclamation-sign"
-              aria-hidden="true"></span>
-          <div> Do not edit this job through the web! </div>
-        </div> 
-
-
-- default_email_publisher: &default_email_publisher
-    name: default_email_publisher
+- std_email_publisher: &std_email_publisher
+    name: std_email_publisher
     jtb-std-email:
         email-every-unstable: '{email-every-unstable}'
         email-individuals: '{email-individuals}'
         email-to: '{email-to}'
 
 
-- default_log_parser: &default_log_parser
-    name: default_log_parser
+- std_log_parser: &std_log_parser
+    name: std_log_parser
     jtb-std-log-parser:
         log-parser-rules: '{log-parser-rules}'
         unstable-on-warning: '{unstable-on-warning}'
         fail-on-error: '{fail-on-error}'
 
-- default_tasks_parser: &default_tasks_parser
-    name: default_tasks_parser
+
+- std_tasks_parser: &std_tasks_parser
+    name: std_tasks_parser
     jtb-inline-tasks-parser:
         project-src: '{project-src}'
 
 
-- restrict_node: &restrict_node
-    name: restrict_node
-    node: '{restrict-node}'
 
-
-
-### Soe more JJB Action macros
+### Some more JJB Action macros
 
 ## SCM macro
 
+# FIXME: test this later, using yaml alias for now
 - scm:
     name: 'scm-github-0'
 
-    <<: *default_github_co
+    <<: *std_gh_co
 
 
+### More complex YAML aliases: composite job types
 
-### YAML aliases: job types
-
-- gh_job: &gh_job
-    name: gh_job
+- std_freestyle_job: &std_freestyle_job
+    name: std_freestyle_job
 
     project-type: freestyle
     display-name: '{title}'
-    disabled: '{obj:disabled}'
-    <<: *default_console_output_job
     <<: *description
-
-    vendor-repo: 'github'
-
-    scm:
-    - 'scm-{vendor-repo}-0':
-        vendor-path: '{vendor-path}'
-        branch: '{branch}'
-        credentials-id: '{credentials-id}'
-
-    properties:
-    - raw:
-        xml: |
-          <com.coravy.hudson.plugins.github.GithubProjectProperty plugin="github@1.13.2">
-            <projectUrl>https://github.com/{vendor-path}/</projectUrl>
-          </com.coravy.hudson.plugins.github.GithubProjectProperty>
+    disabled: '{obj:disabled}'
+    concurrent: '{obj:concurrent}'
+    <<: *restrict_node
+    <<: *std_console_output_job
 
     publishers:
-    - <<: *default_log_parser
-    - <<: *default_tasks_parser
+    - <<: *std_email_publisher
+    - <<: *std_log_parser
+    - <<: *std_tasks_parser
     - jtb-std-warnings:
         publish-on-error: '{publish-on-error}'
 
 
-- gh_trigger: &gh_trigger
-    name: gh_trigger
-
-    triggers:
-    - github
-
-
-- default_pollscm: &default_pollscm
-    name: 'default_pollscm'
-
-    pollscm: "*/1 * * * *"
+- private_gh_job: &private_gh_job
+    name: private_gh_job
+    <<: *std_freestyle_job
+    <<: *private_gh_co
 
 
-- default_scm_trigger: &default_scm_trigger
-    name: 'default_scm_trigger'
+- gh_job: &gh_job
+    name: gh_job
+    <<: *std_freestyle_job
+    <<: *std_gh_co
 
-    triggers:
-    - <<: *default_pollscm
+    #<<: *gh_co
+# FIXME: test this later, using yaml alias for now
+#    scm:
+#    - 'scm-github-0':
+#vendor-path: '{vendor-path}'
+#    branch: '{branch}'
 
 
-# JJB template
+
+### At last, JJB templates
 
 
 - job-template:
-
     name: '{name}-base-0'
-    project-type: freestyle
-    <<: *default_console_output_job
-
-    display-name: '{title}'
-    disabled: '{obj:disabled}'
-    <<: *description
+    <<: *std_freestyle_job
 
     builders: '{obj:builders}'
 
-    publishers:
-    - <<: *default_email_publisher
-    - <<: *default_log_parser
-    - <<: *default_tasks_parser
-
 
 - job-template:
-
     name: '{name}-jtb-0'
-    project-type: freestyle
-    <<: *default_console_output_job
-
-    display-name: '{title}'
-    disabled: '{obj:disabled}'
-    <<: *description
+    <<: *std_freestyle_job
 
     scm:
     - 'scm-{vendor-repo}-0':
@@ -483,21 +589,10 @@
     - builder-jtb-0:
         jjb-files: '$JJB_Files'
 
-    publishers:
-    - <<: *default_email_publisher
-    - <<: *default_log_parser
-    - <<: *default_tasks_parser
-
 
 - job-template:
-
     name: '{name}-jtb-1'
-    project-type: freestyle
-    <<: *default_console_output_job
-
-    display-name: '{title}'
-    disabled: '{obj:disabled}'
-    <<: *description
+    <<: *std_freestyle_job
 
     parameters:
     - choice:
@@ -512,31 +607,13 @@
     - builder-jtb-1:
         jtb-file: '$JTB_File'
 
-    publishers:
-    - <<: *default_email_publisher
-    - <<: *default_log_parser
-
 
 - job-template:
-
     name: '{name}-jtb-2'
-    project-type: freestyle
-    <<: *default_console_output_job
+    <<: *std_freestyle_job
 
-    display-name: '{title}'
-    disabled: '{obj:disabled}'
-    <<: *description
-
-    # TODO: build project for github
-    #
     builders:
     - builder-jtb-2
-
-    publishers:
-    - <<: *default_email_publisher
-    - <<: *default_log_parser
-    - <<: *default_tasks_parser
-
 
 
 # Provision and start, then stop a docker container
@@ -544,12 +621,7 @@
 # TODO: Not sure how to use the create/start exec commands in jenkins.
 - job-template:
     name: '{name}-docker-0'
-    project-type: freestyle
-    <<: *default_console_output_job
-
-    display-name: '{title}'
-    disabled: '{obj:disabled}'
-    <<: *description
+    <<: *std_freestyle_job
 
     parameters:
     - string:
@@ -595,17 +667,12 @@
 #          </org.jenkinsci.plugins.dockerbuildstep.DockerBuilder>
 
 
-    publishers:
-    - <<: *default_email_publisher
-    - <<: *default_log_parser
-    - <<: *default_tasks_parser
-
 
 # These I cannot get to work as expected
 - job-template:
     name: '{name}-docker-1'
     project-type: freestyle
-    <<: *default_console_output_job
+    <<: *std_console_output_job
 
     display-name: '{title}'
     disabled: '{obj:disabled}'
@@ -678,18 +745,15 @@
 
     publishers:
     - jtb-inline-tasks-parser
-    - <<: *default_log_parser
+    - <<: *std_log_parser
+
+
+## Github builds (work in progress, untested)
 
 
 - job-template:
     name: '{name}-gh-automake'
-
-    project-type: freestyle
-    <<: *default_console_output_job
-
-    display-name: '{title}'
-    disabled: '{obj:disabled}'
-    <<: *description
+    <<: *std_freestyle_job
 
     scm:
     - 'scm-{vendor-repo}-0':
@@ -703,10 +767,6 @@
     builders:
     - jtb-automake-builder-0
 
-    publishers:
-    - <<: *default_log_parser
-    - <<: *default_tasks_parser
-
 
 - job-template:
     name: '{name}-gh'
@@ -714,47 +774,60 @@
     <<: *gh_job
     <<: *gh_trigger
 
+    builders: '{obj:builders}'
+
+
+## Travis builds (work in progress, testing)
+
+
+# Jobs for github, public and private
 
 - job-template:
     name: '{name}-gh-travis'
     <<: *restrict_node
+    # NOTE: this would only work with a public server
+    <<: *gh_trigger
     <<: *gh_job
-    # FIXME: this would only work with a public server
-    #<<: *gh_trigger
-    <<: *default_scm_trigger
+
+    builders:
+    - jtb-travis-builder-0
+
+- job-template:
+    name: '{name}-local-gh-travis'
+    <<: *restrict_node
+    <<: *std_scm_trigger
+    <<: *private_gh_job
 
     builders:
     - jtb-travis-builder-0
 
 
+## Work in JJB builder
+
 - job-template:
     name: '{name}-jjb-local'
+    <<: *std_freestyle_job
 
-    project-type: freestyle
-    <<: *default_console_output_job
+    builders: '{obj:builders}'
 
-    display-name: '{title}'
-    disabled: '{obj:disabled}'
-    <<: *description
 
-    publishers:
-    - <<: *default_log_parser
-    - <<: *default_tasks_parser
-
+## Work in progress JTB builder
 
 - job-template:
     name: '{name}-jtb-install-local'
+    <<: *std_freestyle_job
 
-    project-type: freestyle
-    <<: *default_console_output_job
+    builders: '{obj:builders}'
 
-    display-name: '{title}'
-    disabled: '{obj:disabled}'
-    <<: *description
 
-    publishers:
-    - <<: *default_log_parser
-    - <<: *default_tasks_parser
+## Work in progress free-style GIT checkout build
+
+- job-template:
+    name: '{name}-free-git'
+    <<: *std_freestyle_job
+    <<: *std_git_co
+
+    builders: '{obj:builders}'
 
 
 # Id: jtb/0.0.2-test tpl/base.yaml
