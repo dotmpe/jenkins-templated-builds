@@ -54,6 +54,8 @@
 
     git-recursive-init: false
 
+    require-tap-plan: false
+
 
 ### JJB Action macros for job parts
 
@@ -377,6 +379,7 @@
     #    comparison: equal-or-over
     #    #condition: 
 
+
 - private_gh_co: &private_gh_co
     name: 'private_gh_co'
 
@@ -520,6 +523,7 @@
 - std_freestyle_job: &std_freestyle_job
     name: std_freestyle_job
 
+    defaults: base
     project-type: freestyle
     display-name: '{title}'
     <<: *description
@@ -568,13 +572,7 @@
 
 - job-template:
     name: '{name}-jtb-0'
-    <<: *std_freestyle_job
-
-    scm:
-    - 'scm-{vendor-repo}-0':
-        vendor-path: '{vendor-path}'
-        branch: '{branch}'
-        credentials-id: '{credentials-id}'
+    <<: *gh_job
 
     parameters:
     - bool:
