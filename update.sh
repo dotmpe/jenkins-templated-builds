@@ -15,7 +15,7 @@ test -d "$(dirname $test_err)" || error "No such dir for $test_err" 1
 test -n "$DRY" || DRY=1
 test -n "$JJB_CONFIG" || JJB_CONFIG=/etc/jenkins_jobs/jenkins_jobs.ini
 
-test -e "~/.jenkins_jobs.ini" && flags="--conf ~/.jenkins_jobs"
+test -e "~/.jenkins_jobs.ini" && flags="--conf ~/.jenkins_jobs.ini"
 
 
 debug()
