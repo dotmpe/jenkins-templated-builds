@@ -13,17 +13,19 @@ test -d "$2" || error "Should be dir: $2" 1
 test -n "$3" || set -- "$1" "$2" "/tmp/${scriptname}"
 test -d "$3" || mkdir -vp "$3"
 
-grep '^#include' "$1" || exit 2
-
-relpath="$(relpath "$1" "$2")"
-output="$3/$relpath"
-
+relinput="$(relpath "$1" "$2")"
+output="$3/$relinput"
+mkdir -vp $3/$(dirname $relinput)
 cp $1 $output
-while grep '^#include' $output
+
+grep -q '^#include' "$1" || exit 2
+
+while grep -q '^#include' $output
 do
   cp $output $output.tmp
   grep -n '^#include' $output | while read proc pathid
   do
+    log "Including $pathid into $output"
     linenr=${proc//:*}
     echo -n > $output
     head -n $(( $linenr - 1 )) $output.tmp >> $output
@@ -37,7 +39,9 @@ do
       warn "$msg"
       echo "# $msg" >> $output
     }
-    tail -n +$(( $linenr + 1)) $output.tmp >> $output
+    tail -n +$(( $linenr + 1 )) $output.tmp >> $output
+    rm $output.tmp
+    break
   done
 done
 

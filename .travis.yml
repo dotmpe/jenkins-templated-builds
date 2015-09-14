@@ -10,8 +10,12 @@ install:
 - './install-dependencies.sh install_jjb'
 
 before_script:
+- jenkins-jobs --version
+- test -d dist || mkdir -vp dist
 
-script: ../update.sh
+script:
+- ./jtb-process.sh tpl dist
+- ./update.sh
 
 branches:
   only:
