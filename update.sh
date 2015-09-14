@@ -9,8 +9,8 @@ test -n "$files" || files=dist/base.yaml:jtb.yaml
 test -n "$test_out" || test_out=/tmp/jtb-test.out
 test -n "$test_err" || test_err=/tmp/jtb-test.err
 
-test -d "$(dirname $test_out)" || err "No such dir for $test_out" 1
-test -d "$(dirname $test_err)" || err "No such dir for $test_err" 1
+test -d "$(dirname $test_out)" || error "No such dir for $test_out" 1
+test -d "$(dirname $test_err)" || error "No such dir for $test_err" 1
 
 test -n "$DRY" || DRY=1
 test -n "$JJB_CONFIG" || JJB_CONFIG=/etc/jenkins_jobs/jenkins_jobs.ini
@@ -18,9 +18,9 @@ test -n "$JJB_CONFIG" || JJB_CONFIG=/etc/jenkins_jobs/jenkins_jobs.ini
 
 debug()
 {
-  err files=$files
-  err test_out=$test_out
-  err test_err=$test_err
+  info "files=$files"
+  info "test_out=$test_out"
+  info "test_err=$test_err"
 }
 
 debugcat()
@@ -65,7 +65,7 @@ jenkins-jobs test $files 2> $test_err > $test_out && {
 
   grep -i 'error\|exception' $test_err && {
     log "Test stderr/stdout in $test_err/$test_out."
-    err "errors during test ($test_err)" 12
+    error "errors during test ($test_err)" 12
     debug_cat
 
   } || {
