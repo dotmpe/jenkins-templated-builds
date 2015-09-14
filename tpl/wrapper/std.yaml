@@ -1,0 +1,12 @@
+
+## YAML aliases: Build wrapper part
+
+- std_console_output_job: &std_console_output_job
+    name: 'std_console_output_job'
+
+    wrappers:
+    - timestamps
+    - ansicolor:
+        colormap: vga
+
+

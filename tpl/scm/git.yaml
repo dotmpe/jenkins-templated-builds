@@ -1,0 +1,144 @@
+## YAML aliases: Standard GIT SCM parts
+
+
+- git_co: &git_co
+    name: git_co
+
+    url: '{git-url}'
+    submodule:
+      recursive: '{git-recursive-init}'
+    skip-tag: true
+    wipe-workspace: false
+    prune: true
+    skip-tag: true
+    wipe-workspace: false
+    prune: true
+    credentials-id: '{credentials-id}'
+    browser: '{git-browser}'
+    browser-url: '{git-browser-url}'
+
+
+- git_branchless_co: &git_branchless_co
+    name: git_branchless_co
+
+    <<: *git_co
+    branches:
+    - '{branch}'
+
+
+# FIXME: git-branch-co stopped working at VS1?
+- git_branch_co: &git_branch_co
+    name: git_branch_co
+
+    <<: *git_co
+    branches:
+    - 'origin/{branch}'
+    local-branch: '{branch}'
+
+
+- std_git_co: &std_git_co
+    name: std_git_co
+
+    scm:
+    - git:
+        <<: *git_co
+
+
+- vnd_git_co: &vnd_git_co
+    name: 'vnd_git_co'
+
+    scm:
+    - git:
+        <<: *git_co
+        url: '{vendor-root}{vendor-path}.git'
+
+
+- gh_shared_parts: &gh_shared_parts
+    name: gh_shared_parts
+
+    properties:
+    - raw:
+        xml: |
+          <com.coravy.hudson.plugins.github.GithubProjectProperty plugin="github@1.13.2">
+            <projectUrl>https://github.com/{vendor-path}/</projectUrl>
+          </com.coravy.hudson.plugins.github.GithubProjectProperty>
+
+#    publishers:
+# Join trigger can only group projects (upstream?),
+# ant do parametrized build triggerss once group done as a whole
+#    - join-trigger:
+#        even-if-unstable: true
+#        projects: '{obj:upstream-group}'
+#        even-if-unstable: '{downstream-on-unstable}'
+#        publishers:
+#        - trigger:
+#            project: xxx
+#            threshold: unstable
+#        publishers: '{obj:downstream}'
+
+# Downstream is kind of backwards. Natural for build system to keep downstream
+# with upstream config. For real life projects not so much. Want
+# to append downstream projects later to existing jobs?
+    #- downstream-ext:
+    #    projects: '{obj:downstream}'
+    #    criteria: sucess
+    #    only-on-scm-change: false
+    #    only-on-local-scm-change: false
+    #    comparison: equal-or-over
+    #    #condition: 
+
+
+- private_gh_co: &private_gh_co
+    name: 'private_gh_co'
+
+    <<: *gh_shared_parts
+    git-browser: githubweb
+    git-browser-url: 'https://github.com/'
+    vendor-root: 'git@github.com:'
+    scm:
+    - git:
+        <<: *git_branchless_co
+        # git@github.com:<vendor-path>.mpe.git
+        url: '{vendor-root}{vendor-path}.git'
+        credentials-id: '{credentials-id}'
+
+
+- std_gh_co: &std_gh_co
+    name: 'std_gh_co'
+
+    <<: *gh_shared_parts
+    git-browser: githubweb
+    git-browser-url: 'https://github.com/'
+    vendor-root: 'https://github.com/'
+    scm:
+    - git:
+        <<: *git_branchless_co
+        # https://github.com/<vendor-path>.git
+        url: '{vendor-root}{vendor-path}.git'
+
+
+
+# YAML aliases: other scm related parts
+
+
+- gh_trigger: &gh_trigger
+    name: gh_trigger
+
+    triggers:
+    - github
+
+
+- std_pollscm: &std_pollscm
+    name: 'std_pollscm'
+
+    pollscm: "*/1 * * * *"
+
+
+- std_scm_trigger: &std_scm_trigger
+    name: 'std_scm_trigger'
+
+    triggers:
+    - <<: *std_pollscm
+
+
+
