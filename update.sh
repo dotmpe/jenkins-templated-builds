@@ -58,23 +58,22 @@ test -e $JJB_CONFIG && {
 # Naive routines for testing
 jenkins-jobs test $files 2> $test_err > $test_out && {
 
-  grep -i 'error\|exception' $test_err && {
-    err "errors during test ($test_err)" 1
-  }
   jobs="$(echo $(grep -i builder.job.name $test_err | cut -d ':' -f 4))"
   count="$(grep -i number.of.jogs.generated $test_err | cut -d ':' -f 4)"
   log "Generated $count jobs: $jobs"
 
-  test -s $test_out && {
-
-    log "Test OK. Starting update of files '$files'"
-    $jjb_update $files
-    log "OK: Update complete"
+  grep -i 'error\|exception' $test_err && {
+    log "Test stderr/stdout in $test_err/$test_out."
+    err "errors during test ($test_err)" 12
+    debug_cat
 
   } || {
-    log "Updated failed. Test stderr/stdout in $test_err/$test_out."
-    debug_cat
-    exit 12
+
+    log "Test OK. Starting update of files '$files'"
+    $jjb_update $files && \
+      log "OK: Update complete" || \
+      error "Update failed" 5
+
   }
 
 } || {
