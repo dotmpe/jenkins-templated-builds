@@ -65,8 +65,9 @@ jenkins-jobs test $files 2> $test_err > $test_out && {
 
   grep -i 'error\|exception' $test_err && {
     log "Test stderr/stdout in $test_err/$test_out."
+    echo ---------------------------------------------------------------------------
     error "errors during test ($test_err)" 12
-    debug_cat
+    debugcat
 
   } || {
 
@@ -82,7 +83,7 @@ jenkins-jobs test $files 2> $test_err > $test_out && {
   echo ---------------------------------------------------------------------------
   log "ERROR: testing $files"
   debug
-  debug_cat
+  debugcat
   exit 11
 }
 
