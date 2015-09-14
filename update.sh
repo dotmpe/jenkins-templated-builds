@@ -15,6 +15,8 @@ test -d "$(dirname $test_err)" || error "No such dir for $test_err" 1
 test -n "$DRY" || DRY=1
 test -n "$JJB_CONFIG" || JJB_CONFIG=/etc/jenkins_jobs/jenkins_jobs.ini
 
+test -e "~/.jenkins_jobs.ini" && flags="--conf ~/.jenkins_jobs"
+
 
 debug()
 {
@@ -44,20 +46,20 @@ test -e $JJB_CONFIG && {
     jjb_update="echo DRY-RUN jenkins-jobs update"
   } || {
     log "Running actual update"
-    jjb_update="jenkins-jobs update"
+    jjb_update="jenkins-jobs $flags update"
   }
 
 } || {
 
   log "Not a jenkins env. Not running update"
 
-  jjb_update="echo NO-OP jenkins-jobs update"
+  jjb_update="echo NO-OP jenkins-jobs $flags update"
 
   debug
 }
 
 # Naive routines for testing
-jenkins-jobs test $files 2> $test_err > $test_out && {
+jenkins-jobs $flags test $files 2> $test_err > $test_out && {
 
   jobs="$(echo $(grep -i builder.job.name $test_err | cut -d ':' -f 4))"
   count="$(grep -i number.of.jogs.generated $test_err | cut -d ':' -f 4)"
