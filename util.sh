@@ -18,11 +18,11 @@ err()
   [ -z $3 ] || exit $3
 }
 
-boldred="$(tput bold)$(tput setaf 2)"
-#boldred="\[\e[1;31m\]"
-purple="\[\e[0;35m\]"
-grey="\[\e[0;37m\]"
-yellow="\[\e[1;33m\]"
+#boldred="$(tput bold)$(tput setaf 2)"
+##boldred="\[\e[1;31m\]"
+#purple="\033[0;35m"
+#grey="\033[0;37m"
+#yellow="\033[1;33m"
 error()
 {
   err "${boldred}Error" "${white}$1" "$2"

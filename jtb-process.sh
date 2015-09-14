@@ -31,7 +31,7 @@ parse_ret()
 find $src -iname '*.y*ml' | while read file
 do
 
-  cp $file $dest
+  log "Processing $file from $src to $dest"
   ./jtb-process-includes.sh $file $src $dest || parse_ret $?
 
 done

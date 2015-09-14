@@ -11,9 +11,10 @@ install:
 
 before_script:
 - jenkins-jobs --version
+- test -d dist || mkdir -vp dist
 
 script:
-- ./jtc-process.sh tpl dist
+- ./jtb-process.sh tpl dist
 - ./update.sh
 
 branches:
