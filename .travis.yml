@@ -12,8 +12,8 @@ install:
 before_script:
 - jenkins-jobs --version
 - test -d dist || mkdir -vp dist
-- echo '[job_builder] ' > ~/.jenkins_jobs.ini
-- echo 'allow_empty_variables=True ' >> ~/.jenkins_jobs.ini
+- echo '[job_builder] ' > $HOME/.jenkins_jobs.ini
+- echo 'allow_empty_variables=True ' >> $HOME/.jenkins_jobs.ini
 
 script:
 - ./jtb-process.sh tpl dist
