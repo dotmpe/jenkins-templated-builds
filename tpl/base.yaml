@@ -1,11 +1,6 @@
-# # The initial base file, split this up later.
-#
 
-# global defaults is special only? why not use something else. filename or 
-# argument or something.
-# XXX: can have only one defaults[name=global]
 - defaults:
-    name: base
+    name: global
 
     # Job template vars
     project-title: 'Job Template Builder'
@@ -13,7 +8,7 @@
     disabled: true
     concurrent: true
     htmlDescription:
-    restrict-node:
+    restrict-node: ''
 
     ## Parameter vars
     # none
@@ -55,6 +50,8 @@
     git-recursive-init: false
 
     require-tap-plan: false
+
+
 
 
 ### JJB Action macros for job parts

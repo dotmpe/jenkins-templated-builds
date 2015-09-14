@@ -64,7 +64,7 @@ test -e $JJB_CONFIG && {
 jenkins-jobs $flags test $files 2> $test_err > $test_out && {
 
   jobs="$(echo $(grep -i builder.job.name $test_err | cut -d ':' -f 4))"
-  count="$(grep -i number.of.jogs.generated $test_err | cut -d ':' -f 4)"
+  count="$(grep -i number.of.jobs.generated $test_err | cut -d ':' -f 4)"
   log "Generated $count jobs: $jobs"
 
   grep -i 'exception' $test_err && {

@@ -2,7 +2,7 @@
 - std_freestyle_job: &std_freestyle_job
     name: std_freestyle_job
 
-    defaults: base
+    defaults: global
     project-type: freestyle
     display-name: '{title}'
     <<: *description

@@ -1,9 +1,4 @@
 
-#!include tpl/base.yaml
-
-- defaults:
-    name: global
-
 - project:
     name: 'jtb-A'
 
@@ -66,9 +61,6 @@
         title: 'Docker1 Test Run'
         htmlDescription: 'with {project-title} v{version}'
 
-
-#!include tpl/parts.yaml
-#!include tpl/docker.yaml
 
 
 # Id: jtb/0.0.2-test jtb.yaml
