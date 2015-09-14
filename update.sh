@@ -66,9 +66,11 @@ jenkins-jobs test $files 2> $test_err > $test_out && {
   log "Generated $count jobs: $jobs"
 
   test -s $test_out && {
+
     log "Test OK. Starting update of files '$files'"
     $jjb_update $files
     log "OK: Update complete"
+
   } || {
     log "Updated failed. Test stderr/stdout in $test_err/$test_out."
     debug_cat

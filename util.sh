@@ -15,7 +15,7 @@ err()
     warn*|err*|notice ) log "$1: $2" 1>&2 ;;
     * ) log "$2" 1>&2 ;;
   esac
-  [ -z $3 ] || exit $3
+  [ -z "$3" ] || exit $3
 }
 
 #boldred="$(tput bold)$(tput setaf 2)"
