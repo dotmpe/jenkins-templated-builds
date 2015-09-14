@@ -10,6 +10,7 @@ install:
 - './install-dependencies.sh install_jjb'
 
 before_script:
+- jenkins-jobs --version
 
 script: ./update.sh
 
