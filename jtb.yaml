@@ -25,7 +25,7 @@
     # jtb-std-log-parser
     log-parser-rules: $JENKINS_HOME/log-parser-rules.txt
     unstable-on-warning: true
-    fail-on-error: true
+    #fail-on-error: true
     # jtd-std-email
     email-every-unstable: false
     email-individuals: false

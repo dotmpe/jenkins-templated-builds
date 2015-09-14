@@ -51,7 +51,7 @@
     jtb-std-log-parser:
         log-parser-rules: '{log-parser-rules}'
         unstable-on-warning: '{unstable-on-warning}'
-        fail-on-error: '{fail-on-error}'
+        fail-on-error: '{obj:fail-on-error}'
 
 
 - std_tasks_parser: &std_tasks_parser
@@ -61,4 +61,21 @@
 
 
 
+- std_bats_publisher: &std_bats_publisher
+    name: std_bats_publisher
+    raw:
+      xml: |
+        <org.tap4j.plugin.TapPublisher plugin="tap@1.23">
+          <testResults>build/test-results.tap</testResults>
+          <failIfNoResults>false</failIfNoResults>
+          <failedTestsMarkBuildAsFailure>false</failedTestsMarkBuildAsFailure>
+          <outputTapToConsole>false</outputTapToConsole>
+          <enableSubtests>false</enableSubtests>
+          <discardOldReports>false</discardOldReports>
+          <todoIsFailure>false</todoIsFailure>
+          <includeCommentDiagnostics>false</includeCommentDiagnostics>
+          <validateNumberOfTests>false</validateNumberOfTests>
+          <planRequired>{require-tap-plan}</planRequired>
+          <verbose>true</verbose>
+        </org.tap4j.plugin.TapPublisher>
 

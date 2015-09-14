@@ -8,6 +8,7 @@
     <<: *description
     disabled: '{obj:disabled}'
     concurrent: '{obj:concurrent}'
+    fail-on-error: '{obj:fail-on-error}'
     <<: *restrict_node
     <<: *std_console_output_job
 

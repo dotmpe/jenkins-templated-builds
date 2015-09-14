@@ -67,7 +67,7 @@ jenkins-jobs $flags test $files 2> $test_err > $test_out && {
   count="$(grep -i number.of.jogs.generated $test_err | cut -d ':' -f 4)"
   log "Generated $count jobs: $jobs"
 
-  grep -i 'error\|exception' $test_err && {
+  grep -i 'exception' $test_err && {
     log "Test stderr/stdout in $test_err/$test_out."
     echo ---------------------------------------------------------------------------
     error "errors during test ($test_err)" 12
