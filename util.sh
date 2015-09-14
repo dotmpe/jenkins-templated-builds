@@ -25,19 +25,19 @@ err()
 #yellow="\033[1;33m"
 error()
 {
-  err "${boldred}Error" "${white}$1" "$2"
+  err "${boldred}Error" "${white}$1" $2
 }
 warn()
 {
-  err "${yellow}Warning" "${grey}$1" "$2"
+  err "${yellow}Warning" "${grey}$1" $2
 }
 note()
 {
-  err "${purple}Notice" "${grey}$1" "$2"
+  err "${purple}Notice" "${grey}$1" $2
 }
 info()
 {
-  err " " "$1" "$2"
+  err " " "$1" $2
 }
 
 
