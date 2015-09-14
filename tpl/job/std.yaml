@@ -1,0 +1,21 @@
+
+- std_freestyle_job: &std_freestyle_job
+    name: std_freestyle_job
+
+    defaults: base
+    project-type: freestyle
+    display-name: '{title}'
+    <<: *description
+    disabled: '{obj:disabled}'
+    concurrent: '{obj:concurrent}'
+    <<: *restrict_node
+    <<: *std_console_output_job
+
+    publishers:
+    - <<: *std_email_publisher
+    - <<: *std_log_parser
+    - <<: *std_tasks_parser
+    - jtb-std-warnings:
+        publish-on-error: '{publish-on-error}'
+
+

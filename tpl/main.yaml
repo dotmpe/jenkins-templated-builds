@@ -1,0 +1,44 @@
+
+### YAML aliases: generic job parts
+
+
+- restrict_node: &restrict_node
+    name: restrict_node
+    node: '{restrict-node}'
+
+
+- description: &description
+    name: description
+    description: |
+        <div id="jtb-ci-description" class="well">
+          <div class="row">
+
+            <div class="col-md-3" style="width:15%"><img width="100%" src="{build-summary-image}" /></div>
+            <div class="col-md-5" style="width:40%"> {htmlDescription} </div> 
+            <div class="col-md-4" style="width:45%">
+
+              <table class="table table-condensed">
+
+                <tr>
+                  <th> Vendor # branch </th> <td> <code class="muted">{vendor-repo}</code>:<code>{vendor-path}#{branch}</code> </td>
+                </tr> <tr>
+                  <th> Project source </th> <td> {project-src} </td>
+                </tr> <tr>
+                  <th> E-mail developers </th> <td> {email-individuals} </td>
+                </tr> <tr>
+                  <th> Additional Subscribers </th> <td> {email-to} </td>
+                </tr>
+
+              </table>
+
+            </div> 
+          </div>
+        </div>
+
+        <div class="alert alert-info center" role="alert">
+          <span class="glyphicon glyphicon-exclamation-sign"
+              aria-hidden="true"></span>
+          <div> This is a JJB managed configuration. </div>
+        </div> 
+
+

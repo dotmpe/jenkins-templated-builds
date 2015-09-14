@@ -1,9 +1,8 @@
 
+#!include tpl/base.yaml
+
 - defaults:
-    name: base
-
-    jjb-files:
-
+    name: global
 
 - project:
     name: 'jtb-A'
@@ -66,6 +65,10 @@
         disabled: false
         title: 'Docker1 Test Run'
         htmlDescription: 'with {project-title} v{version}'
+
+
+#!include tpl/parts.yaml
+#!include tpl/docker.yaml
 
 
 # Id: jtb/0.0.2-test jtb.yaml

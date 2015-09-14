@@ -1,0 +1,45 @@
+./ReadMe.rst:
+  151
+    TODO: make better use of groovy extensions. https://wiki.jenkins-ci.org/display/JENKINS/Jenkins+Script+Console
+
+
+./preset/gh-jtb.yaml:
+  2
+     TODO: want to set an ENV
+
+
+./tpl/base.yaml:
+  321
+     FIXME: git-branch-co stopped working at VS1?
+  514
+     FIXME: test this later, using yaml alias for now
+  555
+     FIXME: test this later, using yaml alias for now
+  619
+     TODO: Not sure how to use the create/start exec commands in jenkins.
+  6
+     XXX: can have only one defaults[name=global]
+  786
+     NOTE: this would only work with a public server
+
+
+./tpl/docker.yaml:
+  5
+     TODO: Not sure how to use the create/start exec commands in jenkins.
+
+
+./tpl/parts.yaml:
+  283
+     FIXME: test this later, using yaml alias for now
+  323
+     FIXME: test this later, using yaml alias for now
+  454
+     NOTE: this would only work with a public server
+  73
+     FIXME: git-branch-co stopped working at VS1?
+
+
+./update.sh:
+  51
+     XXX: need to scan stdout for test_out results, instead of test -s. And then fail:
+
