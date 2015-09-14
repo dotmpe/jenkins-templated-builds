@@ -57,6 +57,7 @@ test -e $JJB_CONFIG && {
 
 # Naive routines for testing
 jenkins-jobs test $files 2> $test_err > $test_out && {
+
   grep -i 'error\|exception' $test_err && {
     err "errors during test ($test_err)" 1
   }
@@ -75,8 +76,9 @@ jenkins-jobs test $files 2> $test_err > $test_out && {
   }
 
 } || {
+
   echo ---------------------------------------------------------------------------
-  err "ERROR: testing $files"
+  log "ERROR: testing $files"
   debug
   debug_cat
   exit 11

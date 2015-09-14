@@ -12,7 +12,9 @@ install:
 before_script:
 - jenkins-jobs --version
 
-script: ./update.sh
+script:
+- ./jtc-process.sh tpl dist
+- ./update.sh
 
 branches:
   only:
