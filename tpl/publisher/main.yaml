@@ -1,0 +1,144 @@
+
+## Publisher macros
+
+
+- publisher:
+    name: jtb-checkstyle
+    publishers:
+    - checkstyle:
+        pattern: 'build/checkstyle-result.xml'
+
+
+- publisher:
+    name: jtb-inline-tasks-parser
+    publishers:
+    - raw:
+        xml: |
+
+          <hudson.plugins.tasks.TasksPublisher plugin="tasks@4.45">
+            <healthy/>
+            <unHealthy/>
+            <thresholdLimit>low</thresholdLimit>
+            <pluginName>[TASKS]</pluginName>
+            <defaultEncoding/>
+            <canRunOnFailed>true</canRunOnFailed>
+            <usePreviousBuildAsReference>false</usePreviousBuildAsReference>
+            <useStableBuildAsReference>false</useStableBuildAsReference>
+            <useDeltaValues>false</useDeltaValues>
+            <thresholds plugin="analysis-core@1.72">
+              <unstableTotalAll/>
+              <unstableTotalHigh/>
+              <unstableTotalNormal/>
+              <unstableTotalLow/>
+              <failedTotalAll/>
+              <failedTotalHigh/>
+              <failedTotalNormal/>
+              <failedTotalLow/>
+            </thresholds>
+            <shouldDetectModules>false</shouldDetectModules>
+            <dontComputeNew>true</dontComputeNew>
+            <doNotResolveRelativePaths>false</doNotResolveRelativePaths>
+            <high>FIXME</high>
+            <normal>TODO</normal>
+            <low>XXX</low>
+            <ignoreCase>false</ignoreCase>
+            <asRegexp>false</asRegexp>
+            <pattern>{project-src}</pattern>
+            <excludePattern/>
+          </hudson.plugins.tasks.TasksPublisher>
+
+#     - task-scanner:
+#         pattern: '{project-src}'
+#         health-threshold: low
+#         can-run-on-failed: true
+#         use-stable-build-as-reference: false
+#         use-delta-values: false
+#         should-detect-modules: false
+#         do-not-resolve-relative-paths: true
+#         dont-compute-new: true
+
+
+- publisher:
+    name: jtb-std-log-parser
+    publishers:
+    # hudson.plugins.logparser.LogParserPublisher
+    - logparser:
+        parse-rules: '{log-parser-rules}'
+        unstable-on-warning: '{unstable-on-warning}'
+        fail-on-error: '{fail-on-error}'
+
+- publisher:
+    name: jtb-std-warnings
+    publishers:
+    - raw:
+        xml: |
+          <hudson.plugins.analysis.collector.AnalysisPublisher plugin="analysis-collector@1.43">
+            <healthy/>
+            <unHealthy/>
+            <thresholdLimit>low</thresholdLimit>
+            <pluginName>[ANALYSIS-COLLECTOR]</pluginName>
+            <defaultEncoding/>
+            <canRunOnFailed>{publish-on-error}</canRunOnFailed>
+            <usePreviousBuildAsReference>false</usePreviousBuildAsReference>
+            <useStableBuildAsReference>false</useStableBuildAsReference>
+            <useDeltaValues>false</useDeltaValues>
+            <thresholds plugin="analysis-core@1.72">
+              <unstableTotalAll/>
+              <unstableTotalHigh/>
+              <unstableTotalNormal/>
+              <unstableTotalLow/>
+              <failedTotalAll/>
+              <failedTotalHigh/>
+              <failedTotalNormal/>
+              <failedTotalLow/>
+            </thresholds>
+            <shouldDetectModules>false</shouldDetectModules>
+            <dontComputeNew>true</dontComputeNew>
+            <doNotResolveRelativePaths>true</doNotResolveRelativePaths>
+            <isCheckStyleDeactivated>true</isCheckStyleDeactivated>
+            <isDryDeactivated>true</isDryDeactivated>
+            <isFindBugsDeactivated>true</isFindBugsDeactivated>
+            <isPmdDeactivated>true</isPmdDeactivated>
+            <isOpenTasksDeactivated>false</isOpenTasksDeactivated>
+            <isWarningsDeactivated>false</isWarningsDeactivated>
+          </hudson.plugins.analysis.collector.AnalysisPublisher>
+
+
+- publisher:
+    name: jtb-std-email
+    publishers:
+    # use hudson.tasks.Mailer, see also hudson.maven.reporters.Mailer
+    - email:
+        notify-every-unstable-build: '{email-every-unstable}'
+        send-to-individuals: '{email-individuals}'
+        recipients: '{email-to}'
+
+
+- publisher:
+    name: jenkins-html
+    publishers:
+    - html-publisher:
+        name: 'JTB Build Report'
+        dir: build/ci-html-report/
+        files: '{report-files}'
+        keep-all: true
+        allow-missing: true
+
+
+- publisher:
+    name: jenkins-summary
+    publishers:
+    - xml-summary:
+        files: 'test_summary.xml'
+
+
+- publisher:
+    name: jtb-junit
+    publishers:
+    - junit:
+        results: 'build/logs/*.xml'
+        keep-long-stdio: true
+        test-stability: false
+        claim-build: false
+
+

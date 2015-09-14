@@ -1,0 +1,46 @@
+
+## Builder macros
+
+- builder:
+    name: builder-jtb-0
+    builders:
+    - shell: 'jenkins-jobs test {jjb-files}'
+
+
+- builder:
+    name: builder-jtb-1
+    builders:
+    - shell: 'files={jjb-files} ./update.sh'
+    #- shell: 'jtb ${jtb-file}'
+
+
+- builder:
+    name: builder-jtb-2
+    builders:
+    - shell: 'echo version={version}'
+
+
+- builder:
+    name: jtb-travis-builder-0
+    builders:
+    - raw:
+        xml: |
+
+          <ruby-proxy-object>
+            <ruby-object ruby-class="Jenkins::Tasks::BuilderProxy" pluginid="travis-yml">
+              <object ruby-class="TravisYmlBuilder" pluginid="travis-yml"/>
+              <pluginid pluginid="travis-yml" ruby-class="String">travis-yml</pluginid>
+            </ruby-object>
+          </ruby-proxy-object>
+
+
+- builder:
+    name: jtb-automake-builder-0
+    builders:
+    - shell: |
+        for x in configure configure.sh; do test -e ./$x && ./$x || echo -n; done
+    - shell: |
+        test -e Makefile && {{ make && make install; }} || echo 'Warning: Nothing to do'
+
+
+

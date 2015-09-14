@@ -6,3 +6,4 @@ test.sh
 update.sh
 install-dependencies.sh
 jenkins-template-build.py
+tpl/job-template/main.yaml

@@ -5,13 +5,16 @@ Jenkins Templated Builds
 :Description:
   JJB Templates for Jenkins
 :Abstract:
-  YAML's minimalism makes it very interesting for concise, generic metadata. In this particular case, to define the recipe and parameters associated with continious integration of software |---| the contents of GIT repositories in specific. Presented here in this ReadMe is an short evaluation of Jenkins Job Builder [JJB] and Jenkins as a CI backend, followed by an overview of some initial work contained within this project.
+  YAML's minimalism makes it very interesting for concise, generic metadata. In this particular case, to define the recipe and parameters associated with continious integration of software |---| the contents of GIT repositories in specific. 
+  
+  Presented here in this ReadMe is an short evaluation of Jenkins Job Builder [JJB] and Jenkins as a CI backend, followed by an overview of some initial work contained within this project.
 
 :Build status:
 
   .. image:: https://secure.travis-ci.org/dotmpe/jenkins-templated-builds.png
     :target: https://travis-ci.org/dotmpe/jenkins-templated-builds
     :alt: Build
+
 
 
 Intro
@@ -91,7 +94,7 @@ and have the defaults or parametrized inputs to deal with all settings.
 
 And as for the points raised, any further conceptual requirement would simply end up as another Jenkins plugin.. I suppose.
 
-.. sidebar::
+.. sidebar:: Job URI
 
   For example with the name (and consequently) Uniform Location issue of the job,
   one direct solution would require to generate HTTP URL aliases and to load these into the web server io. to have control over the URLs for each job.
@@ -112,7 +115,7 @@ Plan
 -----
 Some "profiles" are obiously called for, and I've planned to build the following JJB templates initially. And then see about the other issues. I fancy to set up a dockerized solution to my own PC needs more than I would setting up yet another JPI project right now.
 
-.. info::
+.. note::
 
    These are JJB template-jobs so I use their ``{var}`` notation. Refer to the excellent `docs at OpenStack (``docs.openstack.org``)`__
 
