@@ -11,7 +11,7 @@ install:
 
 before_script:
 
-script: ./test.sh && ./update.sh
+script: ../update.sh
 
 branches:
   only:
