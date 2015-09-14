@@ -6,7 +6,7 @@ set -e
 # stdio/stderr/exit util
 log()
 {
-  [ -n "$(echo "$*")" ] || return 1;
+  test -n "$1" || return
   echo "[$scriptname.sh] $1"
 }
 err()

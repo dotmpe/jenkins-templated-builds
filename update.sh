@@ -50,6 +50,7 @@ test -e $JJB_CONFIG && {
 } || {
 
   log "Not a jenkins env. Not running update"
+
   jjb_update="echo NO-OP jenkins-jobs update"
 
   debug
