@@ -65,7 +65,7 @@
     - logparser:
         parse-rules: '{log-parser-rules}'
         unstable-on-warning: '{unstable-on-warning}'
-        fail-on-error: '{obj:fail-on-error}'
+        fail-on-error: '{fail-on-error}'
 
 
 - publisher:

@@ -51,7 +51,7 @@
     jtb-std-log-parser:
         log-parser-rules: '{log-parser-rules}'
         unstable-on-warning: '{unstable-on-warning}'
-        fail-on-error: '{obj:fail-on-error}'
+        fail-on-error: '{fail-on-error}'
 
 
 - std_tasks_parser: &std_tasks_parser
