@@ -1,0 +1,159 @@
+
+# Config without using any reusable features, JJB YAML all enclosed here
+
+
+- project:
+    name: jtb
+
+    jobs:
+    - jtb-simple
+
+
+- job:
+    name: jtb-simple
+
+    project-type: freestyle
+    disabled: false
+    node: master
+
+    display-name: 'JTB [simple]'
+    description: ''
+
+    logrotate:
+      daysToKeep: -1
+      numToKeep: 1
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
+
+    triggers:
+    - pollscm:
+        cron: "H/5 * * * *"
+
+    scm:
+    - git:
+        url: 'git@github.com:dotmpe/jenkins-templated-builds.git'
+        skip-tag: true
+        branches:
+        - 'origin/dev'
+
+    builders:
+    - shell: jenkins-jobs update jtb-simple.yaml
+
+    wrappers:
+    - timestamps
+    - ansicolor:
+        colormap: vga
+
+    # Add build to environment view
+    - raw:
+        xml:
+          <org.jenkinsci.plugins.environmentdashboard.DashboardBuilder plugin="environment-dashboard@1.1.4">
+            <nameOfEnv>jenkins</nameOfEnv>
+            <componentName>jenkins-job-builder</componentName>
+            <buildNumber>${BUILD_NUMBER}</buildNumber>
+            <buildJob>${JOB_NAME}</buildJob>
+            <packageName>#${BUILD_NUMBER} [simple]</packageName>
+            <data/>
+            <addColumns>false</addColumns>
+          </org.jenkinsci.plugins.environmentdashboard.DashboardBuilder>
+
+    publishers:
+
+    # detect errors and warnings and adjust build result accordingly
+    - logparser:
+        parse-rules: '/var/lib/jenkins/log-rules.txt'
+        unstable-on-warning: true
+        fail-on-error: true
+
+    # don't send (OpenStack) committers mail
+    - email:
+        notify-every-unstable-build: false
+        send-to-individuals: false
+        recipients: berend@brixcrm.nl
+
+    # Publish combined analysis, nice for a bit extra info
+    - raw:
+        xml:
+          <hudson.plugins.analysis.collector.AnalysisPublisher plugin="analysis-collector@1.43">
+            <healthy></healthy>
+            <unHealthy></unHealthy>
+            <thresholdLimit>low</thresholdLimit>
+            <pluginName>[ANALYSIS-COLLECTOR]</pluginName>
+            <defaultEncoding></defaultEncoding>
+            <canRunOnFailed>false</canRunOnFailed>
+            <usePreviousBuildAsReference>false</usePreviousBuildAsReference>
+            <useStableBuildAsReference>false</useStableBuildAsReference>
+            <useDeltaValues>false</useDeltaValues>
+            <thresholds plugin="analysis-core@1.72">
+              <unstableTotalAll></unstableTotalAll>
+              <unstableTotalHigh></unstableTotalHigh>
+              <unstableTotalNormal></unstableTotalNormal>
+              <unstableTotalLow></unstableTotalLow>
+              <failedTotalAll></failedTotalAll>
+              <failedTotalHigh></failedTotalHigh>
+              <failedTotalNormal></failedTotalNormal>
+              <failedTotalLow></failedTotalLow>
+            </thresholds>
+            <shouldDetectModules>false</shouldDetectModules>
+            <dontComputeNew>true</dontComputeNew>
+            <doNotResolveRelativePaths>true</doNotResolveRelativePaths>
+            <isCheckStyleDeactivated>false</isCheckStyleDeactivated>
+            <isDryDeactivated>true</isDryDeactivated>
+            <isFindBugsDeactivated>true</isFindBugsDeactivated>
+            <isPmdDeactivated>true</isPmdDeactivated>
+            <isOpenTasksDeactivated>false</isOpenTasksDeactivated>
+            <isWarningsDeactivated>true</isWarningsDeactivated>
+          </hudson.plugins.analysis.collector.AnalysisPublisher>
+
+    # Scan for embedded issues
+    - raw:
+        xml:
+          <hudson.plugins.tasks.TasksPublisher plugin="tasks@4.45">
+            <healthy/>
+            <unHealthy/>
+            <thresholdLimit>low</thresholdLimit>
+            <pluginName>[TASKS]</pluginName>
+            <defaultEncoding/>
+            <canRunOnFailed>true</canRunOnFailed>
+            <usePreviousBuildAsReference>false</usePreviousBuildAsReference>
+            <useStableBuildAsReference>false</useStableBuildAsReference>
+            <useDeltaValues>false</useDeltaValues>
+            <thresholds plugin="analysis-core@1.72">
+              <unstableTotalAll/>
+              <unstableTotalHigh/>
+              <unstableTotalNormal/>
+              <unstableTotalLow/>
+              <failedTotalAll/>
+              <failedTotalHigh/>
+              <failedTotalNormal/>
+              <failedTotalLow/>
+            </thresholds>
+            <shouldDetectModules>false</shouldDetectModules>
+            <dontComputeNew>true</dontComputeNew>
+            <doNotResolveRelativePaths>false</doNotResolveRelativePaths>
+            <high>FIXME</high>
+            <normal>TODO</normal>
+            <low>XXX</low>
+            <ignoreCase>false</ignoreCase>
+            <asRegexp>false</asRegexp>
+            <pattern>*.{cfg,py,rst,ini},{jenkins_jobs,tests,tools}/**</pattern>
+            <excludePattern/>
+          </hudson.plugins.tasks.TasksPublisher>
+
+    # Remove entire workspace dir after building
+    - raw:
+        xml:
+          <hudson.plugins.ws__cleanup.WsCleanup plugin="ws-cleanup@0.28">
+            <deleteDirs>false</deleteDirs>
+            <skipWhenFailed>false</skipWhenFailed>
+            <cleanWhenSuccess>true</cleanWhenSuccess>
+            <cleanWhenUnstable>true</cleanWhenUnstable>
+            <cleanWhenFailure>true</cleanWhenFailure>
+            <cleanWhenNotBuilt>true</cleanWhenNotBuilt>
+            <cleanWhenAborted>true</cleanWhenAborted>
+            <notFailBuild>false</notFailBuild>
+            <cleanupMatrixParent>false</cleanupMatrixParent>
+            <externalDelete/>
+          </hudson.plugins.ws__cleanup.WsCleanup>
+
+
