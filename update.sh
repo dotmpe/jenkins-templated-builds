@@ -3,7 +3,7 @@
 scriptname=update
 version=0.0.2-test # jtb
 
-. ./util.sh
+. $(dirname $0)/util.sh
 
 test -n "$files" || files=dist/base.yaml:jtb.yaml
 test -n "$test_out" || test_out=/tmp/jtb-test.out
