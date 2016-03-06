@@ -38,7 +38,7 @@
         <div class="alert alert-info center" role="alert">
           <span class="glyphicon glyphicon-exclamation-sign"
               aria-hidden="true"></span>
-          <div> This is a JJB managed configuration. </div>
+          <div> Note: This is a JJB managed configuration. </div>
         </div> 
 
 

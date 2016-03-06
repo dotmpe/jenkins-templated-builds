@@ -1,9 +1,12 @@
 
 - job-template:
     name: '{name}-base-0'
+
+    # contains basic job properties, builders, wrappers and publishers
     <<: *std_freestyle_job
 
     builders: '{obj:builders}'
+    triggers: '{obj:triggers}'
 
 
 - job-template:
@@ -32,10 +35,8 @@
     - choice:
         name: JTB_File
         choices:
-        - jtb.yml
         - jtb.yaml
-        - .jtb.yml
-        - .jtb.yaml
+        - jtb-simple.yaml
 
     builders:
     - builder-jtb-1:

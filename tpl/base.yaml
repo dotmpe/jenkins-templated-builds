@@ -1,6 +1,6 @@
 
 - defaults:
-    name: global
+    name: base
 
     # Job template vars
     project-title: 'Job Template Builder'

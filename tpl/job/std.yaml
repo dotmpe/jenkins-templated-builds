@@ -1,8 +1,36 @@
+- defaults:
+
+    name: std-freestyle-job
+
+    # Job template vars
+    title: 'JTB Freestyle Job'
+    disabled: true
+    concurrent: false
+    restrict-node: ''
+    htmlDescription: 'Standard Freestyle build configured from Jenkins Templated Builds'
+
+    # email publisher (jtd-std-email)
+    email-every-unstable: false
+    email-individuals: false
+    email-to: ''
+
+    # tasks publisher (jtb-inline-tasks-parser)
+    project-src: '*.{{styl,rst,js,yaml,rst}}'
+
+    # analysis publisher (jtb-std-warnings)
+    publish-on-error: true
+
+    # logparser (jtb-std-log-parser)
+    log-parser-rules: $JENKINS_HOME/log-parser-rules.txt
+    unstable-on-warning: true
+    fail-on-error: true
+
 
 - std_freestyle_job: &std_freestyle_job
     name: std_freestyle_job
 
-    defaults: global
+    defaults: 'std-freestyle-job'
+
     project-type: freestyle
     display-name: '{title}'
     <<: *description
@@ -16,7 +44,7 @@
     - <<: *std_email_publisher
     - <<: *std_log_parser
     - <<: *std_tasks_parser
+    - <<: *std_analysis_report
     - jtb-std-warnings:
         publish-on-error: '{publish-on-error}'
-
 

@@ -24,7 +24,10 @@ version = '0.0.2-test' # jtb
 
 def get_template(path, jjb_template_id):
 
-    base = yaml.load(open(path))
+    try:
+        base = yaml.load(open(path))
+    except Exception, e:
+        raise Exception("Failed loading %s: %s. %s" % (jjb_template_id, path, str(e)))
 
     for item in base:
         if 'job-template' in item:

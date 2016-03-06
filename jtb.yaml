@@ -1,11 +1,12 @@
 
 - project:
-    name: 'jtb-A'
+    name: 'jtb'
 
     # Job template vars
     project-title: 'Jenkins Templated Builds'
     version: 0.0.0
-    build-summary-image: /userContent/jenkins-build-templates.png
+    #build-summary-image: /userContent/jenkins-build-templates.png
+    build-summary-image: 'http://www.tupilabs.com/img/posts/2012-10-31_promoting-material-for-jenkins-user-event/jenkins_no_bg.png'
 
     #git: 'git@github.com:dotmpe/jenkins-build-templates.git'
 
@@ -35,32 +36,78 @@
         htmlDescription: 'Shell Job {project-title} v{version}'
         builders:
         - shell: 'whoami && hostname'
+        triggers:
+        - pollscm:
+            cron: 'H/5 * * * *'
 
     - '{name}-jtb-0':
+        name: test
         disabled: false
-        title: 'JJB0 test'
-        htmlDescription: 'Testing JJB with {project-title} v{version}'
+        title: 'JTB test'
+        htmlDescription: 'Testing {project-title} v{version} with JJB'
 
     - '{name}-jtb-1':
+        name: update
         disabled: false
-        title: 'JTB1 upd'
+        title: 'JTB1 update'
         htmlDescription: 'Running JTB? with {project-title} v{version}'
 
-    - '{name}-jtb-2':
+#    - '{name}-jtb-2':
+#        disabled: true
+#        title: 'JTB2 gen GH'
+#        htmlDescription: 'Generate GitHub job with {project-title} v{version}'
+#
+#    - '{name}-docker-0':
+#        disabled: true
+#        title: 'Docker0 Test Create-Kill-Remove'
+#        htmlDescription: 'with {project-title} v{version}'
+#
+#    - '{name}-docker-1':
+#        disabled: true
+#        title: 'Docker1 Test Run'
+#        htmlDescription: 'with {project-title} v{version}'
+
+    - '{name}-base-0':
+        name: jtb-test-cleanup
+        title: 'JTB test cleanup'
+        builders:
+        - shell: jenkins-cli delete-job jtb-base-0
+        triggers: {}
+
+
+- defaults:
+    name: jtb-juc
+
+    # Job template vars
+    project-title: 'Jenkins User-Content'
+    version: 0.0.0
+    build-summary-image: 'http://www.tupilabs.com/img/posts/2012-10-31_promoting-material-for-jenkins-user-event/jenkins_no_bg.png'
+
+    ## SCM vars
+    vendor-repo: github
+    vendor-path: dotmpe/jenkins-userContent
+    branch: master
+
+    ## Builder vars
+
+    ## Publisher vars
+
+    # tasks publisher (jtb-inline-tasks-parser)
+    project-src: '*'
+
+    # email publisher (jtd-std-email)
+    email-to: dev@dotmpe.com
+
+
+- project:
+    name: 'jtb-juc'
+    defaults: jtb-juc
+
+    jobs:
+    - '{name}-gh-travis':
         disabled: false
-        title: 'JTB2 gen GH'
-        htmlDescription: 'Generate GitHub job with {project-title} v{version}'
-
-    - '{name}-docker-0':
-        disabled: false
-        title: 'Docker0 Test Create-Kill-Remove'
-        htmlDescription: 'with {project-title} v{version}'
-
-    - '{name}-docker-1':
-        disabled: false
-        title: 'Docker1 Test Run'
-        htmlDescription: 'with {project-title} v{version}'
+        title: 'Jenkins UserContent'
+        htmlDescription: '{project-title} v{version}'
 
 
-
-# Id: jtb/0.0.2-test jtb.yaml
+## Id: jtb/0.0.2-test jtb.yaml

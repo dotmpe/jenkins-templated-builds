@@ -7,12 +7,9 @@
     url: '{git-url}'
     submodule:
       recursive: '{git-recursive-init}'
-    skip-tag: true
     wipe-workspace: false
     prune: true
     skip-tag: true
-    wipe-workspace: false
-    prune: true
     credentials-id: '{credentials-id}'
     browser: '{git-browser}'
     browser-url: '{git-browser-url}'

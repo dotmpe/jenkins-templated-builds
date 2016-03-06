@@ -16,8 +16,7 @@ before_script:
 - echo 'allow_empty_variables=True ' >> $HOME/.jenkins_jobs.ini
 
 script:
-- ./jtb-process.sh tpl dist
-- ./update.sh
+- make dist update
 
 branches:
   only:
