@@ -1,6 +1,8 @@
 
-- project:
+- job:
     name: 'docker-any-slave-example'
+
+
     project-type: freestyle
     display-name: 'Any Docker Slave Shell Script Demo'
     disabled: false
