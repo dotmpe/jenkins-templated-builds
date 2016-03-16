@@ -109,5 +109,6 @@
 ### At last, JJB templates
 
 #include ./job-template/main.yaml
+#include ./job-template/docker.yaml
 
 # Id: jtb/0.0.2-test tpl/base.yaml

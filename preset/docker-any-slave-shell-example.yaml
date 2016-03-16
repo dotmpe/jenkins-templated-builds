@@ -1,0 +1,18 @@
+
+- project:
+    name: 'docker-any-slave-example'
+    project-type: freestyle
+    <<: *std_console_output_job
+    display-name: 'Any Docker Slave Shell Script Demo'
+    disabled: false
+    description: ''
+    node: docker
+    concurrent: false
+
+    builders:
+    - shell: |
+	hostname
+	whoami
+	ping -c4 google.com
+	env
+
