@@ -11,5 +11,6 @@ update:
 	DRY=$(DRY) ./update.sh
 
 dist::
+	mkdir -vp dist
 	./jtb-process.sh tpl dist
 
