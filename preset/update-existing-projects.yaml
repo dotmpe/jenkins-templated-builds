@@ -44,7 +44,7 @@
         inject-env-groovy-content: |
               def map = [:]
               try {
-                if ("".equals(DEBUG)) {{
+                if ("".equals(DEBUG)) {
                   map['DEBUG'] = 'false'
                 }
               } catch (MissingPropertyException e) {
