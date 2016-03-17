@@ -94,11 +94,13 @@
 
         jenkins-cli version
 
+        local jjb_subcmd=
         case "$branch" in dev ) jjb_subcmd=test ;; master ) jjb_subcmd=update ;; * ) error "Unknown branch $branch" 1 ;; esac
 
         jenkins-cli list-jobs | while read jobname
         do
           test -e preset/$jobname.yaml || continue && {
+            note "jenkins-jobs $jjb_subcmd $jobname"
             jenkins-jobs $jjb_subcmd preset/$jobname.yaml:dist/base.yaml
           }
         done
