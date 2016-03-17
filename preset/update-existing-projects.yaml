@@ -55,7 +55,7 @@
               map['base'] = JOB_NAME
               map['brix_packages'] = '/opt/annex/brix-packages'
               try {
-                # XXX: this only works with existing workspace, SCM hasnt run yet
+                // XXX: this only works with existing workspace, SCM hasnt run yet
                 String branch_ref = "git symbolic-ref HEAD" .execute().text
                 map['branch'] = "basename ${branch_ref}" .execute().text
               } catch (MissingPropertyException e) {
