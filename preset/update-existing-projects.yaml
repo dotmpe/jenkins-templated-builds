@@ -1,4 +1,24 @@
 
+
+- property:
+    name: generic-env-inject
+    properties:
+    - inject:
+        enabled: true
+        keep-system-variables: true
+        keep-build-variables: true
+        override-build-parameters: true
+        load-from-master: false
+        # Inject properties
+        properties-file: '{inject-properties-file}'
+        properties-content: '{inject-properties-content}'
+        # Sh script cannot update env, but can run other tasks before SCM runs
+        script-file: '{env-script-file}'
+        script-content: '{env-script-content}'
+        # Groovy script can return map to update env
+        groovy-content: '{inject-env-groovy-content}'
+
+
 - job:
     name: update-existing-projects
 
@@ -11,6 +31,36 @@
 
     triggers:
     - pollscm: "*/1 * * * *"
+
+    wrappers:
+    - build-name: 'xxx-${{BUILD_ID}}-$branch'
+
+    properties:
+    - generic-env-inject:
+        inject-properties-file: ''
+        inject-properties-content: ''
+        env-script-file: ''
+        env-script-content: ''
+        inject-env-groovy-content: |
+              def map = [:]
+              try {{
+                if ("".equals(DEBUG)) {{
+                  map['DEBUG'] = 'false'
+                }}
+              }} catch (MissingPropertyException e) {{
+                map['DEBUG'] = 'false'
+              }}
+              map['Redis_Key'] = "jenkins:jobs:"+JOB_NAME
+              map['scriptpath'] = JENKINS_HOME + "/bin"
+              map['base'] = JOB_NAME
+              map['brix_packages'] = '/opt/annex/brix-packages'
+              try {{
+                map['branch'] = "git symbolic-ref HEAD"
+              }} catch (MissingPropertyException e) {{
+                println "Must checkout named branch, no detached HEAD's"
+                asser false
+              }}
+              return map
 
     scm:
     - git:
@@ -39,7 +89,7 @@
     - shell: |
         . ./util.sh
 
-        branch=$(git symbolic-ref HEAD || error "Must checkout named branch, no detached HEAD's" 1)
+        #branch=$(git symbolic-ref HEAD || error "Must checkout named branch, no detached HEAD's" 1)
 
         jenkins-cli version
 
