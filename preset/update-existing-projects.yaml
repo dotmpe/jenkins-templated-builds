@@ -97,9 +97,9 @@
 
         jenkins-cli list-jobs | while read jobname
         do
-          test -e preset/$jobname.yaml || continue && {{
+          test -e preset/$jobname.yaml || continue && {
             jenkins-jobs $jjb_subcmd preset/$jobname.yaml:dist/base.yaml
-          }}
+          }
         done
 
 
