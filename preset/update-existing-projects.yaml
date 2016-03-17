@@ -43,23 +43,23 @@
         env-script-content: ''
         inject-env-groovy-content: |
               def map = [:]
-              try {{
+              try {
                 if ("".equals(DEBUG)) {{
                   map['DEBUG'] = 'false'
-                }}
-              }} catch (MissingPropertyException e) {{
+                }
+              } catch (MissingPropertyException e) {
                 map['DEBUG'] = 'false'
-              }}
+              }
               map['Redis_Key'] = "jenkins:jobs:"+JOB_NAME
               map['scriptpath'] = JENKINS_HOME + "/bin"
               map['base'] = JOB_NAME
               map['brix_packages'] = '/opt/annex/brix-packages'
-              try {{
+              try {
                 map['branch'] = "git symbolic-ref HEAD"
-              }} catch (MissingPropertyException e) {{
+              } catch (MissingPropertyException e) {
                 println "Must checkout named branch, no detached HEAD's"
                 asser false
-              }}
+              }
               return map
 
     scm:
