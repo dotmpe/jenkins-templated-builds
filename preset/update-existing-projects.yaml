@@ -54,6 +54,7 @@
               map['scriptpath'] = JENKINS_HOME + "/bin"
               map['base'] = JOB_NAME
               map['brix_packages'] = '/opt/annex/brix-packages'
+              map['git_ls'] = "ls -la .git" .execute().text
               try {
                 // FIXME: this only works with existing workspace, SCM hasnt run yet. Ie. this is the old build..
                 String branch_ref = "git symbolic-ref HEAD" .execute().text
@@ -93,6 +94,7 @@
         . ./util.sh
 
         env | grep scriptpath
+        env | grep git_ls
         env | grep branch
         exit 0
 
