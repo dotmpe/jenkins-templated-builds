@@ -6,7 +6,7 @@
     project-type: freestyle
     display-name: 'Any Docker Slave Shell Script Demo'
     disabled: false
-    description: ''
+    description: 'Execute a little shell script on any slave with label "docker". '
     node: docker
     concurrent: false
 
