@@ -55,7 +55,8 @@
               map['base'] = JOB_NAME
               map['brix_packages'] = '/opt/annex/brix-packages'
               try {
-                map['branch'] = 'basename $(git symbolic-ref HEAD)' .execute().text
+                String branch_ref = "git symbolic-ref HEAD" .execute().text
+                map['branch'] = "basename ${branch_ref" .execute().text
               } catch (MissingPropertyException e) {
                 println "Must checkout named branch, no detached HEAD's"
                 asser false
