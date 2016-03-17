@@ -19,8 +19,16 @@
         prune: true
         skip-tag: true
         branches:
-        - 'origin/master'
         - 'origin/dev'
+        local-branch: dev
+    - git:
+        url: https://github.com/dotmpe/jenkins-templated-builds.git
+        wipe-workspace: true
+        prune: true
+        skip-tag: true
+        branches:
+        - 'origin/master'
+        local-branch: master
 
     wrappers:
     - timestamps
