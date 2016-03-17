@@ -55,11 +55,12 @@
               map['base'] = JOB_NAME
               map['brix_packages'] = '/opt/annex/brix-packages'
               try {
+                # XXX: this only works with existing workspace, SCM hasnt run yet
                 String branch_ref = "git symbolic-ref HEAD" .execute().text
                 map['branch'] = "basename ${branch_ref}" .execute().text
               } catch (MissingPropertyException e) {
                 println "Must checkout named branch, no detached HEAD's"
-                asser false
+                assert false
               }
               return map
 
@@ -89,6 +90,9 @@
     builders:
     - shell: |
         . ./util.sh
+
+        env
+        exit 0
 
         test -n "$branch" || error "Check env-inject"
         branchref=$(git symbolic-ref HEAD || error "Must checkout named branch, no detached HEAD's" 1)
