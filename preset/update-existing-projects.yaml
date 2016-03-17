@@ -55,7 +55,7 @@
               map['base'] = JOB_NAME
               map['brix_packages'] = '/opt/annex/brix-packages'
               try {
-                map['branch'] = "git symbolic-ref HEAD"
+                map['branch'] = "git symbolic-ref HEAD" .execute().text
               } catch (MissingPropertyException e) {
                 println "Must checkout named branch, no detached HEAD's"
                 asser false
@@ -89,7 +89,8 @@
     - shell: |
         . ./util.sh
 
-        #branch=$(git symbolic-ref HEAD || error "Must checkout named branch, no detached HEAD's" 1)
+        test -n "$branch" || error "Check env-inject"
+        branch=$(git symbolic-ref HEAD || error "Must checkout named branch, no detached HEAD's" 1)
 
         jenkins-cli version
 
