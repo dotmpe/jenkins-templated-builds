@@ -94,7 +94,7 @@
 
         jenkins-cli version
 
-        case "$branch" in dev ) jjb_subcmd=test ;; master ) jjb_subcmd=update ;; esac
+        case "$branch" in dev ) jjb_subcmd=test ;; master ) jjb_subcmd=update ;; * ) error "Unknown branch $branch" 1 ;; esac
 
         jenkins-cli list-jobs | while read jobname
         do
