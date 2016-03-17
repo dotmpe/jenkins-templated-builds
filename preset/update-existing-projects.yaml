@@ -2,13 +2,22 @@
 - job:
     name: update-existing-projects
 
-
     project-type: freestyle
     display-name: 'Update Projects'
     disabled: false
     description: 'Update all jobs. '
     node: master
     concurrent: false
+
+    triggers:
+    - pollscm: "*/1 * * * *"
+
+    scm:
+    - git:
+        url: https://github.com/dotmpe/jenkins-templated-builds.git
+        branches:
+        - 'origin/master'
+        - 'origin/dev'
 
     wrappers:
     - timestamps
@@ -18,5 +27,11 @@
     builders:
     - shell: |
         jenkins-cli version
+        jenkins-cli list-jobs | while read jobname
+        do
+          test -e presets/$jobname.yaml || continue && {{
+            jenkins-jobs test preset/$jobname.yaml:dist/base.yaml
+          }}
+        done
 
 
