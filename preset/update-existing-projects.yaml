@@ -37,14 +37,18 @@
 
     builders:
     - shell: |
-        git describe --always
-        git status
-        #git symbolic-ref HEAD
+        . ./util.sh
+
+        branch=$(git symbolic-ref HEAD || error "Must checkout named branch, no detached HEAD's" 1)
+
         jenkins-cli version
+
+        case "$branch" in dev ) jjb_subcmd=test ;; master ) jjb_subcmd=update ;; esac
+
         jenkins-cli list-jobs | while read jobname
         do
           test -e presets/$jobname.yaml || continue && {{
-            jenkins-jobs test preset/$jobname.yaml:dist/base.yaml
+            jenkins-jobs $jjb_subcmd preset/$jobname.yaml:dist/base.yaml
           }}
         done
 
