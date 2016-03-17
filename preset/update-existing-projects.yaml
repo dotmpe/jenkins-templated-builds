@@ -15,6 +15,9 @@
     scm:
     - git:
         url: https://github.com/dotmpe/jenkins-templated-builds.git
+        wipe-workspace: true
+        prune: true
+        skip-tag: true
         branches:
         - 'origin/master'
         - 'origin/dev'
@@ -26,6 +29,7 @@
 
     builders:
     - shell: |
+        git describe
         jenkins-cli version
         jenkins-cli list-jobs | while read jobname
         do
