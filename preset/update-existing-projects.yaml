@@ -30,7 +30,8 @@
     builders:
     - shell: |
         git describe --always
-        git symbolic-ref HEAD
+        git status
+        #git symbolic-ref HEAD
         jenkins-cli version
         jenkins-cli list-jobs | while read jobname
         do
