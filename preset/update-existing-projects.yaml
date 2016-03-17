@@ -1,0 +1,22 @@
+
+- job:
+    name: update-existing-projects
+
+
+    project-type: freestyle
+    display-name: 'Update Projects'
+    disabled: false
+    description: 'Update all jobs. '
+    node: master
+    concurrent: false
+
+    wrappers:
+    - timestamps
+    - ansicolor:
+        colormap: vga
+
+    builders:
+    - shell: |
+        jenkins-cli version
+
+
