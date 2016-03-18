@@ -56,8 +56,13 @@
               map['brix_packages'] = '/opt/annex/brix-packages'
               map['git_ls'] = "pwd" .execute().text
 
+              "echo '-----------------'" .execute()
+              "env" .execute()
+              "echo '-----------------'" .execute()
               "git symbolic-ref HEAD" .execute()
+              "echo '-----------------'" .execute()
               'basename $(git symbolic-ref HEAD)' .execute().text
+              "echo '-----------------'" .execute()
 
               try {
                 // FIXME: this only works with existing workspace, SCM hasnt run yet. Ie. this is the old build..
