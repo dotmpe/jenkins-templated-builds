@@ -81,8 +81,10 @@
           return map
 
     scm:
-    - scm-jtb-branch: branch: dev
-    - scm-jtb-branch: branch: master
+    - scm-jtb-branch:
+        branch: dev
+    - scm-jtb-branch:
+        branch: master
 
     wrappers:
     - timestamps
