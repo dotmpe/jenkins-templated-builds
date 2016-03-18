@@ -126,9 +126,12 @@
           remote=$(basename $(dirname $ref))
           branch=$(basename $ref)
           info $remote/$branch
-          REFS="$REFS $remote/$branch"
-          BRANCHES="$BRANCHES $branch"
+          echo $remote/$branch >>.refs
+          echo $branch >>.branches
         done
+
+        REFS="$(sort -u .refs)"
+        BRANCHES="$(sort -u .branches)"
 
         BUILD_ID=$JOB_NAME
         BUILD_VERSION=$(grep Version ReadMe.rst | sed 's/[^0-9\.]//g')
