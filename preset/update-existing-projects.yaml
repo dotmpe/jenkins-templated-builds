@@ -111,12 +111,17 @@
     - shell: |
         . ./util.sh
 
-        title_h6 Testing GIT
+
+        title_h6 Preparing env from detached GIT
 
         checkout=$(git log -n 1 --pretty="format:%H")
-        echo checkout=$checkout
 
-        git show-ref | grep -F "$checkout"
+        git show-ref | grep -F "$checkout" | while read sha1 ref
+        do
+          remote=$(basename $(dirname $ref))
+          branch=$(basename $ref)
+          echo $remote/$branch
+        done
 
         title_h6 Generating Env-Inject settings
 
