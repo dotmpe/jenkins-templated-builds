@@ -118,6 +118,8 @@
         git describe --always
 
         CHECKOUT=$(git log -n 1 --pretty="format:%H")
+        REFS=
+        BRANCHES=
 
         git show-ref | grep -F "$CHECKOUT" | while read sha1 ref
         do
