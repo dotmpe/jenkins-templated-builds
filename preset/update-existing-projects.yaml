@@ -1,4 +1,8 @@
 
+# TODO: separate build for dev/master/... or some matrix thingie.
+#   Current config with multiple scm of same repo seems to pick last scm and keep building for some reason.
+
+
 
 - property:
     name: generic-env-inject
@@ -30,6 +34,7 @@
         branches:
         - 'origin/{branch}'
         local-branch: '{branch}'
+
 
 - job:
     name: update-existing-projects
@@ -82,9 +87,9 @@
 
     scm:
     - scm-jtb-branch:
-        branch: dev
-    - scm-jtb-branch:
         branch: master
+    - scm-jtb-branch:
+        branch: dev
 
     wrappers:
     - timestamps
