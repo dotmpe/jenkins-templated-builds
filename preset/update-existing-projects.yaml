@@ -137,11 +137,11 @@
 
           BRANCHES="$BRANCHES $branch_default"
 
-          BUILD_TAG="$BUILD_NUMBER manual"
+          BUILD_TAG="prerelease build $BUILD_NUMBER manual"
 
         } || {
 
-          BUILD_TAG="$BUILD_NUMBER"
+          BUILD_TAG="prerelease build $BUILD_NUMBER"
         }
 
         BUILD_META="$BUILD_META $(echo $BRANCHES | tr " " "\n" | sort -u | tr "\n" " ")"
