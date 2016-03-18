@@ -113,7 +113,7 @@
         echo build_version=0.0.1 >> .env-inject
         echo build_meta= >> .env-inject
 
-        git --describe --always
+        git describe --always
         checkout=$(git rev-parse)
         git rev-parse
         git log -n 1 --pretty="format:\%H"
