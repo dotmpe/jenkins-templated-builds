@@ -91,17 +91,22 @@
     - shell: |
         . ./util.sh
 
-        echo version=1.2.3 >> .env-inject
-        echo project='{project-id}' >> .env-inject
+        echo build_package='JTB[update]' >> .env-inject
+        echo build_version=0.0.1 >> .env-inject
+        echo build_meta= >> .env-inject
 
         test -z "$BUILD_CAUSE_SCMTRIGGER" && {
 
           git checkout $branch_default
           echo branch=$branch_default >> .env-inject
+          echo build_tag=-$BUILD_ID-$branch_default-manual >> .env-inject
 
         } || {
           branch_ref=$(git symbolic-ref HEAD || error "Must checkout named branch, no detached HEAD's" 1)
-          echo branch=$(basename $branch_ref) >> .env-inject
+          branch=$(basename $branch_ref)
+
+          echo branch=$branch >> .env-inject
+          echo build_tag=-$BUILD_ID-$branch>> .env-inject
         }
 
         env
@@ -126,7 +131,7 @@
         xml: |
           <org.jenkinsci.plugins.buildnameupdater.BuildNameUpdater plugin="build-name-setter@1.5.1">
             <buildName></buildName>
-            <macroTemplate>${project}:${JOB_NAME}/${version}-#${BUILD_NUMBER}-${branch}</macroTemplate>
+            <macroTemplate>${build_package}/${build_version}${build_tag}${build_meta}</macroTemplate>
             <fromFile>false</fromFile>
             <fromMacro>true</fromMacro>
             <macroFirst>false</macroFirst>
