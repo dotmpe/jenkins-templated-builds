@@ -103,7 +103,9 @@
     wrappers:
     - timestamps
     - ansicolor:
-        colormap: gnome
+        # vga, gnome-terminal, xterm: white on black, may require userContent tweaks
+        # css: black on white, generally readable with defaults
+        colormap: vga
 
     builders:
     - shell: |
