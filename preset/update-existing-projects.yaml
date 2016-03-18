@@ -44,7 +44,8 @@
     project-id: jenkins-templated-builds
 
     triggers:
-    - pollscm: "*/1 * * * *"
+    - pollscm:
+         cron: "*/1 * * * *"
 
     parameters:
     - string:
