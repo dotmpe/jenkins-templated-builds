@@ -113,16 +113,8 @@
 
         title_h6 Testing GIT
 
-        git describe --always
-        git rev-parse
-
-        checkout=$(git rev-parse)
+        checkout=$(git log -n 1 --pretty="format:%H")
         echo checkout=$checkout
-
-        checkout=$(git describe --always)
-        echo checkout=$checkout
-
-        git log -n 1 --pretty="format:%H"
 
         git show-ref | grep -F "$checkout"
 
