@@ -86,10 +86,19 @@
           return map
 
     scm:
-    - scm-jtb-branch:
-        branch: master
-    - scm-jtb-branch:
-        branch: dev
+    - git:
+        url: https://github.com/dotmpe/jenkins-templated-builds.git
+        wipe-workspace: true
+        prune: true
+        skip-tag: true
+        branches:
+        - 'origin/dev'
+        - 'origin/master'
+
+#    - scm-jtb-branch:
+#        branch: master
+#    - scm-jtb-branch:
+#        branch: dev
 
     wrappers:
     - timestamps
@@ -158,8 +167,8 @@
 
         jenkins-cli version
 
-        jjb_subcmd=
-        case "$branch" in dev ) jjb_subcmd=test ;; master ) jjb_subcmd=update ;; * ) error "Unknown branch $branch" 1 ;; esac
+        jjb_subcmd=test
+        #case "$branch" in dev ) jjb_subcmd=test ;; master ) jjb_subcmd=update ;; * ) error "Unknown branch $branch" 1 ;; esac
 
         jenkins-cli list-jobs | while read jobname
         do
