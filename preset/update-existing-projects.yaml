@@ -91,7 +91,8 @@
     - shell: |
         . ./util.sh
 
-        touch .env-inject
+        echo version=1.2.3 >> .env-inject
+        echo project='{project-id}' >> .env-inject
 
         test -z "$BUILD_CAUSE_SCMTRIGGER" && {
 
@@ -101,8 +102,6 @@
         } || {
           branch_ref=$(git symbolic-ref HEAD || error "Must checkout named branch, no detached HEAD's" 1)
           echo branch=$(basename $branch_ref) >> .env-inject
-          echo project='{project-id}' >> .env-inject
-          echo version=1.2.3 >> .env-inject
         }
 
         env
