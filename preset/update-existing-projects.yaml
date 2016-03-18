@@ -113,6 +113,13 @@
         echo build_version=0.0.1 >> .env-inject
         echo build_meta= >> .env-inject
 
+        git --describe --always
+        checkout=$(git rev-parse)
+        git rev-parse
+        git log -n 1 --pretty="format:\%H"
+
+        git show-ref | grep -F $checkout
+
         test -z "$BUILD_CAUSE_SCMTRIGGER" && {
 
           git checkout $branch_default
@@ -120,8 +127,8 @@
           echo build_tag=-$BUILD_ID-$branch_default-manual >> .env-inject
 
         } || {
-          branch_ref=$(git symbolic-ref HEAD || error "Must checkout named branch, no detached HEAD's" 1)
-          branch=$(basename $branch_ref)
+          #branch_ref=$(git symbolic-ref HEAD || error "Must checkout named branch, no detached HEAD's" 1)
+          #branch=$(basename $branch_ref)
 
           echo branch=$branch >> .env-inject
           echo build_tag=-$BUILD_ID-$branch>> .env-inject
