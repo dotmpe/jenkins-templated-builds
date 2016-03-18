@@ -177,9 +177,9 @@
         echo "BUILD_META=$BUILD_META"
 
         test -z "$BUILD_TAG" \
-          || BUILD_DISPLAY_NAME="$BUILD_DISPLAY_NAME-$(echo $BUILD_TAG | tr ' ' '-')"
+          || BUILD_DISPLAY_NAME="$BUILD_DISPLAY_NAME-$(echo $BUILD_TAG | sed 's/[^a-z-A-Z0-9]/-/')"
         test -z "$BUILD_META" \
-          || BUILD_DISPLAY_NAME="$BUILD_DISPLAY_NAME+$(echo $BUILD_META | tr ' ' '+')"
+          || BUILD_DISPLAY_NAME="$BUILD_DISPLAY_NAME+$(echo $BUILD_META | sed 's/[^a-z-A-Z0-9]/+/')"
 
         info "New Build-Name: $BUILD_DISPLAY_NAME"
         echo $BUILD_DISPLAY_NAME > .build-name
