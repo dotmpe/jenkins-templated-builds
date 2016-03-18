@@ -148,7 +148,6 @@
         . ./util.sh
 
         jenkins-cli version
-        exit 0
 
         jjb_subcmd=
         case "$branch" in dev ) jjb_subcmd=test ;; master ) jjb_subcmd=update ;; * ) error "Unknown branch $branch" 1 ;; esac
