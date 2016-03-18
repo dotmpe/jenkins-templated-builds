@@ -170,11 +170,11 @@
 
         info "Current Build-Name: $BUILD_DISPLAY_NAME"
 
-        BUILD_DISPLAY_NAME=$build_version
+        BUILD_DISPLAY_NAME="$build_version"
         test -z "$build_tag" \
-          || BUILD_DISPLAY_NAME=$BUILD_DISPLAY_NAME-$(echo $build_tag | tr ' ' '-')
+          || BUILD_DISPLAY_NAME="$BUILD_DISPLAY_NAME-$(echo $build_tag | tr ' ' '-')"
         test -z "$build_meta" \
-          || BUILD_DISPLAY_NAME=$BUILD_DISPLAY_NAME+$(echo $build_meta | tr ' ' '+')
+          || BUILD_DISPLAY_NAME="$BUILD_DISPLAY_NAME+$(echo $build_meta | tr ' ' '+')"
 
         info "New Build-Name: $BUILD_DISPLAY_NAME"
         echo $BUILD_DISPLAY_NAME > .build-name
