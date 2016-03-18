@@ -82,8 +82,9 @@
         prune: true
         skip-tag: true
         branches:
-        - 'origin/dev'
         - 'origin/master'
+        - 'origin/dev'
+        - 'origin/test'
 
     wrappers:
     - timestamps
