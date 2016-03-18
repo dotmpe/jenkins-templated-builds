@@ -103,14 +103,14 @@
     wrappers:
     - timestamps
     - ansicolor:
-        colormap: vga
+        colormap: gnome
 
     builders:
     - shell: |
         . ./util.sh
 
         echo build_package='JTB[update]' >> .env-inject
-        echo build_version=0.0.1 >> .env-inject
+        echo build_version=0.0.2 >> .env-inject
         echo build_meta= >> .env-inject
 
         git describe --always
