@@ -140,7 +140,7 @@
         xml: |
           <org.jenkinsci.plugins.buildnameupdater.BuildNameUpdater plugin="build-name-setter@1.5.1">
             <buildName></buildName>
-            <macroTemplate>${build_package}/${build_version}${build_tag}${build_meta}</macroTemplate>
+            <macroTemplate>${build_version}${build_tag}${build_meta}</macroTemplate>
             <fromFile>false</fromFile>
             <fromMacro>true</fromMacro>
             <macroFirst>false</macroFirst>
