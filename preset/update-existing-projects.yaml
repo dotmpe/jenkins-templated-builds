@@ -29,7 +29,7 @@
         skip-tag: true
         branches:
         - 'origin/{branch}'
-        local-branch: {branch}
+        local-branch: '{branch}'
 
 - job:
     name: update-existing-projects
