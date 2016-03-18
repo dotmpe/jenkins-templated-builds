@@ -144,7 +144,7 @@
           BUILD_TAG="$BUILD_NUMBER"
         }
 
-        BUILD_META="$(echo $BRANCHES | tr " " "\n" | sort -u | tr "\n" " ")"
+        BUILD_META="$BUILD_META $(echo $BRANCHES | tr " " "\n" | sort -u | tr "\n" " ")"
 
 
         note "Generating Env-Inject properties"
@@ -177,6 +177,7 @@
 
         echo "BUILD_TAG=$BUILD_TAG"
         echo "BUILD_META=$BUILD_META"
+        echo "BRANCHES=$BRANCHES"
 
         test -z "$BUILD_TAG" \
           || BUILD_DISPLAY_NAME="$BUILD_DISPLAY_NAME-$(echo $BUILD_TAG | sed 's/[^a-zA-Z0-9]\{1,\}/-/g')"
