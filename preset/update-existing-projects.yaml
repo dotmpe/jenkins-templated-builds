@@ -34,7 +34,7 @@
 
     logrotate:
       daysToKeep: -1
-      numToKeep: -7
+      numToKeep: 7
 
     project-id: jenkins-templated-builds
 
@@ -163,13 +163,14 @@
 
         BUILD_META="$BUILD_META $(echo $BRANCHES | tr " " "\n" | sort -u | tr "\n" " ")"
 
-
         note "Generating Env-Inject properties"
         for var in CHECKOUT BRANCHES BUILD_ID BUILD_VERSION BUILD_TAG BUILD_META
         do
           info "exporting $var $(eval echo \$$var)"
           echo "$var = $(eval echo \$$var | sed 's/[\\ :\\,-]/\\&/')" >> .env-inject
         done
+
+        echo "Approve : 1" >> .env-inject
 
     - raw:
         xml: |
