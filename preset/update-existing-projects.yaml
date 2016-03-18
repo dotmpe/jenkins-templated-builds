@@ -56,7 +56,6 @@
               map['brix_packages'] = '/opt/annex/brix-packages'
               map['git_ls'] = "pwd" .execute().text
 
-              echo JOB_NAME
               println "git symbolic-ref HEAD" .execute().text
               println 'basename $(git symbolic-ref HEAD)' .execute().text
 
