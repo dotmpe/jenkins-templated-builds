@@ -109,16 +109,21 @@
     - shell: |
         . ./util.sh
 
-        echo build_package='JTB[update]' >> .env-inject
-        echo build_version=0.0.2 >> .env-inject
-        echo build_meta= >> .env-inject
+        title_h6 Testing GIT
 
         git describe --always
         checkout=$(git rev-parse)
+        echo checkout=$checkout
         git rev-parse
         git log -n 1 --pretty="format:%H"
 
         git show-ref | grep -F "$checkout"
+
+        title_h6 Generating Env-Inject settings
+
+        echo build_package='JTB[update]' >> .env-inject
+        echo build_version=0.0.2 >> .env-inject
+        echo build_meta= >> .env-inject
 
         test -z "$BUILD_CAUSE_SCMTRIGGER" && {
 
@@ -133,9 +138,10 @@
           echo branch=$branch >> .env-inject
           echo build_tag=-$BUILD_ID-$branch>> .env-inject
         }
-
+        title_h6 ENV
         env
 
+        title_h6 GIT 
         echo $GIT_COMMIT
         echo $GIT_PREVIOUS_COMMIT
         echo $GIT_PREVIOUS_SUCCESSFUL_COMMIT
