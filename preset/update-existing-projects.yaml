@@ -1,7 +1,6 @@
 
-# TODO: separate build for dev/master/... or some matrix thingie.
-#   Current config with multiple scm of same repo seems to pick last scm and keep building for some reason.
-
+# TODO: 
+#
 
 
 - property:
@@ -21,19 +20,6 @@
         script-content: '{env-script-content}'
         # Groovy script can return map to update env
         groovy-content: '{inject-env-groovy-content}'
-
-- scm:
-    name: scm-jtb-branch
-
-    scm:
-    - git:
-        url: https://github.com/dotmpe/jenkins-templated-builds.git
-        wipe-workspace: true
-        prune: true
-        skip-tag: true
-        branches:
-        - 'origin/{branch}'
-        local-branch: '{branch}'
 
 
 - job:
@@ -95,11 +81,6 @@
         - 'origin/dev'
         - 'origin/master'
 
-#    - scm-jtb-branch:
-#        branch: master
-#    - scm-jtb-branch:
-#        branch: dev
-
     wrappers:
     - timestamps
     - ansicolor:
@@ -155,6 +136,10 @@
           echo build_tag=-$BUILD_ID-$branch>> .env-inject
         }
 
+        echo $BUILD_DISPLAY_NAME
+        BUILD_DISPLAY_NAME=${build_version}${build_tag}${build_meta}
+        echo BUILD_DISPLAY_NAME=$BUILD_DISPLAY_NAME >> .env-inject
+        echo $BUILD_DISPLAY_NAME > .build-name
 
     - raw:
         xml: |
@@ -168,15 +153,12 @@
     - raw:
         xml: |
           <org.jenkinsci.plugins.buildnameupdater.BuildNameUpdater plugin="build-name-setter@1.5.1">
-            <buildName></buildName>
-            <macroTemplate>${build_version}${build_tag}${build_meta}</macroTemplate>
-            <fromFile>false</fromFile>
-            <fromMacro>true</fromMacro>
+            <buildName>.build-name</buildName>
+            <macroTemplate></macroTemplate>
+            <fromFile>true</fromFile>
+            <fromMacro>false</fromMacro>
             <macroFirst>false</macroFirst>
           </org.jenkinsci.plugins.buildnameupdater.BuildNameUpdater>
-
-    - shell: |
-        echo $BUILD_DISPLAY_NAME
 
     - shell: |
         mkdir -vp dist
