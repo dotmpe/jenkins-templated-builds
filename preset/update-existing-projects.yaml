@@ -150,7 +150,7 @@
         note "Generating Env-Inject properties"
         for var in CHECKOUT BRANCHES BUILD_ID BUILD_VERSION BUILD_TAG BUILD_META
         do
-          echo exporting $var
+          info "exporting $var $(eval echo \$$var)"
           echo "$var = $(eval echo \$$var | sed 's/[\\ :\\,-]/\\&/')" >> .env-inject
         done
 
