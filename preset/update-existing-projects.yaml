@@ -54,7 +54,8 @@
               map['scriptpath'] = JENKINS_HOME + "/bin"
               map['base'] = JOB_NAME
               map['brix_packages'] = '/opt/annex/brix-packages'
-              map['git_ls'] = "pwd" .execute().text
+
+              map['inject_job_name'] = JOB_NAME
 
               try {
                 // FIXME: this only works with existing workspace, SCM hasnt run yet. Ie. this is the old build..
@@ -94,9 +95,9 @@
     - shell: |
         . ./util.sh
 
-        env | grep JOB_NAME
+        echo $inject_job_name
+        env | grep inject_job_name
         env | grep base
-        env | grep scriptpath
 
         branch_ref=$(git symbolic-ref HEAD || error "Must checkout named branch, no detached HEAD's" 1)
         branch=$(basename $branch_ref)
@@ -106,6 +107,8 @@
 
         jjb_subcmd=
         case "$branch" in dev ) jjb_subcmd=test ;; master ) jjb_subcmd=update ;; * ) error "Unknown branch $branch" 1 ;; esac
+
+        make dist
 
         jenkins-cli list-jobs | while read jobname
         do
