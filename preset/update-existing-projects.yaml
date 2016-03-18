@@ -135,6 +135,7 @@
         BRANCHES="$(sort -u .branches)"
 
         BUILD_ID=$JOB_NAME
+        BUILD_ID=JTB-Upd
         BUILD_VERSION=$(grep Version ReadMe.rst | sed 's/[^0-9\.]//g')
 
         test -z "$BUILD_CAUSE_SCMTRIGGER" && {
@@ -178,7 +179,7 @@
 
         info "Current Build-Name: $BUILD_DISPLAY_NAME"
 
-        BUILD_DISPLAY_NAME="$BUILD_VERSION"
+        BUILD_DISPLAY_NAME="$BUILD_ID/$BUILD_VERSION"
 
         echo "BUILD_TAG=$BUILD_TAG"
         echo "BUILD_META=$BUILD_META"
