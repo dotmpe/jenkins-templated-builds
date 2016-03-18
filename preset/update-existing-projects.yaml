@@ -171,6 +171,8 @@
         info "Current Build-Name: $BUILD_DISPLAY_NAME"
 
         BUILD_DISPLAY_NAME="$build_version"
+        echo "build_meta=$build_meta"
+        echo "build_tag=$build_tag"
         test -z "$build_tag" \
           || BUILD_DISPLAY_NAME="$BUILD_DISPLAY_NAME-$(echo $build_tag | tr ' ' '-')"
         test -z "$build_meta" \
