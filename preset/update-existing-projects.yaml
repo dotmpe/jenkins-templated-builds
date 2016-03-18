@@ -18,6 +18,18 @@
         # Groovy script can return map to update env
         groovy-content: '{inject-env-groovy-content}'
 
+- scm:
+    name: scm-jtb-branch
+
+    scm:
+    - git:
+        url: https://github.com/dotmpe/jenkins-templated-builds.git
+        wipe-workspace: true
+        prune: true
+        skip-tag: true
+        branches:
+        - 'origin/{branch}'
+        local-branch: {branch}
 
 - job:
     name: update-existing-projects
@@ -47,40 +59,29 @@
         env-script-file: ''
         env-script-content: ''
         inject-env-groovy-content: |
-           // Pre-workspace, pre-scm vars. Previous workspace may still exist.
-           // Build only has a JOB_NAME and BUILD_ID/BUILD_NUMBER at this point
-           def map = [:]
-           try {
-             if ("".equals(DEBUG)) {
-               map['DEBUG'] = 'false'
-             }
-           } catch (MissingPropertyException e) {
-             map['DEBUG'] = 'false'
-           }
-           map['Redis_Key'] = "jenkins:jobs:"+JOB_NAME
-           map['scriptpath'] = JENKINS_HOME + "/bin"
-           map['base'] = JOB_NAME
-           map['brix_packages'] = '/opt/annex/brix-packages'
+          def map = [:]
 
-           return map
+          // Pre-workspace, pre-scm vars. Previous workspace may still exist 
+          // (but PWD default to root). Build only has a JOB_NAME and 
+          // BUILD_ID/BUILD_NUMBER at this point
+          try {
+            if ("".equals(DEBUG)) {
+              map['DEBUG'] = 'false'
+            }
+          } catch (MissingPropertyException e) {
+            map['DEBUG'] = 'false'
+          }
+          map['Redis_Key'] = "jenkins:jobs:"+JOB_NAME
+          map['scriptpath'] = JENKINS_HOME + "/bin"
+          map['base'] = JOB_NAME
+          map['brix_packages'] = '/opt/annex/brix-packages'
+
+          // Return map with settings to inject
+          return map
 
     scm:
-    - git:
-        url: https://github.com/dotmpe/jenkins-templated-builds.git
-        wipe-workspace: true
-        prune: true
-        skip-tag: true
-        branches:
-        - 'origin/dev'
-        local-branch: dev
-    - git:
-        url: https://github.com/dotmpe/jenkins-templated-builds.git
-        wipe-workspace: true
-        prune: true
-        skip-tag: true
-        branches:
-        - 'origin/master'
-        local-branch: master
+    - scm-jtb-branch: branch: dev
+    - scm-jtb-branch: branch: master
 
     wrappers:
     - timestamps
