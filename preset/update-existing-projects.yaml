@@ -115,6 +115,8 @@
 
         note "Preparing env from detached GIT"
 
+        git describe --always
+
         CHECKOUT=$(git log -n 1 --pretty="format:%H")
 
         git show-ref | grep -F "$CHECKOUT" | while read sha1 ref
