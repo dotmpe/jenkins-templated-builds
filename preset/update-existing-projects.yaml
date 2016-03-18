@@ -116,9 +116,9 @@
         git describe --always
         checkout=$(git rev-parse)
         git rev-parse
-        git log -n 1 --pretty="format:\%H"
+        git log -n 1 --pretty="format:%H"
 
-        git show-ref | grep -F $checkout
+        git show-ref | grep -F "$checkout"
 
         test -z "$BUILD_CAUSE_SCMTRIGGER" && {
 
