@@ -34,6 +34,12 @@
     triggers:
     - pollscm: "*/1 * * * *"
 
+    parameters:
+    - string:
+        name: branch_default
+        description: Set the branch for non-SCM-triggered builds.
+        default: dev
+
     properties:
     - generic-env-inject:
         inject-properties-file: ''
@@ -42,7 +48,7 @@
         env-script-content: ''
         inject-env-groovy-content: |
            // Pre-workspace, pre-scm vars. Previous workspace may still exist.
-           // Build only has a JOB_NAME at this point
+           // Build only has a JOB_NAME and BUILD_ID/BUILD_NUMBER at this point
            def map = [:]
            try {
              if ("".equals(DEBUG)) {
@@ -55,10 +61,6 @@
            map['scriptpath'] = JENKINS_HOME + "/bin"
            map['base'] = JOB_NAME
            map['brix_packages'] = '/opt/annex/brix-packages'
-
-           map['pre_scm_JOB_NAME'] = JOB_NAME
-           map['pre_scm_BUILD_ID'] = BUILD_ID
-           map['pre_scm_BUILD_NUMBER'] = BUILD_NUMBER
 
            return map
 
@@ -89,12 +91,28 @@
     - shell: |
         . ./util.sh
 
+        touch .env-inject
+
+        test -z "$BUILD_CAUSE_SCMTRIGGER" && {
+
+          git checkout $branch_default
+          echo branch=$branch_default >> .env-inject
+
+        } || {
+          branch_ref=$(git symbolic-ref HEAD || error "Must checkout named branch, no detached HEAD's" 1)
+          echo branch=$(basename $branch_ref) >> .env-inject
+          echo project='{project-id}' >> .env-inject
+          echo version=1.2.3 >> .env-inject
+        }
+
         env
 
-        branch_ref=$(git symbolic-ref HEAD || error "Must checkout named branch, no detached HEAD's" 1)
-        echo branch=$(basename $branch_ref) >> .env-inject
-        echo project={project-id} >> .env-inject
-        echo version=1.2.3 >> .env-inject
+        echo $GIT_COMMIT
+        echo $GIT_PREVIOUS_COMMIT
+        echo $GIT_PREVIOUS_SUCCESSFUL_COMMIT
+        echo $ROOT_BUILD_CAUSE
+        echo $BUILD_CAUSE_MANUALTRIGGER
+        echo $BUILD_DISPLAY_NAME
 
     - raw:
         xml: |
@@ -116,8 +134,9 @@
           </org.jenkinsci.plugins.buildnameupdater.BuildNameUpdater>
 
     - shell: |
-        . ./util.sh
+        echo $BUILD_DISPLAY_NAME
 
+    - shell: |
         mkdir -vp dist
         make dist
 
@@ -125,6 +144,7 @@
         . ./util.sh
 
         jenkins-cli version
+        exit 0
 
         jjb_subcmd=
         case "$branch" in dev ) jjb_subcmd=test ;; master ) jjb_subcmd=update ;; * ) error "Unknown branch $branch" 1 ;; esac
