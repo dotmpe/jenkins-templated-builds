@@ -92,10 +92,10 @@
     - shell: |
         . ./util.sh
 
-        title_h6 ENV
+        debug ENV
         env
 
-        title_h6 GIT 
+        debug GIT 
         echo $GIT_COMMIT
         echo $GIT_PREVIOUS_COMMIT
         echo $GIT_PREVIOUS_SUCCESSFUL_COMMIT
@@ -108,7 +108,7 @@
         #set +x
         . ./util.sh
 
-        title_h6 Preparing env from detached GIT
+        note "Preparing env from detached GIT"
 
         checkout=$(git log -n 1 --pretty="format:%H")
         branches=
@@ -117,7 +117,7 @@
         do
           remote=$(basename $(dirname $ref))
           branch=$(basename $ref)
-          echo $remote/$branch
+          info $remote/$branch
           branches="$branches $remote/$branch"
         done
 
@@ -141,7 +141,7 @@
           build_tag=-$BUILD_ID-$branch
         }
 
-        title_h6 Generating Env-Inject settings
+        note "Generating Env-Inject settings"
 
         for var in checkout branche build_id build_version build_tag build_meta
         do
@@ -161,9 +161,9 @@
         #set +x
         . ./util.sh
 
-        note Generating Build-Name file
+        note "Generating Build-Name file"
 
-        echo $BUILD_DISPLAY_NAME
+        info "Current Build-Name: $BUILD_DISPLAY_NAME"
 
         BUILD_DISPLAY_NAME=$build_version
         test -z "$build_tag" \
@@ -171,6 +171,7 @@
         test -z "$build_meta" \
           || BUILD_DISPLAY_NAME=$BUILD_DISPLAY_NAME+$(echo ${build_meta} | tr ' ' '+')
 
+        info "New Build-Name: $BUILD_DISPLAY_NAME"
         echo $BUILD_DISPLAY_NAME > .build-name
         # could reinject, but probably does little if anything
         #echo BUILD_DISPLAY_NAME=$BUILD_DISPLAY_NAME >> .env-inject
