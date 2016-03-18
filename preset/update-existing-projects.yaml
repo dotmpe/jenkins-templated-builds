@@ -29,11 +29,10 @@
     node: master
     concurrent: false
 
+    project-id: jenkins-templated-builds
+
     triggers:
     - pollscm: "*/1 * * * *"
-
-    wrappers:
-    - build-name: 'xxx-${{BUILD_ID}}-$branch'
 
     properties:
     - generic-env-inject:
@@ -42,31 +41,26 @@
         env-script-file: ''
         env-script-content: ''
         inject-env-groovy-content: |
-              def map = [:]
-              try {
-                if ("".equals(DEBUG)) {
-                  map['DEBUG'] = 'false'
-                }
-              } catch (MissingPropertyException e) {
-                map['DEBUG'] = 'false'
-              }
-              map['Redis_Key'] = "jenkins:jobs:"+JOB_NAME
-              map['scriptpath'] = JENKINS_HOME + "/bin"
-              map['base'] = JOB_NAME
-              map['brix_packages'] = '/opt/annex/brix-packages'
+           // Pre-workspace, pre-scm vars. Previous workspace may still exist.
+           // Build only has a JOB_NAME at this point
+           def map = [:]
+           try {
+             if ("".equals(DEBUG)) {
+               map['DEBUG'] = 'false'
+             }
+           } catch (MissingPropertyException e) {
+             map['DEBUG'] = 'false'
+           }
+           map['Redis_Key'] = "jenkins:jobs:"+JOB_NAME
+           map['scriptpath'] = JENKINS_HOME + "/bin"
+           map['base'] = JOB_NAME
+           map['brix_packages'] = '/opt/annex/brix-packages'
 
-              map['inject_job_name'] = JOB_NAME
+           map['pre_scm_JOB_NAME'] = JOB_NAME
+           map['pre_scm_BUILD_ID'] = BUILD_ID
+           map['pre_scm_BUILD_NUMBER'] = BUILD_NUMBER
 
-              try {
-                // FIXME: this only works with existing workspace, SCM hasnt run yet. Ie. this is the old build..
-                String branch_ref = "git symbolic-ref HEAD" .execute().text
-                map['branch_ref'] = branch_ref
-                map['branch'] = "basename ${branch_ref}" .execute().text
-              } catch (MissingPropertyException e) {
-                println "Must checkout named branch, no detached HEAD's"
-                assert false
-              }
-              return map
+           return map
 
     scm:
     - git:
@@ -95,9 +89,31 @@
     - shell: |
         . ./util.sh
 
-        echo $inject_job_name
-        env | grep inject_job_name
-        env | grep base
+        env
+
+        branch_ref=$(git symbolic-ref HEAD || error "Must checkout named branch, no detached HEAD's" 1)
+        echo branch=$(basename $branch_ref) >> .env-inject
+        echo project={project-id} >> .env-inject
+        echo version=1.2.3 >> .env-inject
+
+    - raw:
+        xml: |
+          <EnvInjectBuilder plugin="envinject@1.92.1">
+            <info>
+              <propertiesFilePath>.env-inject</propertiesFilePath>
+              <propertiesContent></propertiesContent>
+            </info>
+          </EnvInjectBuilder>
+
+    - raw:
+        xml: |
+          <org.jenkinsci.plugins.buildnameupdater.BuildNameUpdater plugin="build-name-setter@1.5.1">
+            <buildName></buildName>
+            <macroTemplate>${project}:${JOB_NAME}/${version}-#${BUILD_NUMBER}-${branch}</macroTemplate>
+            <fromFile>true</fromFile>
+            <fromMacro>false</fromMacro>
+            <macroFirst>false</macroFirst>
+          </org.jenkinsci.plugins.buildnameupdater.BuildNameUpdater>
 
     - shell: |
         . ./util.sh
@@ -107,10 +123,6 @@
 
     - shell: |
         . ./util.sh
-
-        branch_ref=$(git symbolic-ref HEAD || error "Must checkout named branch, no detached HEAD's" 1)
-        branch=$(basename $branch_ref)
-        #test -n "$branch" || error "Check env-inject"
 
         jenkins-cli version
 
