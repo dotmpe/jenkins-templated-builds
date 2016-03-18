@@ -56,9 +56,6 @@
               map['brix_packages'] = '/opt/annex/brix-packages'
               map['git_ls'] = "pwd" .execute().text
 
-              println "git symbolic-ref HEAD" .execute().text
-              println 'basename $(git symbolic-ref HEAD)' .execute().text
-
               try {
                 // FIXME: this only works with existing workspace, SCM hasnt run yet. Ie. this is the old build..
                 String branch_ref = "git symbolic-ref HEAD" .execute().text
@@ -97,13 +94,13 @@
     - shell: |
         . ./util.sh
 
+        env | grep JOB_NAME
+        env | grep base
         env | grep scriptpath
-        env | grep git_ls
-        env | grep branch
-        exit 0
 
-        test -n "$branch" || error "Check env-inject"
-        branchref=$(git symbolic-ref HEAD || error "Must checkout named branch, no detached HEAD's" 1)
+        branch_ref=$(git symbolic-ref HEAD || error "Must checkout named branch, no detached HEAD's" 1)
+        branch=$(basename $branch_ref)
+        #test -n "$branch" || error "Check env-inject"
 
         jenkins-cli version
 
