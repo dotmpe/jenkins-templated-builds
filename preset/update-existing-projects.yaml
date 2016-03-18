@@ -177,7 +177,7 @@
         echo "BUILD_META=$BUILD_META"
 
         test -z "$BUILD_TAG" \
-          || BUILD_DISPLAY_NAME="$BUILD_DISPLAY_NAME-$(echo $BUILD_TAG | sed 's/[^a-zA-Z0-9]\{1,\}      /-/g')"
+          || BUILD_DISPLAY_NAME="$BUILD_DISPLAY_NAME-$(echo $BUILD_TAG | sed 's/[^a-zA-Z0-9]\{1,\}/-/g')"
         test -z "$BUILD_META" \
           || BUILD_DISPLAY_NAME="$BUILD_DISPLAY_NAME+$(echo $BUILD_META | sed 's/[^a-zA-Z0-9]\{1,\}/+/g')"
 
