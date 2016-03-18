@@ -153,7 +153,7 @@
         for var in checkout branche build_id build_version build_tag build_meta tag foo
         do
           echo exporting $var
-          echo "$var=$(eval echo \$$var)" >> .env-inject
+          echo "$var = $(eval echo \$$var)" >> .env-inject
         done
 
         cat .env-inject
