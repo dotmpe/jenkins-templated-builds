@@ -150,7 +150,7 @@
         for var in checkout branche build_id build_version build_tag build_meta
         do
           echo exporting $var
-          echo "$var=$(eval echo \$$var)" >> .env-inject
+          printf "$var=$(eval echo \$$var)\n" >> .env-inject
         done
 
         cat .env-inject
@@ -172,6 +172,8 @@
 
         info "Current Build-Name: $BUILD_DISPLAY_NAME"
 
+        echo "checkout=$checkout"
+        echo "build_id=$build_id"
         BUILD_DISPLAY_NAME="$build_version"
         echo "build_meta=$build_meta"
         echo "build_tag=$build_tag"
