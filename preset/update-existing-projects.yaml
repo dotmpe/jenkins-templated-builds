@@ -146,7 +146,7 @@
 
 
         note "Generating Env-Inject properties"
-        for var in checkout branche BUILD_ID BUILD_VERSION BUILD_TAG BUILD_META
+        for var in CHECKOUT BRANCHES BUILD_ID BUILD_VERSION BUILD_TAG BUILD_META
         do
           echo exporting $var
           echo "$var = $(eval echo \$$var | sed 's/[\\ :\\,-]/\\&/')" >> .env-inject
@@ -162,6 +162,7 @@
             </info>
           </EnvInjectBuilder>
 
+    # Build .build-name file with semver compatible version string
     - shell: |
         set +x
         . ./util.sh
@@ -171,6 +172,9 @@
         info "Current Build-Name: $BUILD_DISPLAY_NAME"
 
         BUILD_DISPLAY_NAME="$BUILD_VERSION"
+
+        echo "BUILD_TAG=$BUILD_TAG"
+        echo "BUILD_META=$BUILD_META"
 
         test -z "$BUILD_TAG" \
           || BUILD_DISPLAY_NAME="$BUILD_DISPLAY_NAME-$(echo $BUILD_TAG | tr ' ' '-')"
