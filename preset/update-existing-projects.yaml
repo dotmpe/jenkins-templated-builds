@@ -137,20 +137,23 @@
           branch=$branch_default
           build_tag="$BUILD_NUMBER,$branch_default,manual"
 
+          foo="$BUILD_NUMBER.$branch_default.manual"
         } || {
           #branch_ref=$(git symbolic-ref HEAD || error "Must checkout named branch, no detached HEAD's" 1)
           #branch=$(basename $branch_ref)
 
           branch=$branch
           build_tag="$BUILD_NUMBER,$branch"
+          foo="$BUILD_NUMBER.$branch"
         }
+        tag="$(echo $build_tag)"
 
         note "Generating Env-Inject settings"
 
-        for var in checkout branche build_id build_version build_tag build_meta
+        for var in checkout branche build_id build_version build_tag build_meta tag foo
         do
           echo exporting $var
-          printf "$var=$(eval echo \$$var)\n" >> .env-inject
+          echo "$var=$(eval echo \$$var)" >> .env-inject
         done
 
         cat .env-inject
@@ -172,6 +175,7 @@
 
         info "Current Build-Name: $BUILD_DISPLAY_NAME"
 
+        echo "foo=$foo"
         echo "checkout=$checkout"
         echo "build_id=$build_id"
         BUILD_DISPLAY_NAME="$build_version"
