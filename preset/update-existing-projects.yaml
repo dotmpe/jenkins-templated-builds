@@ -103,42 +103,50 @@
         echo $BUILD_CAUSE_MANUALTRIGGER
         echo $BUILD_DISPLAY_NAME
 
+    builders:
+    - shell: |
+        #set +x
+        . ./util.sh
 
         title_h6 Preparing env from detached GIT
 
         checkout=$(git log -n 1 --pretty="format:%H")
+        branches=
 
         git show-ref | grep -F "$checkout" | while read sha1 ref
         do
           remote=$(basename $(dirname $ref))
           branch=$(basename $ref)
           echo $remote/$branch
+          branches="$branches $remote/$branch"
         done
 
-        title_h6 Generating Env-Inject settings
-
-        echo build_package='JTB[update]' >> .env-inject
-        echo build_version=0.0.2 >> .env-inject
-        echo build_meta= >> .env-inject
+        build_id='JTB[update]'
+        build_version=0.0.2
+        build_tag=
+        build_meta=
+        branch=
 
         test -z "$BUILD_CAUSE_SCMTRIGGER" && {
 
           git checkout $branch_default
-          echo branch=$branch_default >> .env-inject
-          echo build_tag=-$BUILD_ID-$branch_default-manual >> .env-inject
+          branch=$branch_default
+          build_tag=-$BUILD_ID-$branch_default-manual
 
         } || {
           #branch_ref=$(git symbolic-ref HEAD || error "Must checkout named branch, no detached HEAD's" 1)
           #branch=$(basename $branch_ref)
 
-          echo branch=$branch >> .env-inject
-          echo build_tag=-$BUILD_ID-$branch>> .env-inject
+          branch=$branch
+          build_tag=-$BUILD_ID-$branch
         }
 
-        echo $BUILD_DISPLAY_NAME
-        BUILD_DISPLAY_NAME=${build_version}${build_tag}${build_meta}
-        echo BUILD_DISPLAY_NAME=$BUILD_DISPLAY_NAME >> .env-inject
-        echo $BUILD_DISPLAY_NAME > .build-name
+        title_h6 Generating Env-Inject settings
+
+        for var in checkout branche build_id build_version build_tag build_meta
+        do
+          echo $var=$(eval echo \$$var) >> .env-inject
+        done
 
     - raw:
         xml: |
@@ -148,6 +156,24 @@
               <propertiesContent></propertiesContent>
             </info>
           </EnvInjectBuilder>
+
+    - shell: |
+        #set +x
+        . ./util.sh
+
+        note Generating Build-Name file
+
+        echo $BUILD_DISPLAY_NAME
+
+        BUILD_DISPLAY_NAME=$build_version
+        test -z "$build_tag" \
+          || BUILD_DISPLAY_NAME=$BUILD_DISPLAY_NAME-$(echo ${build_tag} | tr ' ' '-')
+        test -z "$build_meta" \
+          || BUILD_DISPLAY_NAME=$BUILD_DISPLAY_NAME+$(echo ${build_meta} | tr ' ' '+')
+
+        echo $BUILD_DISPLAY_NAME > .build-name
+        # could reinject, but probably does little if anything
+        #echo BUILD_DISPLAY_NAME=$BUILD_DISPLAY_NAME >> .env-inject
 
     - raw:
         xml: |
