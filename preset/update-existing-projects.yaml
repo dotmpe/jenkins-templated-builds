@@ -105,7 +105,7 @@
     - ansicolor:
         # vga, gnome-terminal, xterm: white on black, may require userContent tweaks
         # css: black on white, generally readable with defaults
-        colormap: vga
+        colormap: css
 
     builders:
     - shell: |
@@ -114,9 +114,14 @@
         title_h6 Testing GIT
 
         git describe --always
+        git rev-parse
+
         checkout=$(git rev-parse)
         echo checkout=$checkout
-        git rev-parse
+
+        checkout=$(git describe --always)
+        echo checkout=$checkout
+
         git log -n 1 --pretty="format:%H"
 
         git show-ref | grep -F "$checkout"
