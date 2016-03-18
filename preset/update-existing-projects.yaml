@@ -109,54 +109,49 @@
 
     builders:
     - shell: |
-        #set +x
+        set +x
         . ./util.sh
+
 
         note "Preparing env from detached GIT"
 
-        checkout=$(git log -n 1 --pretty="format:%H")
-        branches=
+        CHECKOUT=$(git log -n 1 --pretty="format:%H")
 
-        git show-ref | grep -F "$checkout" | while read sha1 ref
+        git show-ref | grep -F "$CHECKOUT" | while read sha1 ref
         do
           remote=$(basename $(dirname $ref))
           branch=$(basename $ref)
           info $remote/$branch
-          branches="$branches $remote/$branch"
+          REFS="$REFS $remote/$branch"
+          BRANCHES="$BRANCHES $branch"
         done
 
-        build_id='JTB[update]'
-        build_version=0.0.2
-        BUILD_TAG=
-        build_meta=
-        branch=
+        BUILD_ID=$JOB_NAME
+        BUILD_VERSION=0.0.2
 
         test -z "$BUILD_CAUSE_SCMTRIGGER" && {
 
           git checkout $branch_default
-          branch=$branch_default
-          BUILD_TAG="$BUILD_NUMBER $branch_default manual"
+
+          BRANCHES="$BRANCHES $branch_default"
+
+          BUILD_TAG="$BUILD_NUMBER manual"
 
         } || {
-          #branch_ref=$(git symbolic-ref HEAD || error "Must checkout named branch, no detached HEAD's" 1)
-          #branch=$(basename $branch_ref)
 
-          branch=$branch
-          BUILD_TAG="$BUILD_NUMBER $branch"
+          BUILD_TAG="$BUILD_NUMBER"
         }
 
-        note "Generating Env-Inject properties"
+        BUILD_META="$(echo $BRANCHES | tr " " "\n" | sort -u | tr "\n" " ")"
 
-        for var in checkout branche build_id build_version BUILD_TAG build_meta
+
+        note "Generating Env-Inject properties"
+        for var in checkout branche BUILD_ID BUILD_VERSION BUILD_TAG BUILD_META
         do
           echo exporting $var
           echo "$var = $(eval echo \$$var | sed 's/[\\ :\\,-]/\\&/')" >> .env-inject
         done
 
-        echo "foo : Foo\\ Bar\\ Baz" >> .env-inject
-        echo "foo2 : Foo\\:Bar\\:Baz" >> .env-inject
-
-        cat .env-inject
 
     - raw:
         xml: |
@@ -168,25 +163,19 @@
           </EnvInjectBuilder>
 
     - shell: |
-        #set +x
+        set +x
         . ./util.sh
 
         note "Generating Build-Name file"
 
         info "Current Build-Name: $BUILD_DISPLAY_NAME"
 
-        echo "tag=$tag"
-        echo "foo=$foo"
-        echo "foo2=$foo2"
-        echo "checkout=$checkout"
-        echo "build_id=$build_id"
-        BUILD_DISPLAY_NAME="$build_version"
-        echo "build_meta=$build_meta"
+        BUILD_DISPLAY_NAME="$BUILD_VERSION"
 
         test -z "$BUILD_TAG" \
           || BUILD_DISPLAY_NAME="$BUILD_DISPLAY_NAME-$(echo $BUILD_TAG | tr ' ' '-')"
-        test -z "$build_meta" \
-          || BUILD_DISPLAY_NAME="$BUILD_DISPLAY_NAME+$(echo $build_meta | tr ' ' '+')"
+        test -z "$BUILD_META" \
+          || BUILD_DISPLAY_NAME="$BUILD_DISPLAY_NAME+$(echo $BUILD_META | tr ' ' '+')"
 
         info "New Build-Name: $BUILD_DISPLAY_NAME"
         echo $BUILD_DISPLAY_NAME > .build-name
