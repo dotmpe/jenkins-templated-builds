@@ -135,14 +135,14 @@
 
           git checkout $branch_default
           branch=$branch_default
-          build_tag=-$BUILD_ID-$branch_default-manual
+          build_tag="$BUILD_ID $branch_default manual"
 
         } || {
           #branch_ref=$(git symbolic-ref HEAD || error "Must checkout named branch, no detached HEAD's" 1)
           #branch=$(basename $branch_ref)
 
           branch=$branch
-          build_tag=-$BUILD_ID-$branch
+          build_tag="$BUILD_ID $branch"
         }
 
         note "Generating Env-Inject settings"
