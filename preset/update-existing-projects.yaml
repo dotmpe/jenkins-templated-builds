@@ -44,9 +44,13 @@
 
     parameters:
     - string:
-        name: branch_default
+        name: Branch_Default
         description: Set the branch for non-SCM-triggered builds.
         default: dev
+    - bool:
+        name: Override_Branches
+        description: Disregard other branches pointing at commit of given Branch_Default.
+        default: false
 
     properties:
     - generic-env-inject:
@@ -133,6 +137,7 @@
 
         REFS="$(sort -u .refs)"
         BRANCHES="$(sort -u .branches)"
+        rm .refs .branches
 
         BUILD_ID=$JOB_NAME
         BUILD_ID=JTB-Upd
@@ -140,9 +145,14 @@
 
         test -z "$BUILD_CAUSE_SCMTRIGGER" && {
 
-          git checkout $branch_default
+          git checkout $Branch_Default
 
-          BRANCHES="$BRANCHES $branch_default"
+          trueish "$Override_Branches" && {
+            # Override branches
+            BRANCHES="$Branch_Default"
+          } || {
+            BRANCHES="$BRANCHES $Branch_Default"
+          }
 
           BUILD_TAG="build $BUILD_NUMBER manual"
 
