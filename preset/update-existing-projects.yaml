@@ -32,6 +32,10 @@
     node: master
     concurrent: false
 
+    logrotate:
+      daysToKeep: -1
+      numToKeep: -7
+
     project-id: jenkins-templated-builds
 
     triggers:
