@@ -111,6 +111,18 @@
     - shell: |
         . ./util.sh
 
+        title_h6 ENV
+        env
+
+        title_h6 GIT 
+        echo $GIT_COMMIT
+        echo $GIT_PREVIOUS_COMMIT
+        echo $GIT_PREVIOUS_SUCCESSFUL_COMMIT
+        echo $ROOT_BUILD_CAUSE
+        echo $BUILD_CAUSE_MANUALTRIGGER
+        echo $BUILD_DISPLAY_NAME
+
+        set +x
 
         title_h6 Preparing env from detached GIT
 
@@ -142,16 +154,7 @@
           echo branch=$branch >> .env-inject
           echo build_tag=-$BUILD_ID-$branch>> .env-inject
         }
-        title_h6 ENV
-        env
 
-        title_h6 GIT 
-        echo $GIT_COMMIT
-        echo $GIT_PREVIOUS_COMMIT
-        echo $GIT_PREVIOUS_SUCCESSFUL_COMMIT
-        echo $ROOT_BUILD_CAUSE
-        echo $BUILD_CAUSE_MANUALTRIGGER
-        echo $BUILD_DISPLAY_NAME
 
     - raw:
         xml: |
