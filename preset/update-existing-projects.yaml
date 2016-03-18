@@ -129,7 +129,7 @@
         done
 
         BUILD_ID=$JOB_NAME
-        BUILD_VERSION=$(grep Version ReadMe.rst | sed 's/:Version: //')
+        BUILD_VERSION=$(grep Version ReadMe.rst | sed 's/[^0-9\.]//g')
 
         test -z "$BUILD_CAUSE_SCMTRIGGER" && {
 
@@ -153,7 +153,6 @@
           info "exporting $var $(eval echo \$$var)"
           echo "$var = $(eval echo \$$var | sed 's/[\\ :\\,-]/\\&/')" >> .env-inject
         done
-
 
     - raw:
         xml: |
