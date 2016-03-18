@@ -103,7 +103,6 @@
         echo $BUILD_CAUSE_MANUALTRIGGER
         echo $BUILD_DISPLAY_NAME
 
-        set +x
 
         title_h6 Preparing env from detached GIT
 
