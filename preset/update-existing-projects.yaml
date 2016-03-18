@@ -128,8 +128,8 @@
           <org.jenkinsci.plugins.buildnameupdater.BuildNameUpdater plugin="build-name-setter@1.5.1">
             <buildName></buildName>
             <macroTemplate>${project}:${JOB_NAME}/${version}-#${BUILD_NUMBER}-${branch}</macroTemplate>
-            <fromFile>true</fromFile>
-            <fromMacro>false</fromMacro>
+            <fromFile>false</fromFile>
+            <fromMacro>true</fromMacro>
             <macroFirst>false</macroFirst>
           </org.jenkinsci.plugins.buildnameupdater.BuildNameUpdater>
 
