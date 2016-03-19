@@ -22,7 +22,7 @@
 
 
 - job:
-    name: update-existing-projects
+    name: Jenkins/update-existing-projects
 
     project-type: freestyle
     display-name: 'Update Projects'

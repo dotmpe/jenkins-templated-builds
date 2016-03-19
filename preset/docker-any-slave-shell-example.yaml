@@ -1,6 +1,6 @@
 
 - job:
-    name: 'docker-any-slave-example'
+    name: 'Jenkins/Examples/docker-any-slave-example'
 
 
     project-type: freestyle
@@ -13,7 +13,7 @@
     wrappers:
     - timestamps
     - ansicolor:
-        colormap: vga
+        colormap: css
 
     builders:
     - shell: |
