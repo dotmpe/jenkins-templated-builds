@@ -2,21 +2,6 @@
 # TODO: 
 #
 
-- job:
-    name: 'Project Folder/Fs2'
-    project-type: freestyle
-    display-name: 'Pf/Fs2'
-    disabled: false
-    description: 'Folder test. '
-    node: master
-    concurrent: false
-
-    logrotate:
-      daysToKeep: -1
-      numToKeep: 7
-
-
-
 - property:
     name: generic-env-inject
     properties:
