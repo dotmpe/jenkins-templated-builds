@@ -23,5 +23,5 @@ test -z "$BUILD_META" \
   || BUILD_DISPLAY_NAME="$BUILD_DISPLAY_NAME+$(echo $BUILD_META | sed 's/[^a-zA-Z0-9]\{1,\}/+/g')"
 
 info "New Build-Name: $BUILD_DISPLAY_NAME"
-echo $BUILD_DISPLAY_NAME > .build-name
+echo $BUILD_DISPLAY_NAME > $1
 
