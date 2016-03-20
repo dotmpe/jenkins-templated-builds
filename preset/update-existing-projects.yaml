@@ -200,7 +200,7 @@
           * Build Tag: ${ENV:BUILD_TAG} 
           * Build Meta: ${ENV:BUILD_META} 
 
-          - GIT Commit: ${ENV:GIT_COMMIT}
+          - GIT Commit: ${ENV:GIT_COMMIT_ABBREV}
           - Prev. GIT Commit: ${ENV:GIT_PREVIOUS_COMMIT}
           - Prev. Success GIT Commit: ${ENV:GIT_PREVIOUS_SUCCESSFUL_COMMIT}
 
@@ -221,4 +221,11 @@
             <parserName>Confluence</parserName>
           </org.korosoft.jenkins.plugin.rtp.RichTextPublisher> 
 
+
+    publishers:
+    # Set either matched console output lines, or fixed description. A bit limited, but it does access env.
+    - description-setter:
+#        regexp: ^.*Notice.*$
+        description: |
+          GIT: ${GIT_COMMIT_ABBREV}
 

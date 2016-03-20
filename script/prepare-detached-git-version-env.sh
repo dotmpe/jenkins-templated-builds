@@ -22,9 +22,9 @@ test -n "$BUILD_VERSION" || {
 
 note "Preparing env from detached GIT"
 
-GIT_CHECKOUT=$(git log -n 1 --pretty="format:%H")
+#GIT_CHECKOUT=$(git log -n 1 --pretty="format:%H")
 
-git show-ref | grep -F "$GIT_CHECKOUT" | while read sha1 ref
+git show-ref | grep -F "$GIT_COMMIT" | while read sha1 ref
 do
   remote=$(basename $(dirname $ref))
   branch=$(basename $ref)
@@ -36,6 +36,8 @@ done
 SCM_REFS="$(sort -u .refs)"
 BRANCHES="$(sort -u .branches)"
 rm .refs .branches
+
+GIT_COMMIT_ABBREV=${GIT_COMMIT:0:7}
 
 # TODO: add feature tags to for differation in build, including the way the
 # package version and/or build display name are build up.
@@ -65,7 +67,7 @@ test -z "$BUILD_CAUSE_SCMTRIGGER" && {
 BUILD_META="$BUILD_META $(echo $BRANCHES | tr " " "\n" | sort -u | tr "\n" " ")"
 
 note "Generating Env-Inject properties"
-for var in GIT_CHECKOUT SCM_REFS BRANCHES BUILD_ID BUILD_VERSION BUILD_TAG BUILD_META
+for var in SCM_REFS BRANCHES GIT_COMMIT_ABBREV BUILD_ID BUILD_VERSION BUILD_TAG BUILD_META
 do
   info "Exporting $var $(eval echo \$$var)"
   echo "$var = $(eval echo \$$var | sed 's/[\\ :\\,-]/\\&/')" >> $1
