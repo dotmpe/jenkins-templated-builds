@@ -170,27 +170,28 @@
     - raw:
         xml: |
           <org.korosoft.jenkins.plugin.rtp.RichTextPublisher plugin="rich-text-publisher-plugin@1.3">
-            <stableText>h3. Test RTF report - ${{ENV:BUILD_DISPLAY_NAME}}
+            <stableText>h3. Test RTF report - ${ENV:BUILD_DISPLAY_NAME}
 
           - Build #: ${ENV:BUILD_NUMBER} 
-          - SCM Refs: $SCM_REFS
-          - Branches: $BRANCHES
-          - Root Build Cause: $ROOT_BUILD_CAUSE
-          - Is Manual: $BUILD_CAUSE_MANUALTRIGGER
-          - Is SCM: $BUILD_CAUSE_SCMTRIGGER
+          - SCM Refs: ${ENV:SCM_REFS}
+          - Branches: ${ENV:BRANCHES}
+          - Root Build Cause: ${ENV:ROOT_BUILD_CAUSE}
+          - Is Manual: ${ENV:BUILD_CAUSE_MANUALTRIGGER}
+          - Is SCM: ${ENV:BUILD_CAUSE_SCMTRIGGER}
 
           * Build ID: ${ENV:BUILD_ID} 
           * Build Tag: ${ENV:BUILD_TAG} 
           * Build Meta: ${ENV:BUILD_META} 
-          * Build Display Name: ${ENV: BUILD_DISPLAY_NAME}
+          * Build Display Name: ${ENV:BUILD_DISPLAY_NAME}
 
-          - GIT Commit: $GIT_COMMIT
-          - Prev. GIT Commit: $GIT_PREVIOUS_COMMIT
-          - Prev. Success GIT Commit: $GIT_PREVIOUS_SUCCESSFUL_COMMIT
+          - GIT Commit: ${ENV:GIT_COMMIT}
+          - Prev. GIT Commit: ${ENV:GIT_PREVIOUS_COMMIT}
+          - Prev. Success GIT Commit: ${ENV:GIT_PREVIOUS_SUCCESSFUL_COMMIT}
 
           For the stable builds, add this something to the build and main job page. 
 
-          Test Report on env, ${{ENV:VAR}} ie. ${{ENV:PATH}} or ${{ENV:JTB_HOME}} And some file goodness too. Confluence formatting for convienent source updates.
+          Test Report on env, ${ENV:VAR} ie. ${ENV:PATH} or ${ENV:JTB_HOME}.
+          And some file goodness too. Confluence formatting for convienent source updates.
 
           h3. Confluence formatting test
 
