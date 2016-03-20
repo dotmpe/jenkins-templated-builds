@@ -221,11 +221,10 @@
             <parserName>Confluence</parserName>
           </org.korosoft.jenkins.plugin.rtp.RichTextPublisher> 
 
-
-    publishers:
-    # Set either matched console output lines, or fixed description. A bit limited, but it does access env.
+    # Set either matched console output lines, or fall back to fixed description. 
+    # May seem a bit limited, but it does access env so no problem.
     - description-setter:
-#        regexp: ^.*Notice.*$
         description: |
           GIT: ${GIT_COMMIT_ABBREV}
+#        regexp: ^.*Notice.*$
 
