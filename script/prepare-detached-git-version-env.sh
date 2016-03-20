@@ -37,7 +37,7 @@ SCM_REFS="$(sort -u .refs)"
 BRANCHES="$(sort -u .branches)"
 rm .refs .branches
 
-GIT_COMMIT_ABBREV=${GIT_COMMIT:0:7}
+GIT_COMMIT_ABBREV=$(echo ${GIT_COMMIT} | cut -c 1,7 )
 
 # TODO: add feature tags to for differation in build, including the way the
 # package version and/or build display name are build up.
