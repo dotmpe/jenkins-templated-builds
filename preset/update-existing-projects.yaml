@@ -143,7 +143,7 @@
         set +x
         . ./util.sh
 
-        debug ENV
+        log ENV
         env
 
     # Start the actual build
