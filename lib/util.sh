@@ -28,8 +28,9 @@ logh()
 }
 
 case "$TERM" in
-	dumb ) ;;
+	""|dumb ) ;;
 	* )
+	  echo TERM=$TERM
 boldred="$(tput bold)$(tput setaf 2)"
 ##boldred="\[\e[1;31m\]"
 #purple="\033[0;35m"
