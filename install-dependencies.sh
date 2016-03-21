@@ -10,10 +10,6 @@ test -n "$JJB_HOME" || {
   JJB_HOME=$HOME/build/jjb
 }
 
-test -n "$JJB_HOME" || {
-    err "No JJB_HOME var $JJB_HOME" 1
-}
-
 test -n "$JTB_SH_BIN" || JTB_SH_BIN=$JTB_HOME/bin
 test -n "$JTB_SH_LIB" || JTB_SH_LIB=$JTB_HOME/lib
 # share dist with JJB YAML files
@@ -25,6 +21,10 @@ test -n "$verbosity" || verbosity=4
 
 
 . $JTB_SH_LIB/util.sh
+
+test -n "$JJB_HOME" || {
+    err "No JJB_HOME var $JJB_HOME" 1
+}
 
 
 install_jjb()
