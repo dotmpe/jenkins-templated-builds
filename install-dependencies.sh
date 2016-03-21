@@ -3,7 +3,6 @@
 set -e
 
 # JTB dep installer for travis
-# Id: jtb/0.0.2-test install-dependencies.sh
 
 test -n "$JJB_HOME" || {
   # default checkout dir at travis
@@ -23,12 +22,24 @@ test -n "$JTB_SHARE" || JTB_SHARE=$JTB_HOME
 
 test -n "$verbosity" || verbosity=4
 
-scriptname=$(basename $0)
-. $JTB_SH_LIB/util.sh
+test -n "$PREFIX" || {
+PREFIX=/usr/local
+}
+
+test -n "$SRC_PREFIX" || {
+SRC_PREFIX=$HOME/build
+}
 
 test -n "$JJB_HOME" || {
-    err "No JJB_HOME var $JJB_HOME" 1
+JJB_HOME=$SRC_PREFIX/jjb
 }
+
+test -n "$JTB_HOME" || {
+JTB_HOME=$SRC_PREFIX/jtb
+}
+
+scriptname=$(basename $0)
+. $JTB_SH_LIB/util.sh
 
 
 install_jjb()
@@ -64,9 +75,35 @@ install_jjb()
   }
 }
 
-test -n "$1" && type $1 &> /dev/null && {
-  cmd=$1
-  shift 1
-  $cmd $@
+install_bats()
+{
+  echo "Installing bats"
+  local pwd=$(pwd)
+  mkdir -vp $SRC_PREFIX
+  cd $SRC_PREFIX
+  git clone https://github.com/sstephenson/bats.git
+  cd bats
+  ${sudo} ./install.sh $PREFIX
+  cd $pwd
 }
 
+test -n "$1" && {
+  type $1 &> /dev/null && {
+    cmd=$1
+    shift 1
+    $cmd $@
+  }
+} || {
+
+  test -x "$(which jenkins-jobs)" || {
+    install_jjb
+  }
+
+  # Check for BATS shell test runner or install
+  test -x "$(which bats)" || {
+    install_bats
+  }
+
+}
+
+# Id: jtb/0.0.2-test install-dependencies.sh
