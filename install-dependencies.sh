@@ -83,8 +83,14 @@ install_bats()
   cd $SRC_PREFIX
   git clone https://github.com/sstephenson/bats.git
   cd bats
-  ${sudo} ./install.sh $PREFIX
+  ${sudo} ./install.sh $HOME/.local
   cd $pwd
+
+  bats --version && {
+    log "BATS install OK"
+  } || {
+    err "BATS installation invalid" 1
+  }
 }
 
 test -n "$1" && {
