@@ -1,9 +1,9 @@
-#!/usr/bin/env bash
+#!/bin/sh
+
+set -e
 
 # JTB dep installer for travis
 # Id: jtb/0.0.2-test install-dependencies.sh
-
-. ./util.sh
 
 test -n "$JJB_HOME" || {
   # default checkout dir at travis
@@ -13,6 +13,19 @@ test -n "$JJB_HOME" || {
 test -n "$JJB_HOME" || {
     err "No JJB_HOME var $JJB_HOME" 1
 }
+
+test -n "$JTB_SH_BIN" || JTB_SH_BIN=$JTB_HOME/bin
+test -n "$JTB_SH_LIB" || JTB_SH_LIB=$JTB_HOME/lib
+# share dist with JJB YAML files
+test -n "$JTB_JJB_LIB" || JTB_JJB_LIB=$JTB_HOME/dist
+# share tools, script, tpl?
+test -n "$JTB_SHARE" || JTB_SHARE=$JTB_HOME
+
+test -n "$verbosity" || verbosity=4
+
+
+. $JTB_SH_LIB/util.sh
+
 
 install_jjb()
 {
