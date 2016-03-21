@@ -2,7 +2,7 @@
 
 set -e
 
-# Id: jtb/0.0.2-test lib/jtb.sh
+# Id: jtb/0.0.2-master lib/jtb.sh
 
 
 # Process all source files in $1:src/ into $2:dest/

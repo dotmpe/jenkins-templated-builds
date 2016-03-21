@@ -83,8 +83,14 @@ install_bats()
   cd $SRC_PREFIX
   git clone https://github.com/sstephenson/bats.git
   cd bats
-  ${sudo} ./install.sh $PREFIX
+  ${sudo} ./install.sh $HOME/.local
   cd $pwd
+
+  bats --version && {
+    log "BATS install OK"
+  } || {
+    err "BATS installation invalid" 1
+  }
 }
 
 test -n "$1" && {
@@ -106,4 +112,4 @@ test -n "$1" && {
 
 }
 
-# Id: jtb/0.0.2-test install-dependencies.sh
+# Id: jtb/0.0.2-master install-dependencies.sh
