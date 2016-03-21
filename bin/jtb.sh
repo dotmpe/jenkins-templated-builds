@@ -34,6 +34,6 @@ subcmd_func="$(var_id jtb__$subcmd)"
 $subcmd_func "$@" && {
   exit 0
 } || {
-  error "running sub-command ($subcmd_func)" $?
+  error "Failed running sub-command ($subcmd_func)" $?
 }
 

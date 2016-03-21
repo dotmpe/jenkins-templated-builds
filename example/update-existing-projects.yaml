@@ -81,7 +81,7 @@
     # Prepare package/version env from GIT
     - shell: |
         set +x
-        . ./util.sh
+        . ./lib/util.sh
         . ./script/prepare-detached-git-version-env.sh .env-inject
 
     - generic-env-inject:
@@ -90,7 +90,7 @@
     # Build .build-name file with semver compatible version string
     - shell: |
         set +x
-        . ./util.sh
+        . ./lib/util.sh
         . ./script/prepare-jenkins-build-display-name.sh .build-name
         echo BUILD_DISPLAY_NAME=$BUILD_DISPLAY_NAME > .env-inject
 
@@ -107,7 +107,7 @@
 
     # TODO: test all presets, and maybe other instances found in other projects.
     - shell: |
-        . ./util.sh
+        . ./lib/util.sh
         jenkins-cli version
 
         jjb_subcmd=test
