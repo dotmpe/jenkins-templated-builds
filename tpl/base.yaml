@@ -57,6 +57,8 @@
 ### JJB Action macros for job parts
 
 #include ./builder/main.yaml
+#include ./builder/generic-env-inject.yaml
+#include ./builder/build-name-updater.yaml
 #include ./publisher/main.yaml
 
 
@@ -64,6 +66,7 @@
 
 #include ./main.yaml
 #include ./scm/git.yaml
+#include ./property/generic-env-inject.yaml
 
 
 ## YAML aliases
@@ -98,6 +101,7 @@
     <<: *std_freestyle_job
     <<: *std_gh_co
 
+
     #<<: *gh_co
 # FIXME: test this later, using yaml alias for now
 #    scm:
@@ -109,6 +113,6 @@
 ### At last, JJB templates
 
 #include ./job-template/main.yaml
-#include ./job-template/docker.yaml
+##include ./job-template/docker.yaml
 
 # Id: jtb/0.0.2-test tpl/base.yaml

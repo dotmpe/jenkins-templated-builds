@@ -7,3 +7,5 @@ update.sh
 install-dependencies.sh
 jenkins-template-build.py
 tpl/job-template/main.yaml
+bin/jtb.sh
+lib/util.sh

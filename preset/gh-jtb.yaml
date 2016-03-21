@@ -14,5 +14,6 @@
     project-src: '*.sh,*.yaml,tpl/*.yaml,preset/*.yaml,*.py'
     email-individuals: false
     email-to:
-
+    fail-on-error: true
+    concurrent: true
 

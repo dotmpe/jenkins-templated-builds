@@ -1,0 +1,19 @@
+
+- property:
+    name: generic-env-inject
+    properties:
+    - inject:
+        enabled: true
+        keep-system-variables: true
+        keep-build-variables: true
+        override-build-parameters: true
+        load-from-master: false
+        # Inject properties
+        properties-file: '{inject-properties-file}'
+        properties-content: '{inject-properties-content}'
+        # Sh script cannot update env, but can run other tasks before SCM runs
+        script-file: '{env-script-file}'
+        script-content: '{env-script-content}'
+        # Groovy script can return map to update env
+        groovy-content: '{inject-env-groovy-content}'
+

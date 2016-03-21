@@ -1,29 +1,9 @@
 
-# TODO: 
-#
-
-- property:
-    name: generic-env-inject
-    properties:
-    - inject:
-        enabled: true
-        keep-system-variables: true
-        keep-build-variables: true
-        override-build-parameters: true
-        load-from-master: false
-        # Inject properties
-        properties-file: '{inject-properties-file}'
-        properties-content: '{inject-properties-content}'
-        # Sh script cannot update env, but can run other tasks before SCM runs
-        script-file: '{env-script-file}'
-        script-content: '{env-script-content}'
-        # Groovy script can return map to update env
-        groovy-content: '{inject-env-groovy-content}'
-
 
 - job:
     name: Jenkins/update-existing-projects
 
+    project-id: jenkins-templated-builds
     project-type: freestyle
     display-name: 'Update Projects'
     disabled: false
@@ -33,22 +13,23 @@
 
     logrotate:
       daysToKeep: -1
-      numToKeep: 7
-
-    project-id: jenkins-templated-builds
+      numToKeep: -1
 
     triggers:
     - pollscm:
-         cron: "*/1 * * * *"
+        cron: "*/1 * * * *"
 
     parameters:
     - string:
         name: Branch_Default
-        description: Set the branch for non-SCM-triggered builds.
+        description: |
+          Set the branch for non-SCM-triggered builds.
         default: dev
     - bool:
         name: Override_Branches
-        description: Disregard other branches pointing at commit of given Branch_Default.
+        description: |
+          Disregard other branches pointing at commit 
+          of given Branch_Default.
         default: false
 
     properties:
@@ -92,25 +73,19 @@
     wrappers:
     - timestamps
     - ansicolor:
-        # vga, gnome-terminal, xterm: white on black, may require userContent tweaks
-        # css: black on white, generally readable with defaults
         colormap: css
 
-    # Prepare package/version env from GIT
+
     builders:
+
+    # Prepare package/version env from GIT
     - shell: |
         set +x
         . ./util.sh
         . ./script/prepare-detached-git-version-env.sh .env-inject
 
-    - raw:
-        xml: |
-          <EnvInjectBuilder plugin="envinject@1.92.1">
-            <info>
-              <propertiesFilePath>.env-inject</propertiesFilePath>
-              <propertiesContent></propertiesContent>
-            </info>
-          </EnvInjectBuilder>
+    - generic-env-inject:
+        inject-properties-file: .env-inject
 
     # Build .build-name file with semver compatible version string
     - shell: |
@@ -119,32 +94,11 @@
         . ./script/prepare-jenkins-build-display-name.sh .build-name
         echo BUILD_DISPLAY_NAME=$BUILD_DISPLAY_NAME > .env-inject
 
-    - raw:
-        xml: |
-          <org.jenkinsci.plugins.buildnameupdater.BuildNameUpdater plugin="build-name-setter@1.5.1">
-            <buildName>.build-name</buildName>
-            <macroTemplate></macroTemplate>
-            <fromFile>true</fromFile>
-            <fromMacro>false</fromMacro>
-            <macroFirst>false</macroFirst>
-          </org.jenkinsci.plugins.buildnameupdater.BuildNameUpdater>
+    - build-name-from-file:
+        path: .build-name
 
-    - raw:
-        xml: |
-          <EnvInjectBuilder plugin="envinject@1.92.1">
-            <info>
-              <propertiesFilePath>.env-inject</propertiesFilePath>
-              <propertiesContent></propertiesContent>
-            </info>
-          </EnvInjectBuilder>
-
-    # Build a little version environment report on the above (appended to the job and build pages)
-    - shell: |
-        set +x
-        . ./util.sh
-
-        log ENV
-        env
+    - generic-env-inject:
+        inject-properties-file: .env-inject
 
     # Start the actual build
     - shell: |
@@ -180,6 +134,7 @@
 
           ||Root Build Cause:|${ENV:ROOT_BUILD_CAUSE}|
           ||SCM Refs:|${ENV:SCM_REFS}|
+          ||GIT Commit:|${ENV:GIT_COMMIT_ABBREV} (${ENV:GIT_COMMIT})|
           ||Build ID:|${ENV:BUILD_ID} |
           ||Build Tag:|${ENV:BUILD_TAG} |
           ||Build Meta:|${ENV:BUILD_META} |
@@ -202,8 +157,10 @@
 #          regexp: ^.*Notice.*$
 
     - jtb-inline-tasks-parser:
-        project-src: '*'
+        project-src: 'preset/update-existing-projects.yaml'
 
     # TODO: want to generate a changelog, but first move some things out of
-    # there to main JTB job.
+    # there to main JTB job, and correct this one:
+    # - root project is JTB, this is a subproject
+
 

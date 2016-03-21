@@ -56,7 +56,7 @@
 - job-template:
     name: '{name}-docker-1'
     project-type: freestyle
-    <<: *std_console_output_job
+    <<: *std_console_output_wrapper
 
     display-name: '{title}'
     disabled: '{obj:disabled}'

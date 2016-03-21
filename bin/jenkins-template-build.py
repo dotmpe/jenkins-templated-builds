@@ -6,11 +6,11 @@ and generate new job definition using template.
 
 Commands:
 
-    vars <template-id> <yaml-file>..
+    vars <template-id> [<jjb-yaml-file>..]
 
-    generate <template-id> <yaml-file>..
+    generate <template-id> [<jjb-yaml-file>..]
 
-    preset <preset-id>
+    preset <preset-id> [<jjb-yaml-file>..]
 
 """
 import os
@@ -42,7 +42,7 @@ def get_preset(path):
     return base[0].items()[0]
 
 
-ignored_keys = "name parameters triggers scm builders publishers wrappers axes".split(' ')
+block_keys = "name parameters properties triggers scm builders publishers wrappers axes".split(' ')
 
 def get_defaults(path, keys, jjb_template_id):
 
@@ -67,13 +67,15 @@ def get_defaults(path, keys, jjb_template_id):
     return r
 
 
-re_var = re.compile('\{[A-Za-z0-9_\.\:-]+\}')
+re_var = re.compile('\{+[A-Za-z0-9_\.\:-]+\}+')
 
 def find_template_vars_str(st):
 
     m = re_var.findall(st)
     if isinstance(m, list) and m:
         for i in m:
+            if i.startswith('{{'):
+                continue
             if i.startswith('{obj:'):
                 yield i[5:-1]
             else:
@@ -122,7 +124,8 @@ def find_template_vars(obj):
             for y in g:
                 if y: yield y
 
-def format_job(jjb_template_id, seed):
+
+def format_job(jjb_template_id, vars):
 
     """
     Given template ID and placeholder values, generate a YAML file
@@ -130,20 +133,23 @@ def format_job(jjb_template_id, seed):
     templated jobs.
     """
 
-    obj = '\n        '.join([
-        "%s: %s" % (k, repr(v)) for k,v in seed.items()
-    ])
-    name = seed['name']
-    del seed['name']
-    return """
-- project:
-    name: '%s'
+    assert vars['name'], "At least {name} is required"
 
-    jobs:
-    - '%s':
-        %s
+    name = vars['name']
+    del vars['name']
 
-""" % ( name, jjb_template_id, obj )
+    for key in block_keys:
+        if key in vars:
+            if vars[key].startswith('{obj:'):
+            	vars[key] = {}
+
+    jjb_tpld_job = [ { 'project': {
+        'name': name,
+        'jobs': [ { jjb_template_id: vars } ]
+    } } ]
+
+    return yaml.dump(jjb_tpld_job, default_flow_style=False)
+
 
 
 def find_template(jjb_template_id, *template_files):
@@ -156,33 +162,12 @@ def find_template(jjb_template_id, *template_files):
     return path, template
 
 
-def run_generate(jjb_template_id, *template_files):
-
-    path, template = find_template(jjb_template_id, *template_files)
-    placeholders = list(find_template_vars(template))
-    defaults = get_defaults(path, placeholders, jjb_template_id)
-    seed = dict( zip(placeholders, ( [None] * len(placeholders) )) )
-
-    assert len(seed.keys()) == len(placeholders), \
-            "Expected unique JJB template variables"
-
-    for key in placeholders:
-        seed[key] = os.getenv(key, defaults.get(key, None))
-
-    assert seed['name'], "At least {name} is required"
-
-    print format_job(jjb_template_id, seed)
-
-
 def run_vars(jjb_template_id, *template_files):
 
     path, template = find_template(jjb_template_id, *template_files)
-    placeholders = list(find_template_vars(template))
-    defaults = get_defaults(path, placeholders, jjb_template_id)
+    placeholders = list(set(find_template_vars(template)))
     seed = dict( zip(placeholders, ( [None] * len(placeholders) )) )
-
-    assert len(seed.keys()) == len(placeholders), \
-            "Expected unique JJB template variables"
+    defaults = get_defaults(path, placeholders, jjb_template_id)
 
     for key in placeholders:
         seed[key] = os.getenv(key, defaults.get(key, None))
@@ -191,13 +176,35 @@ def run_vars(jjb_template_id, *template_files):
         print key, seed.get(key, None)
 
 
+def generate_job(jjb_template_id, *template_files):
+
+    path, template = find_template(jjb_template_id, *template_files)
+    placeholders = list(set(find_template_vars(template)))
+    defaults = get_defaults(path, placeholders, jjb_template_id)
+
+    return placeholders, defaults
+
+
+def run_generate(jjb_template_id, *template_files):
+
+    placeholders, defaults = generate_job(jjb_template_id, *template_files)
+    seed = dict( zip(placeholders, ( [None] * len(placeholders) )) )
+
+    for key in placeholders:
+        seed[key] = os.getenv(key, defaults.get(key, None))
+        # TODO: parse some block stuff?
+        if key in block_keys and not seed[key]:
+            seed[key] = {}
+
+    print format_job(jjb_template_id, seed)
+
+
 def run_preset(preset_file, *template_files):
 
     jjb_template_id, seed = get_preset(preset_file)
 
-    path, template = find_template(jjb_template_id, *template_files)
-    placeholders = list(find_template_vars(template))
-    defaults = get_defaults(path, placeholders, jjb_template_id)
+    placeholders, defaults = generate_job(jjb_template_id, *template_files)
+
     for key in placeholders:
         if key not in seed or seed[key] == None:
             seed[key] = defaults.get(key, None)
@@ -210,21 +217,15 @@ if __name__ == '__main__':
 
     argv = list(sys.argv)
 
-    scriptname = argv.pop(0)
-    if not argv:
-        exit(1)
+    argv.pop(0) # scriptname
 
     cmd = argv.pop(0)
-
     if not argv:
-        exit(1)
+        sys.exit(1)
 
-    jjb_template_id = argv.pop(0)
-    if argv:
-        paths = argv
-    else:
-        paths = ['tpl/base.yaml']
-    args = [jjb_template_id] + paths
+    if len(argv) == 1:
+        JTB_JJB_LIB = os.getenv('JTB_JJB_LIB', 'dist')
+        argv.append( os.path.join( JTB_JJB_LIB, 'base.yaml' ) )
 
-    locals()["run_"+cmd](*args)
+    locals()["run_"+cmd](*argv)
 

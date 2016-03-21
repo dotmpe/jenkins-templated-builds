@@ -1,12 +1,14 @@
 
 ## YAML aliases: Build wrapper part
 
-- std_console_output_job: &std_console_output_job
-    name: 'std_console_output_job'
+- std_console_output_wrapper: &std_console_output_wrapper
+    name: 'std_console_output_wrapper'
 
     wrappers:
     - timestamps
     - ansicolor:
-        colormap: vga
+        # vga, gnome-terminal, xterm: white on black, may require userContent tweaks
+        # css: black on white, generally readable with defaults
+        colormap: css
 
 

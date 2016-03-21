@@ -1,0 +1,15 @@
+
+- builder:
+    name: build-name-from-file
+
+    builders:
+    - raw:
+        xml: |
+          <org.jenkinsci.plugins.buildnameupdater.BuildNameUpdater plugin="build-name-setter@1.5.1">
+            <buildName>{path}</buildName>
+            <macroTemplate></macroTemplate>
+            <fromFile>true</fromFile>
+            <fromMacro>false</fromMacro>
+            <macroFirst>false</macroFirst>
+          </org.jenkinsci.plugins.buildnameupdater.BuildNameUpdater>
+

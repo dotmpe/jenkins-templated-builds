@@ -1,12 +1,33 @@
 
+- std_freestyle_parts_1: &std_freestyle_parts_1
+    name: std_freestyle_parts_1
+
+    parameters: '{obj:parameters}'
+    properties: '{obj:properties}'
+
+
+- std_freestyle_parts_1_2: &std_freestyle_parts_1_2
+    name: std_freestyle_parts_1_2
+
+    triggers: '{obj:triggers}'
+    <<: *std_freestyle_parts_1
+
+
+- std_freestyle_parts_1_2_3: &std_freestyle_parts_1_2_3
+    name: std_freestyle_parts_1_2_3
+
+    builders: '{obj:builders}'
+    <<: *std_freestyle_parts_1_2
+
+
 - job-template:
     name: '{name}-base-0'
 
     # contains basic job properties, builders, wrappers and publishers
     <<: *std_freestyle_job
 
-    builders: '{obj:builders}'
     triggers: '{obj:triggers}'
+    <<: *std_freestyle_parts_1
 
 
 - job-template:
@@ -93,18 +114,25 @@
     # NOTE: this would only work with a public server
     <<: *gh_trigger
     <<: *gh_job
+    <<: *std_console_output_wrapper
 
     builders:
     - jtb-travis-builder-0
+
+    <<: *std_freestyle_parts_1
 
 - job-template:
     name: '{name}-local-gh-travis'
     <<: *restrict_node
     <<: *std_scm_trigger
+    # Private uses SSH and requires a key setup
     <<: *private_gh_job
+    <<: *std_console_output_wrapper
 
     builders:
     - jtb-travis-builder-0
+
+    <<: *std_freestyle_parts_1
 
 
 ## Work in JJB builder
@@ -115,14 +143,15 @@
 
     builders: '{obj:builders}'
 
+    <<: *std_freestyle_parts_1
+
 
 ## Work in progress JTB builder
 
 - job-template:
     name: '{name}-jtb-install-local'
     <<: *std_freestyle_job
-
-    builders: '{obj:builders}'
+    <<: *std_freestyle_parts_1
 
 
 ## Work in progress free-style GIT checkout build
@@ -131,8 +160,7 @@
     name: '{name}-free-git'
     <<: *std_freestyle_job
     <<: *std_git_co
-
-    builders: '{obj:builders}'
+    <<: *std_freestyle_parts_1
 
 
 

@@ -1,0 +1,9 @@
+
+- builder:
+    name: generic-env-inject
+    builders:
+    - inject:
+        # Inject properties
+        properties-file: '{inject-properties-file}'
+        properties-content: '{inject-properties-content}'
+

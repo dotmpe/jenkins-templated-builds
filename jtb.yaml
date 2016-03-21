@@ -39,18 +39,24 @@
         triggers:
         - pollscm:
             cron: 'H/5 * * * *'
+        properties: {}
+        parameters: {}
 
     - '{name}-jtb-0':
         name: test
         disabled: false
         title: 'JTB test'
         htmlDescription: 'Testing {project-title} v{version} with JJB'
+        properties: {}
+        parameters: {}
 
     - '{name}-jtb-1':
         name: update
         disabled: false
         title: 'JTB1 update'
         htmlDescription: 'Running JTB? with {project-title} v{version}'
+        properties: {}
+        parameters: {}
 
 #    - '{name}-jtb-2':
 #        disabled: true
@@ -74,6 +80,8 @@
         - shell: jenkins-cli delete-job jtb-base-0
         triggers: {}
 
+        properties: {}
+        parameters: {}
 
 - defaults:
     name: jtb-juc
@@ -108,6 +116,8 @@
         disabled: false
         title: 'Jenkins UserContent'
         htmlDescription: '{project-title} v{version}'
+        properties: {}
+        parameters: {}
 
 
 ## Id: jtb/0.0.2-test jtb.yaml
