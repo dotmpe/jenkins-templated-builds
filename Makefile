@@ -3,7 +3,7 @@ default:
 	@echo "After changing tpl, recompile with 'make dist'. "
 
 test::
-	git-versioning check
+	test -z "$(which git-versioning)" || git-versioning check
 	@for preset_path in preset/*.yaml; do \
 		preset=$$(basename $$preset_path .yaml); \
 		./bin/jtb.sh compile-preset $$preset || exit $?; \
@@ -23,12 +23,12 @@ update:
 
 # Compile source to packaged template sets.
 dist::
-	git-versioning check
+	test -z "$(which git-versioning)" || git-versioning check
 	mkdir -vp $@
 	./bin/jtb.sh process tpl $@
 
 build::
-	git-versioning check
+	test -z "$(which git-versioning)" || git-versioning check
 	./bin/jtb.sh build
 
 
