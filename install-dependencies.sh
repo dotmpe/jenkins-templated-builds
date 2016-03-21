@@ -46,14 +46,15 @@ install_jjb()
       || err "Error cloning to $JJB_HOME" 1
 
     log "Installing JJB.."
-    pushd $JJB_HOME
+    local pwd=$(pwd)
+    cd $JJB_HOME
 
     # Install into ~/..user-packages
     python setup.py install --user \
       && log "JJB install complete" \
       || err "Error during JJB installation" 1
 
-    popd
+    cd $pwd
   }
 
   jenkins-jobs --version && {
