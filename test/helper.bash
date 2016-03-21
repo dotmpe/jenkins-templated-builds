@@ -10,7 +10,7 @@ test_init()
 init_bin()
 {
   # Global test if PREFIX isset
-  test -z "$PREFIX" && bin=./$base || bin=$PREFIX/bin/$base
+  test -z "$PREFIX" && bin=./bin/$base || bin=$PREFIX/bin/$base
 }
 
 # Std test_init for script lib var `lib`

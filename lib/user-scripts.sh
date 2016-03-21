@@ -2,6 +2,8 @@
 
 set -e
 
+# Id: jtb/0.0.2-test lib/user-scripts.sh
+
 
 # XXX: for local dev use, may want multiple source repositories
 jtb__build()

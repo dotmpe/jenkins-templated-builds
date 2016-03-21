@@ -140,8 +140,10 @@ def format_job(jjb_template_id, vars):
 
     for key in block_keys:
         if key in vars:
-            if vars[key].startswith('{obj:'):
+            if isinstance(vars[key], basestring) and vars[key].startswith('{obj:'):
             	vars[key] = {}
+            else:
+            	del vars[key]
 
     jjb_tpld_job = [ { 'project': {
         'name': name,

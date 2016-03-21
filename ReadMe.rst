@@ -5,8 +5,8 @@ Jenkins Templated Builds
 :Description:
   JJB Templates for Jenkins
 :Abstract:
-  YAML's minimalism makes it very interesting for concise, generic metadata. In this particular case, to define the recipe and parameters associated with continious integration of software |---| the contents of GIT repositories in specific. 
-  
+  YAML's minimalism makes it very interesting for concise, generic metadata. In this particular case, to define the recipe and parameters associated with continious integration of software |---| the contents of GIT repositories in specific.
+
   Presented here in this ReadMe is an short evaluation of Jenkins Job Builder [JJB] and Jenkins as a CI backend, followed by an overview of some initial work contained within this project.
 
 :Build status:
@@ -43,7 +43,7 @@ Still, this is a verbose story. Even if templates are accumulated, using them an
 Again the former because it cannot conditional leave out bits but inherit and set everything, and the latter because it always end up with a `defaults` and a `project` object but may need a customized `job-template` too. One or more..
 
 Ease of definition and re-use encourages the use of multiple Jenkins jobs per project,
-or to think of several together as a "single build". 
+or to think of several together as a "single build".
 Which may be good or bad, YMMV.
 
 
@@ -57,7 +57,7 @@ may be used in particular applications of jenkins. Iow. all of its views are cen
 
 .. note::
 
-    JJB does introduce the `project` object, but in my current view it can do nothing 
+    JJB does introduce the `project` object, but in my current view it can do nothing
     to really add such concept to jenkins. And maybe, it has no business here.
 
     JJB also uses attribute key `project-type`. Although the basic Jenkins project type 'free-style' corresponds with an ``<project />`` tag, it seems better to think of them as a Job domain object and not a Project. I hope to have outlined that in Intro_.
@@ -83,7 +83,7 @@ Matrix is a plugin job type that builds all jobs of the cartesian product of sev
 
 Prelim. Charter
 ---------------
-Leaving Jenkins and JJB, both have strengths. Jenkins diverse extensibility is particulary one of them. 
+Leaving Jenkins and JJB, both have strengths. Jenkins diverse extensibility is particulary one of them.
 Though it does not allow to build a project from a only few lines of declarations,
 cf. Travis CI.
 
@@ -107,7 +107,7 @@ Having YAML containing the build recipe along your project is a benefit. But if 
 
    It this case by meaningless repitition of defaults, and references to external re-usable blocks... Maybe it is a good idea, at some point in a project to start to spec the build environment(s), iow. slap versions and other tags on it. But why pretend all projects are the same..
 
-It would be nice to loosen this coupling, or reduce it to the bare essentials. 
+It would be nice to loosen this coupling, or reduce it to the bare essentials.
 And maybe later arrive at some 'opinionated' choices. Probably based on convention. Iow. adapt to some established use. That would help to establish something generic, like Travis CI has done. Only with Jenkins, it is not bound by a particular environment or provider. To emulated the environment though, you would need to set up a VM or container build "cloud".
 
 
@@ -147,7 +147,7 @@ Status
 - Using with dockerized jenkins (git@github.com:dotmpe/docker-jenkins.git v0.0.1).
 
   This job will actually update itself right now.
-  
+
 
 TODO: make better use of groovy extensions. https://wiki.jenkins-ci.org/display/JENKINS/Jenkins+Script+Console
 
