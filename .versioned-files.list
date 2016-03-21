@@ -9,4 +9,3 @@ lib/user-scripts.sh
 lib/util.sh
 bin/jtb.sh
 bin/jenkins-template-build.py
-

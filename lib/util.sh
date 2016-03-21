@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Id: jtb/0.0.2-master lib/util.sh
+# Id: jtb/0.0.2 lib/util.sh
 
 
 # stdio/stderr/exit util

@@ -4,7 +4,7 @@
 
     # Job template vars
     project-title: 'Jenkins Templated Builds'
-    version: 0.0.0
+    version: 0.0.2 # jtb
     #build-summary-image: /userContent/jenkins-build-templates.png
     build-summary-image: 'http://www.tupilabs.com/img/posts/2012-10-31_promoting-material-for-jenkins-user-event/jenkins_no_bg.png'
 
@@ -120,4 +120,3 @@
         parameters: {}
 
 
-## Id: jtb/0.0.2-test jtb.yaml
