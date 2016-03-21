@@ -10,6 +10,10 @@ test -n "$JJB_HOME" || {
   JJB_HOME=$HOME/build/jjb
 }
 
+test -n "$JTB_HOME" || {
+  JTB_HOME=.
+}
+
 test -n "$JTB_SH_BIN" || JTB_SH_BIN=$JTB_HOME/bin
 test -n "$JTB_SH_LIB" || JTB_SH_LIB=$JTB_HOME/lib
 # share dist with JJB YAML files
