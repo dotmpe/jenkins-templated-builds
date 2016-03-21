@@ -106,15 +106,13 @@ cleanpath()
   }
 }
 
-# XXX bash relpath - simple version, does not use common-base to create real
-# relative paths
 relpath()
 {
   test -n "$1" || error "relpath" 1
   test -n "$2" || set -- "$1" "$(pwd)"
 
   local path="$(cleanpath "$1")" base="$(cleanpath "$2")" cpath="$(cleanpath)"
-  relpath=${path:${#base}:$(( ${#path} - ${#base} ))}
+	local relpath=$(echo ${path} | cut -c $(( ${#base} + 1 ))-${#path} )
   echo .$relpath
 }
 
