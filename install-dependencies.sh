@@ -23,7 +23,7 @@ test -n "$JTB_SHARE" || JTB_SHARE=$JTB_HOME
 
 test -n "$verbosity" || verbosity=4
 
-
+scriptname=$(basename $0)
 . $JTB_SH_LIB/util.sh
 
 test -n "$JJB_HOME" || {
