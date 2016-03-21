@@ -27,12 +27,16 @@ logh()
   err "$2" $3
 }
 
+case "$TERM" in
+	dumb ) ;;
+	* )
 boldred="$(tput bold)$(tput setaf 2)"
 ##boldred="\[\e[1;31m\]"
 #purple="\033[0;35m"
 #grey="\033[0;37m"
 #yellow="\033[1;33m"
-
+		;;
+esac
 
 # std-v <level>
 # if verbosity is defined, return non-zero if <level> is below verbosity treshold

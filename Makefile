@@ -28,7 +28,6 @@ dist::
 	./bin/jtb.sh process tpl $@
 
 build::
-	test -z "$(which git-versioning)" || git-versioning check
 	./bin/jtb.sh build
 
 
