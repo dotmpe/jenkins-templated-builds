@@ -132,6 +132,8 @@
           
           h3. Latest build: ${ENV:BUILD_DISPLAY_NAME}
 
+          - [Build Times|buildTimeTrend]
+
           ||Root Build Cause:|${ENV:ROOT_BUILD_CAUSE}|
           ||SCM Refs:|${ENV:SCM_REFS}|
           ||GIT Commit:|${ENV:GIT_COMMIT_ABBREV} (${ENV:GIT_COMMIT})|
@@ -164,3 +166,4 @@
     # - root project is JTB, this is a subproject
 
 
+# Id: jtb/0.0.3-dev

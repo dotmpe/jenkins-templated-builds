@@ -1,11 +1,15 @@
 ReadMe.rst
 jtb.yaml
 jtb-simple.yaml
-tpl/job-template/main.yaml
 tpl/base.yaml
+tpl/job-template/main.yaml
 install-dependencies.sh
 lib/jtb.sh
 lib/user-scripts.sh
 lib/util.sh
 bin/jtb.sh
 bin/jenkins-template-build.py
+script/prepare-detached-git-version-env.sh
+script/prepare-jenkins-build-display-name.sh
+example/docker-any-slave-shell-example.yaml
+example/update-existing-projects.yaml

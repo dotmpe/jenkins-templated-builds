@@ -4,7 +4,7 @@
 
     # Job template vars
     project-title: 'Jenkins Templated Builds'
-    version: 0.0.2 # jtb
+    version: 0.0.3-dev # jtb
     #build-summary-image: /userContent/jenkins-build-templates.png
     build-summary-image: 'http://www.tupilabs.com/img/posts/2012-10-31_promoting-material-for-jenkins-user-event/jenkins_no_bg.png'
 

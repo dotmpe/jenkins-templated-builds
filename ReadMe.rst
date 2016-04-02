@@ -1,6 +1,6 @@
 Jenkins Templated Builds
 ========================
-:Version: 0.0.2
+:Version: 0.0.3-dev
 :Date: |date|
 :Description:
   JJB Templates for Jenkins
@@ -166,4 +166,4 @@ Scriptler? https://wiki.jenkins-ci.org/display/JENKINS/Scriptler+Plugin
    :trim:
 
 
-.. Id: jtb/0.0.2 ReadMe.rst
+.. Id: jtb/0.0.3-dev ReadMe.rst
