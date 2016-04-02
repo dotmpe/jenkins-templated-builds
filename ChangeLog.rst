@@ -8,10 +8,14 @@
     destination using simple include sentinel markers processed by a sh script.
   - Many updates on the JJB templates.
   - Added python program to handle compiling JJB templates from a new non-JJB YAML structure.
+    Attempting to support generating jobs for other projects, see preset/ directory.
 
 (0.0.3)
   - Cleaned up the script and doc structure a bit, moving things to separate
-    separate subdirs.
+    subdirs.
+
+  - TODO: Improve jtb preset flexibiity. See about some way to wizards and
+    guided interactive setups and deal with more and more build options.
 
 
 .. Id: jtb/0.0.3-dev ChangeLog.rst
