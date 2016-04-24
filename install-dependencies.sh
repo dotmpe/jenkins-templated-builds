@@ -60,6 +60,9 @@ install_jjb()
     local pwd=$(pwd)
     cd $JJB_HOME
 
+    # Insall requirements
+    pip install -r requirements.txt
+
     # Install into ~/..user-packages
     python setup.py install --user \
       && log "JJB install complete" \
