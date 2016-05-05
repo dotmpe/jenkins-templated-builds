@@ -1,0 +1,23 @@
+
+- job:
+    name: mb-dsl-test
+
+    description: Test example
+
+    project-type: workflow
+
+    triggers:
+    - pollscm:
+        cron: "*/1 * * * *" 
+
+    dsl:
+      script-name: Jenkinsfile
+
+      scm:
+      - git:
+          skip-tag: true
+          url: git@github.com:dotmpe/jenkins-templated-builds.git
+          branch:
+          - origin/master
+
+
