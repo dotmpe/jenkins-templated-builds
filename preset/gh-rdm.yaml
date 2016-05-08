@@ -1,0 +1,10 @@
+
+- '{name}-gh-wf':
+
+    name: rdm
+    title: "X-Redmine ({branch})"
+    vendor-path: dotmpe/x-redmine
+    branch: master
+    credentials-id:
+
+

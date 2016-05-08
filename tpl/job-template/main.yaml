@@ -1,23 +1,43 @@
 
-- std_freestyle_parts_1: &std_freestyle_parts_1
-    name: std_freestyle_parts_1
+
+- std_job_parts_prm_prp: &std_job_parts_prm_prp
+    name: std_job_parts_prm_prp
 
     parameters: '{obj:parameters}'
     properties: '{obj:properties}'
 
-
-- std_freestyle_parts_1_2: &std_freestyle_parts_1_2
-    name: std_freestyle_parts_1_2
-
-    triggers: '{obj:triggers}'
-    <<: *std_freestyle_parts_1
-
-
-- std_freestyle_parts_1_2_3: &std_freestyle_parts_1_2_3
-    name: std_freestyle_parts_1_2_3
+- std_job_parts_bld_pbl: &std_job_parts_bld_pbl
+    name: std_job_parts_bld_pbl
 
     builders: '{obj:builders}'
-    <<: *std_freestyle_parts_1_2
+    publishers: '{obj:publishers}'
+
+- std_job_parts_prm_prp_trg: &std_job_parts_prm_prp_trg
+    name: std_job_parts_prm_prp_trg
+
+    triggers: '{obj:triggers}'
+    <<: *std_job_parts_prm_prp
+
+- std_job_parts_prm_prp_mtd: &std_job_parts_prm_prp_mtd
+    name: std_job_parts_prm_prp_mtd
+
+    metadata: '{obj:metadata}'
+    <<: *std_job_parts_prm_prp
+
+- std_job_parts_prm_prp_mtd_bld: &std_job_parts_prm_prp_mtd_bld
+    name: std_job_parts_prm_prp_mtd_bld
+
+    builders: '{obj:builders}'
+    <<: *std_job_parts_prm_prp_mtd
+
+- std_job_parts_prm_prp_mtd_bld_pbl: &std_job_parts_prm_prp_mtd_bld_pbl
+    name: std_job_parts_prm_prp_mtd_bld_pbl
+
+    <<: *std_job_parts_prm_prp_mtd
+    <<: *std_job_parts_bld_pbl
+
+
+
 
 
 - job-template:
@@ -27,7 +47,7 @@
     <<: *std_freestyle_job
 
     triggers: '{obj:triggers}'
-    <<: *std_freestyle_parts_1
+    <<: *std_job_parts_prm_prp
 
 
 - job-template:
@@ -119,7 +139,7 @@
     builders:
     - jtb-travis-builder-0
 
-    <<: *std_freestyle_parts_1
+    <<: *std_job_parts_prm_prp
 
 - job-template:
     name: '{name}-local-gh-travis'
@@ -132,7 +152,7 @@
     builders:
     - jtb-travis-builder-0
 
-    <<: *std_freestyle_parts_1
+    <<: *std_job_parts_prm_prp
 
 
 ## Work in JJB builder
@@ -143,7 +163,7 @@
 
     builders: '{obj:builders}'
 
-    <<: *std_freestyle_parts_1
+    <<: *std_job_parts_prm_prp
 
 
 ## Work in progress JTB builder
@@ -151,7 +171,7 @@
 - job-template:
     name: '{name}-jtb-install-local'
     <<: *std_freestyle_job
-    <<: *std_freestyle_parts_1
+    <<: *std_job_parts_prm_prp
 
 
 ## Work in progress free-style GIT checkout build
@@ -160,10 +180,31 @@
     name: '{name}-free-git'
     <<: *std_freestyle_job
     <<: *std_git_co
-    <<: *std_freestyle_parts_1
+    <<: *std_job_parts_prm_prp
 
 
+
+- job-template:
+    name: '{name}-local-gh'
+
+    <<: *restrict_node
+    <<: *std_scm_trigger
+    # Private uses SSH and requires a key setup
+    <<: *private_gh_job
+    <<: *std_job_parts_prm_prp_mtd_bld_pbl
+
+
+- job-template:
+    name: '{name}-local-gh-bats'
+
+    <<: *restrict_node
+    <<: *std_scm_trigger
+    # Private uses SSH and requires a key setup
+    <<: *private_gh_job
+    <<: *std_job_parts_prm_prp_mtd_bld
+
+    publishers:
+    - <<: *std_bats_publisher
 
 
 # Id: jtb/0.0.3-dev tpl/job-template/main.yaml
-

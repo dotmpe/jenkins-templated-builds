@@ -166,6 +166,10 @@ def find_template(jjb_template_id, *template_files):
 
 def run_vars(jjb_template_id, *template_files):
 
+    """
+    Show the JJB placeholders for template ID that have no default values.
+    """
+
     path, template = find_template(jjb_template_id, *template_files)
     placeholders = list(set(find_template_vars(template)))
     seed = dict( zip(placeholders, ( [None] * len(placeholders) )) )
@@ -189,6 +193,11 @@ def generate_job(jjb_template_id, *template_files):
 
 def run_generate(jjb_template_id, *template_files):
 
+    """
+    Generate JJB config by loading given job-template ID, and resolving
+    the placeholders from variables in the shell environment.
+    """
+
     placeholders, defaults = generate_job(jjb_template_id, *template_files)
     seed = dict( zip(placeholders, ( [None] * len(placeholders) )) )
 
@@ -202,6 +211,11 @@ def run_generate(jjb_template_id, *template_files):
 
 
 def run_preset(preset_file, *template_files):
+
+    """
+    Generate a job using job-template ID like 'generate', except load
+    the template ID, name and default values from YAML preset file.
+    """
 
     jjb_template_id, seed = get_preset(preset_file)
 

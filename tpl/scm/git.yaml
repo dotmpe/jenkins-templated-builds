@@ -126,9 +126,10 @@
 
 
 - std_pollscm: &std_pollscm
-    name: 'std_pollscm'
 
     pollscm: "*/1 * * * *"
+
+    name: 'std_pollscm'
 
 
 - std_scm_trigger: &std_scm_trigger
@@ -136,6 +137,27 @@
 
     triggers:
     - <<: *std_pollscm
+
+
+
+
+
+### Some more JJB Action macros
+
+## SCM macro
+
+# FIXME: test this later, using yaml alias for now
+- scm:
+    name: 'scm-github-0'
+
+    <<: *std_gh_co
+
+    #<<: *gh_co
+# FIXME: test this later, using yaml alias for now
+#    scm:
+#    - 'scm-github-0':
+#vendor-path: '{vendor-path}'
+#    branch: '{branch}'
 
 
 

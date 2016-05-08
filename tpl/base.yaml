@@ -49,8 +49,17 @@
 
     git-recursive-init: false
 
-    require-tap-plan: false
-
+    bats-tap-results: 'build/test-results.tap'
+    bats-tap-require-tests: true
+    bats-tap-fail-build: true
+    bats-tap-console-output: true
+    bats-tap-enable-subtests: true
+    bats-tap-discard-old: true
+    bats-tap-todo-is-failure: true
+    bats-tap-include-diagnostics: true
+    bats-tap-validate-test-number: true
+    bats-tap-require-plan: true
+    bats-tap-verbose: true
 
 
 
@@ -75,16 +84,6 @@
 #include ./publisher/std.yaml
 
 
-### Some more JJB Action macros
-
-## SCM macro
-
-# FIXME: test this later, using yaml alias for now
-- scm:
-    name: 'scm-github-0'
-
-    <<: *std_gh_co
-
 
 ### More complex YAML aliases: composite job types
 #
@@ -92,27 +91,28 @@
 
 - private_gh_job: &private_gh_job
     name: private_gh_job
-    <<: *std_freestyle_job
+    <<: *generic_freestyle_job
     <<: *private_gh_co
 
 
 - gh_job: &gh_job
     name: gh_job
-    <<: *std_freestyle_job
-    <<: *std_gh_co
+    <<: *generic_freestyle_job
 
+    #<<: *std_gh_co
 
-    #<<: *gh_co
-# FIXME: test this later, using yaml alias for now
-#    scm:
-#    - 'scm-github-0':
-#vendor-path: '{vendor-path}'
-#    branch: '{branch}'
+    scm:
+    - 'scm-{vendor-repo}-0':
+        vendor-path: '{vendor-path}'
+        branch: '{branch}'
+        credentials-id: '{credentials-id}'
 
 
 ### At last, JJB templates
 
 #include ./job-template/main.yaml
 ##include ./job-template/docker.yaml
+#include ./job-template/workflow.yaml
+
 
 # Id: jtb/0.0.3-dev tpl/base.yaml

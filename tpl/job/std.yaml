@@ -26,8 +26,8 @@
     fail-on-error: true
 
 
-- std_freestyle_job: &std_freestyle_job
-    name: std_freestyle_job
+- generic_freestyle_job: &generic_freestyle_job
+    name: generic_freestyle_job
 
     defaults: 'std-freestyle-job'
 
@@ -39,6 +39,12 @@
     fail-on-error: '{fail-on-error}'
     <<: *restrict_node
     <<: *std_console_output_wrapper
+
+
+- std_freestyle_job: &std_freestyle_job
+    name: std_freestyle_job
+
+    <<: *generic_freestyle_job
 
     publishers:
     - <<: *std_email_publisher
