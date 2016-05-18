@@ -114,9 +114,9 @@
 - std_gh_co: &std_gh_co
     name: 'std_gh_co'
 
-    <<: *gh_shared_parts
-    git-browser: githubweb
-    git-browser-url: 'https://github.com/'
+    #<<: *gh_shared_parts
+    #git-browser: githubweb
+    #git-browser-url: 'https://github.com/'
     vendor-root: 'https://github.com/'
     scm:
     - git:
