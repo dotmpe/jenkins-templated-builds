@@ -20,7 +20,6 @@
     git-url: git@github.com:dotmpe/user-conf.git
 
     branch: master
-    git-browser: githubweb
     git-recursive-init: False
     credentials-id: ''
 
