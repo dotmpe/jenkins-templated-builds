@@ -26,7 +26,12 @@
     credentials-id: ''
 
     parameters: []
-    metadata: []
+
+    metadata:
+    - string:
+        name: Build_Deps_Default_Paths
+        value: true
+
     properties: []
 
     builders:
