@@ -30,7 +30,7 @@
     parameters:
     - string:
         name: Build_Deps_Default_Paths
-        value: "1"
+        default: "1"
 
     properties: []
 
@@ -38,8 +38,7 @@
       - shell: |
           pip install --user \
             ordereddict 'six>=1.5.2' PyYAML 'python-jenkins>=0.4.1' 'pbr>=0.8.2,<2.0'
-      - shell: './install-dependencies.sh install_jjb'
-      - shell: './install-dependencies.sh install_bats'
+      - shell: './install-dependencies.sh project dev build test'
 
     publishers: []
 
