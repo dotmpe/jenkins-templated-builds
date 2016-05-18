@@ -210,6 +210,9 @@ def run_preset(preset_file, *template_files):
     for key in placeholders:
         if key not in seed or seed[key] == None:
             seed[key] = defaults.get(key, None)
+        env_key = "jtb_%s" % key
+        if os.getenv(env_key):
+            seed[key] = os.getenv(env_key)
 
     print format_job(jjb_template_id, seed)
 
