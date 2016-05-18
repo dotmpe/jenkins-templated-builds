@@ -106,6 +106,8 @@
         vendor-path: '{vendor-path}'
         branch: '{branch}'
         credentials-id: '{credentials-id}'
+        git-browser: '{git-browser}'
+        git-browser-url: '{git-browser-url}'
 
 
 ### At last, JJB templates
