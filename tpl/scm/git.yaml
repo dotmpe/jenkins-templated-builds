@@ -16,11 +16,12 @@
 
 
 - git_branchless_co: &git_branchless_co
-    name: git_branchless_co
 
     <<: *git_co
     branches:
     - '{branch}'
+
+    name: git_branchless_co
 
 
 - git_branch_co: &git_branch_co
@@ -28,16 +29,19 @@
 
     <<: *git_co
     branches:
-    - 'refs/head/{branch}'
+    - 'origin/{branch}'
     local-branch: '{branch}'
+
+    name: origin
 
 
 - std_git_co: &std_git_co
-    name: std_git_co
 
     scm:
     - git:
         <<: *git_co
+
+    name: std_git_co
 
 
 - std_git_branch_co: &std_git_branch_co
