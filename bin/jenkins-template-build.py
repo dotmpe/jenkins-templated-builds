@@ -123,6 +123,15 @@ def find_template_vars(obj):
             for y in g:
                 if y: yield y
 
+def parse_value(v):
+    if v.lower() in 'true':
+        return True
+    elif v.lower() in 'false':
+        return False
+    else:
+        return v
+
+
 
 def format_job(jjb_template_id, vars):
 
@@ -200,10 +209,10 @@ def run_generate(jjb_template_id, *template_files):
     seed = dict( zip(placeholders, ( [None] * len(placeholders) )) )
 
     for key in placeholders:
-        seed[key] = os.getenv(key, defaults.get(key, None))
-        # TODO: parse some block stuff?
-        if key in block_keys and not seed[key]:
-            seed[key] = {}
+        if key not in seed or seed[key] == None:
+            seed[key] = defaults.get(key, None)
+        if os.getenv(key):
+            seed[key] = parse_value(os.getenv(key))
 
     print format_job(jjb_template_id, seed)
 
@@ -221,6 +230,8 @@ def run_preset(preset_file, *template_files):
     for key in placeholders:
         if key not in seed or seed[key] == None:
             seed[key] = defaults.get(key, None)
+        if os.getenv(key):
+            seed[key] = parse_value(os.getenv(key))
 
     print format_job(jjb_template_id, seed)
 
