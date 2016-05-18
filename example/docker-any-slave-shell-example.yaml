@@ -1,6 +1,6 @@
 
 - job:
-    name: 'Jenkins/Examples/docker-any-slave-example'
+    name: 'jnk/examples/docker-any-slave-example'
 
 
     project-type: freestyle

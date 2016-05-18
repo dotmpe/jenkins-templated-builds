@@ -1,7 +1,7 @@
 
 
 - job:
-    name: Jenkins/update-existing-projects
+    name: jnk/update-existing-projects
 
     project-id: jenkins-templated-builds
     project-type: freestyle
