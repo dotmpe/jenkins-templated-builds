@@ -17,6 +17,7 @@ import re
 import sys
 
 import yaml
+import types
 
 
 version = '0.0.3-dev' # jtb
@@ -171,6 +172,18 @@ def find_template(jjb_template_id, *template_files):
     return path, template
 
 
+def clean_tpl_data(vars, key):
+    if key in block_keys:
+        if key not in vars:
+            vars[key] = []
+        if isinstance(vars[key], basestring) and vars[key].startswith('{obj:'):
+            vars[key] = []
+    if isinstance(vars[key], basestring) and vars[key].startswith('{obj:'):
+        vars[key] = False
+    if isinstance(vars[key], types.NoneType):
+        vars[key] = ''
+
+
 def run_vars(jjb_template_id, *template_files):
 
     """
@@ -183,10 +196,15 @@ def run_vars(jjb_template_id, *template_files):
     defaults = get_defaults(path, placeholders, jjb_template_id)
 
     for key in placeholders:
-        seed[key] = os.getenv(key, defaults.get(key, None))
+        seed[key] = defaults.get(key, None)
 
-    for key in placeholders:
-        print key, seed.get(key, None)
+        clean_tpl_data( seed, key )
+
+        env_key = "jtb_%s" % key.replace('-', '_')
+        if os.getenv(env_key):
+            seed[key] = os.getenv(env_key)
+
+    print yaml.dump(seed, default_flow_style=False)
 
 
 def generate_job(jjb_template_id, *template_files):
@@ -209,10 +227,14 @@ def run_generate(jjb_template_id, *template_files):
     seed = dict( zip(placeholders, ( [None] * len(placeholders) )) )
 
     for key in placeholders:
-        if key not in seed or seed[key] == None:
+        if key not in seed:
             seed[key] = defaults.get(key, None)
-        if os.getenv(key):
-            seed[key] = parse_value(os.getenv(key))
+
+        clean_tpl_data( seed, keys )
+
+        env_key = "jtb_%s" % key.replace('-', '_')
+        if os.getenv(env_key):
+            seed[key] = os.getenv(env_key)
 
     print format_job(jjb_template_id, seed)
 
@@ -228,8 +250,11 @@ def run_preset(preset_file, *template_files):
     placeholders, defaults = generate_job(jjb_template_id, *template_files)
 
     for key in placeholders:
-        if key not in seed or seed[key] is None:
+        if key not in seed:
             seed[key] = defaults.get(key, None)
+
+        clean_tpl_data( seed, key )
+
         env_key = "jtb_%s" % key.replace('-', '_')
         if os.getenv(env_key):
             seed[key] = os.getenv(env_key)
