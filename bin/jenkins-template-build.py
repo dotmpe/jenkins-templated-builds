@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 """
 
 Helper to find template from files, return placeholders,
@@ -42,7 +41,7 @@ def get_preset(path):
     return base[0].items()[0]
 
 
-block_keys = "name parameters properties triggers scm builders publishers wrappers axes".split(' ')
+block_keys = "name metadata parameters properties triggers scm builders publishers wrappers axes".split(' ')
 
 def get_defaults(path, keys, jjb_template_id):
 
@@ -140,10 +139,9 @@ def format_job(jjb_template_id, vars):
 
     for key in block_keys:
         if key in vars:
+            # Delete default block value
             if isinstance(vars[key], basestring) and vars[key].startswith('{obj:'):
-            	vars[key] = {}
-            else:
-            	del vars[key]
+            	vars[key] = []
 
     jjb_tpld_job = [ { 'project': {
         'name': name,
@@ -218,7 +216,6 @@ def run_preset(preset_file, *template_files):
     """
 
     jjb_template_id, seed = get_preset(preset_file)
-
     placeholders, defaults = generate_job(jjb_template_id, *template_files)
 
     for key in placeholders:

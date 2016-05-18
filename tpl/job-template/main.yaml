@@ -180,7 +180,7 @@
     name: '{name}-free-git'
     <<: *std_freestyle_job
     <<: *std_git_co
-    <<: *std_job_parts_prm_prp
+    <<: *std_job_parts_prm_prp_mtd_bld_pbl
 
 
 
