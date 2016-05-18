@@ -30,7 +30,7 @@
     metadata:
     - string:
         name: Build_Deps_Default_Paths
-        value: true
+        value: "1"
 
     properties: []
 
