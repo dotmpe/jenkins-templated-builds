@@ -23,13 +23,12 @@
     - '{branch}'
 
 
-# FIXME: git-branch-co stopped working at VS1?
 - git_branch_co: &git_branch_co
     name: git_branch_co
 
     <<: *git_co
     branches:
-    - 'origin/{branch}'
+    - 'refs/head/{branch}'
     local-branch: '{branch}'
 
 
@@ -39,6 +38,14 @@
     scm:
     - git:
         <<: *git_co
+
+
+- std_git_branch_co: &std_git_branch_co
+    name: std_git_branch_co
+
+    scm:
+    - git:
+        <<: *git_branch_co
 
 
 - vnd_git_co: &vnd_git_co
