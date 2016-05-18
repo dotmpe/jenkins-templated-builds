@@ -30,4 +30,6 @@ dist::
 build::
 	./bin/jtb.sh build
 
+clean::
+	rm -rf dist build
 
