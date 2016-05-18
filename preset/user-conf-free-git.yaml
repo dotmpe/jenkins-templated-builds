@@ -31,6 +31,7 @@
     - string:
         name: Build_Deps_Default_Paths
         value: "1"
+        expose-to-env: true
 
     properties: []
 
