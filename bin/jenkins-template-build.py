@@ -126,9 +126,9 @@ def find_template_vars(obj):
 
 def parse_value(v):
     if v.lower() in 'true':
-        return True
+        return "true" #True
     elif v.lower() in 'false':
-        return False
+        return "false" #False
     else:
         return v
 
