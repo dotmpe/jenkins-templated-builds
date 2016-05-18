@@ -2,6 +2,8 @@
 - '{name}-free-git':
 
     name: user-conf
+    defaults: std-freestyle-job
+
     title: 'User Conf - Install'
     htmlDescription: ""
     build-summary-image: 'ws/logo.png'
@@ -15,8 +17,8 @@
     unstable-on-warning: true
     publish-on-error: True
 
-    vendor-repo: github
-    vendor-path: dotmpe/user-conf
+    git-url: git@github.com:dotmpe/user-conf.git
+
     branch: master
     git-browser: githubweb
     git-recursive-init: False
