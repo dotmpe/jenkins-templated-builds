@@ -43,7 +43,7 @@
 
     publish-on-error: true
 
-    git-browser: auto
+    git-browser:
     git-browser-url:
     credentials-id:
 

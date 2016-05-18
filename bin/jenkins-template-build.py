@@ -230,7 +230,7 @@ def run_generate(jjb_template_id, *template_files):
         if key not in seed:
             seed[key] = defaults.get(key, None)
 
-        clean_tpl_data( seed, keys )
+        clean_tpl_data( seed, key )
 
         env_key = "jtb_%s" % key.replace('-', '_')
         if os.getenv(env_key):
