@@ -43,7 +43,7 @@
           
     - string:
         name: jtb_preset_yml_pattern
-        default: .jtb-*.y[a]*ml
+        default: .jtb-*.y*ml
 
     - string:
         name: job_name_prefix
