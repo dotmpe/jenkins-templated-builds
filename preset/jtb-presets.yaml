@@ -32,6 +32,10 @@
         name: repo_url
         default: http://github.com/dotmpe/jenkins-templated-builds.git
 
+    - string:
+        name: repo_branch
+        default: master
+
     - text:
         name: jtb_vars
         default: |
@@ -59,7 +63,7 @@
       - shell: |
           test -n "$JTB_HOME" || exit 12
 
-          git clone $repo_url build/jtb-project
+          git clone $repo_url build/jtb-project --branch $repo_branch
           cd build/jtb-project
 
           jjb_jobs=/tmp/jenkins-jtb.yml
