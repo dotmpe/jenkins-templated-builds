@@ -84,7 +84,8 @@ install_bats()
   local pwd=$(pwd)
   mkdir -vp $SRC_PREFIX
   cd $SRC_PREFIX
-  git clone https://github.com/sstephenson/bats.git
+  #git clone https://github.com/sstephenson/bats.git
+  git clone https://github.com/dotmpe/bats.git
   cd bats
   ${sudo} ./install.sh $HOME/.local
   cd $pwd
