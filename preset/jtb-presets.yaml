@@ -43,7 +43,8 @@
           jjb_jobs=/tmp/jenkins-jtb.yml
           test ! -e $jjb_jobs || rm $jjb_jobs
 
-          presets="$(echo ${{jtb_preset_yml_pattern:1:-1}})"
+          ls -la 
+          presets="$(echo $jtb_preset_yml_pattern)"
           test "$presets" != "$jtb_preset_yml_pattern" || {{
             echo "Nothing todo"
             exit 0
