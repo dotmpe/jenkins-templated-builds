@@ -27,9 +27,28 @@
     metadata: []
 
     parameters:
+
+    - string:
+        name: jtb_repo_url
+        default: TODO
+
+    - text:
+        name: jtb_vars
+        default: |
+          jtb_disabled=true
+          
     - string:
         name: jtb_preset_yml_pattern
         default: .jtb-*.y[a]*ml
+
+    - string:
+        name: job_name_prefix
+        default: jtb-preset/
+
+    - string:
+        name: yaml_exts
+        default: .yaml .yml
+
     - bool:
         name: jtb_update
         default: false
@@ -43,16 +62,24 @@
           jjb_jobs=/tmp/jenkins-jtb.yml
           test ! -e $jjb_jobs || rm $jjb_jobs
 
-          ls -la 
-          presets="$(echo $jtb_preset_yml_pattern)"
-          test "$presets" != "$jtb_preset_yml_pattern" || {{
-            echo "Nothing todo"
-            exit 0
+          test -n "$jtb_presets" || {{
+            jtb_presets="$(echo $jtb_preset_yml_pattern)"
+            test "$jtb_presets" != "$jtb_preset_yml_pattern" || {{
+              echo "Nothing todo"
+              exit 0
+            }}
           }}
 
-          for jtb_preset in $presets
+          for jtb_preset in $jtb_presets
           do
-            $JTB_HOME/bin/jtb.sh preset $jtb_preset >> $jjb_jobs
+            leafname=$jtb_preset
+            for yaml_ext in $yaml_exts
+            do
+              leafname=$(basename $leafname $yaml_ext)
+            done
+            $JTB_HOME/bin/jtb.sh preset $jtb_preset \
+              jtb_name=$job_name_prefix$leafname \
+              >> $jjb_jobs
           done
 
           test "$jtb_update" = "true" && {{
