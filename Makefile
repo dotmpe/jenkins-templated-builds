@@ -5,8 +5,8 @@ default:
 test:: BRANCH := test
 test::
 	test -z "$(which git-versioning)" || git-versioning check
-	test -z "$(shell echo $JTB_HOME)" || { \
-		cd "$JTB_HOME" && git checkout $(BRANCH) && git pull origin "$(BRANCH)"; \
+	test -z "$(shell echo $$JTB_HOME)" || { \
+		cd "$$JTB_HOME" && git checkout $(BRANCH) && git pull origin "$(BRANCH)"; \
 	}
 	@for preset_path in preset/*.yaml; do \
 		preset=$$(basename $$preset_path .yaml); \
