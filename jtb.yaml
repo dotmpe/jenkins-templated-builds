@@ -84,7 +84,8 @@
         properties: {}
         parameters: {}
 
-- defaults:
+
+- project:
     name: jtb-juc
 
     # Job template vars
@@ -96,6 +97,7 @@
     vendor-repo: github
     vendor-path: dotmpe/jenkins-userContent
     branch: master
+    git-browser: githubweb
 
     ## Builder vars
 
@@ -108,16 +110,12 @@
     email-to: dev@dotmpe.com
 
 
-#- project:
-#    name: 'jtb-juc'
-#    defaults: jtb-juc
-#
-#    jobs:
-#    - '{name}-gh-travis':
-#        disabled: false
-#        title: 'Jenkins UserContent'
-#        htmlDescription: '{project-title} v{version}'
-#        properties: {}
-#        parameters: {}
-#
-#
+    jobs:
+    - '{name}-gh-travis':
+        disabled: false
+        title: 'Jenkins UserContent'
+        htmlDescription: '{project-title} v{version}'
+        properties: {}
+        parameters: {}
+
+

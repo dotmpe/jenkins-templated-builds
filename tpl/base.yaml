@@ -99,10 +99,12 @@
     name: gh_job
     <<: *generic_freestyle_job
 
-    #<<: *std_gh_co
+    git-browser: githubweb
+    git-browser-url: '{vendor-root}'
 
     scm:
     - 'scm-{vendor-repo}-0':
+        vendor-root: 'https://github.com/'
         vendor-path: '{vendor-path}'
         branch: '{branch}'
         credentials-id: '{credentials-id}'

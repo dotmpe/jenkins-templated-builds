@@ -116,9 +116,9 @@
 
     #<<: *gh_shared_parts
     git-browser: githubweb
-    git-browser-url: 'https://github.com/'
-
+    git-browser-url: '{vendor-root}'
     vendor-root: 'https://github.com/'
+
     scm:
     - git:
         <<: *git_branchless_co
@@ -158,13 +158,11 @@
 
 ## SCM macro
 
-# FIXME: test this later, using yaml alias for now
 - scm:
     name: 'scm-github-0'
 
     <<: *std_gh_co
 
-    #<<: *gh_co
 
 # FIXME: test this later, using yaml alias for now
 #    scm:
