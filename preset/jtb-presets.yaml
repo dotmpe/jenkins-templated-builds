@@ -29,8 +29,8 @@
     parameters:
 
     - string:
-        name: jtb_repo_url
-        default: TODO
+        name: repo_url
+        default: http://github.com/dotmpe/jenkins-templated-builds.git
 
     - text:
         name: jtb_vars
@@ -50,7 +50,7 @@
         default: .yaml .yml
 
     - bool:
-        name: jtb_update
+        name: jjb_update
         default: false
 
     properties: []
@@ -58,6 +58,9 @@
     builders:
       - shell: |
           test -n "$JTB_HOME" || exit 12
+
+          git clone $repo_url build/jtb-project
+          cd build/jtb-project
 
           jjb_jobs=/tmp/jenkins-jtb.yml
           test ! -e $jjb_jobs || rm $jjb_jobs
@@ -82,13 +85,15 @@
               >> $jjb_jobs
           done
 
-          test "$jtb_update" = "true" && {{
+          test "$jjb_update" = "true" && {{
             jenkins-jobs update $jjb_jobs:$JTB_HOME/dist/base.yaml
           }} || {{
             jenkins-jobs test $jjb_jobs:$JTB_HOME/dist/base.yaml
           }}
 
-    publishers: []
+    publishers:
+      - ws-cleanup:
+          delete-ws-after-failure: true
 
 
 

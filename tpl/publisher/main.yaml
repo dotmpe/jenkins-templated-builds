@@ -143,3 +143,39 @@
         claim-build: false
 
 
+
+- publish_clean_workspace: &publish_clean_workspace
+
+    raw:
+      xml: |
+        <hudson.plugins.ws__cleanup.WsCleanup plugin="ws-cleanup@0.28">
+          <deleteDirs>false</deleteDirs>
+          <skipWhenFailed>false</skipWhenFailed>
+          <cleanWhenSuccess>true</cleanWhenSuccess>
+          <cleanWhenUnstable>true</cleanWhenUnstable>
+          <cleanWhenFailure>{delete-ws-after-failure}</cleanWhenFailure>
+          <cleanWhenNotBuilt>true</cleanWhenNotBuilt>
+          <cleanWhenAborted>false</cleanWhenAborted>
+          <notFailBuild>true</notFailBuild>
+          <cleanupMatrixParent>false</cleanupMatrixParent>
+          <externalDelete/>
+        </hudson.plugins.ws__cleanup.WsCleanup>
+
+    name: 'publish_clean_workspace'
+
+
+- publisher:
+    name: ws-cleanup
+    publishers:
+    - <<: *publish_clean_workspace
+#    - conditional-publisher:
+#        - condition-kind: shell
+#          condition-command: |
+#            . $scriptpath/lib/main.sh
+#            trueish "$Build_Skip_Workspace_Delete" \
+#              && {{ note "Skipping Workspace delete"; exit 1; }} \
+#              || exit 0
+#          action:
+#            - <<: *publish_clean_workspace
+
+
