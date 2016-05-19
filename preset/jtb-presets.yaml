@@ -30,7 +30,7 @@
     - string:
         name: jtb_preset_yml_pattern
         default: '.jtb-*.y[a]*ml'
-    - boolean:
+    - bool:
         name: jtb_update
         default: false
 
