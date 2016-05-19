@@ -7,8 +7,7 @@ install:
 - pip install --user ordereddict 'six>=1.5.2' PyYAML 'python-jenkins>=0.4.1' 'pbr>=0.8.2,<2.0'
 # JJB deps and then JJB itself
 - mkdir -vp $HOME/{.local/{bin,lib},build}
-- './install-dependencies.sh install_jjb'
-- './install-dependencies.sh install_bats'
+- './install-dependencies.sh'
 
 before_script:
 - jenkins-jobs --version
