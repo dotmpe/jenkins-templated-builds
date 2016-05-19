@@ -192,20 +192,15 @@ jtb__generate()
 
 jtb__preset()
 {
-  python $JTB_SH_BIN/jenkins-template-build.py preset $@ || return $?
-}
-
-jtb__compile_tpl()
-{
-  test -e $1 || exit $?
   # take preset and JJB source yaml and output
-  $JTB_SH_BIN/$scriptname preset $@ || return $?
+  test -e $1 || exit $?
+  python $JTB_SH_BIN/jenkins-template-build.py preset $@ || return $?
 }
 
 jtb__compile_preset()
 {
   verbosity=0 \
-    $JTB_SH_BIN/$scriptname compile-tpl $JTB_SHARE/preset/$1.yaml $JTB_JJB_LIB/base.yaml \
+    $JTB_SH_BIN/$scriptname preset $JTB_SHARE/preset/$1.yaml $JTB_JJB_LIB/base.yaml \
           > $1.yaml || return $?
 }
 

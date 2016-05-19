@@ -1,0 +1,57 @@
+
+- '{name}-free-git':
+
+    name: jtb-presets
+    defaults: std-freestyle-job
+
+    title: 'Update JTB projects'
+    htmlDescription: "Checkout and scan for JTB presets. Compile each to JJB, and run jenkins-jobs update. "
+    build-summary-image: 'ws/logo.png'
+    disabled: true
+    concurrent: false
+
+    email-individuals: false
+    email-to:
+    fail-on-error: true
+    unstable-on-warning: true
+    publish-on-error: True
+
+    git-url: 'git@github.com:dotmpe/jenkins-templated-builds.git'
+
+    #browser: githubweb
+
+    branch: master
+    git-recursive-init: False
+    credentials-id: ''
+
+    metadata: []
+
+    parameters:
+    - string:
+        name: jtb_preset_yml_pattern
+        value: '.jtb-*.yml'
+
+    properties: []
+
+    builders:
+      - shell: |
+          test -n "$JTB_HOME" || exit 12
+
+          jjb_jobs=/tmp/jenkins-jtb.yml
+          test ! -e $jjb_jobs || rm $jjb_jobs
+
+          for jtb_preset in $jtb_preset_yml_pattern
+          do
+            $JTB_HOME/bin/jtb.sh preset $jtb_preset >> $jjb_jobs
+          done
+
+          test "$jtb_update" = "true" && {{
+            jenkins-jobs update $jjb_jobs:$JTB_HOME/dist/base.yaml
+          }} || {{
+            jenkins-jobs test $jjb_jobs:$JTB_HOME/dist/base.yaml
+          }}
+
+    publishers: []
+
+
+
