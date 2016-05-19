@@ -2,8 +2,12 @@ default:
 	@echo "To update remote jobs, run 'update'. This includes 'test'. "
 	@echo "After changing tpl, recompile with 'make dist'. "
 
+test:: BRANCH := test
 test::
 	test -z "$(which git-versioning)" || git-versioning check
+	test -z "$(shell echo $JTB_HOME)" || { \
+		cd "$JTB_HOME" && git checkout $(BRANCH) && git pull origin "$(BRANCH)"; \
+	}
 	@for preset_path in preset/*.yaml; do \
 		preset=$$(basename $$preset_path .yaml); \
 		./bin/jtb.sh compile-preset $$preset || exit $?; \

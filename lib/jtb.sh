@@ -99,7 +99,7 @@ jtb__update()
   	&& flags="$flags --conf $HOME/.jenkins_jobs.ini"
 
 	log "Using JJB_CONFIG = $JJB_CONFIG"
-	log "Usings flags = $flags"
+	log "Usings flag = $flags"
 
   #jenkins-jobs --version && {
   test -e $JJB_CONFIG && {
