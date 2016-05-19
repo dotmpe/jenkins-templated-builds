@@ -84,8 +84,10 @@
             do
               leafname=$(basename $leafname $yaml_ext)
             done
+
+            export jtb_name=$job_name_prefix$leafname $jtb_vars
+
             $JTB_HOME/bin/jtb.sh preset $jtb_preset \
-              jtb_name=$job_name_prefix$leafname $jtb_vars \
               >> $jjb_jobs
           done
 
