@@ -29,7 +29,10 @@
     parameters:
     - string:
         name: jtb_preset_yml_pattern
-        value: '.jtb-*.yml'
+        default: '.jtb-*.y[a]*ml'
+    - boolean:
+        name: jtb_update
+        default: false
 
     properties: []
 
