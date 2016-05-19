@@ -99,7 +99,7 @@
 - private_gh_co: &private_gh_co
     name: 'private_gh_co'
 
-    <<: *gh_shared_parts
+    #<<: *gh_shared_parts
     git-browser: githubweb
     git-browser-url: 'https://github.com/'
     vendor-root: 'git@github.com:'
@@ -115,8 +115,9 @@
     name: 'std_gh_co'
 
     #<<: *gh_shared_parts
-    #git-browser: githubweb
-    #git-browser-url: 'https://github.com/'
+    git-browser: githubweb
+    git-browser-url: 'https://github.com/'
+
     vendor-root: 'https://github.com/'
     scm:
     - git:
@@ -164,6 +165,7 @@
     <<: *std_gh_co
 
     #<<: *gh_co
+
 # FIXME: test this later, using yaml alias for now
 #    scm:
 #    - 'scm-github-0':

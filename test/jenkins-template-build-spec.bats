@@ -21,14 +21,14 @@ init
   test "$status" -eq 0
 }
 
-@test "${bin} generate {name}-base-0" "name=test" {
-  export name=test
+@test "${bin} generate {name}-base-0" "jtb_name=test" {
+  export jtb_name=test
   run $BATS_TEST_DESCRIPTION
   test "$status" -eq 0
 }
 
 @test "${bin} preset" "preset/*" {
-  export name=test
+  export jtb_name=test
   for preset in preset/*.yaml
   do
     run $BATS_TEST_DESCRIPTION $preset

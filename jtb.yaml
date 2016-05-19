@@ -1,6 +1,7 @@
 
 - project:
     name: 'jtb'
+    defaults: std-freestyle-job
 
     # Job template vars
     project-title: 'Jenkins Templated Builds'
@@ -39,24 +40,24 @@
         triggers:
         - pollscm:
             cron: 'H/5 * * * *'
-        properties: {}
-        parameters: {}
+        properties: []
+        parameters: []
 
-    - '{name}-jtb-0':
-        name: test
-        disabled: false
-        title: 'JTB test'
-        htmlDescription: 'Testing {project-title} v{version} with JJB'
-        properties: {}
-        parameters: {}
-
-    - '{name}-jtb-1':
-        name: update
-        disabled: false
-        title: 'JTB1 update'
-        htmlDescription: 'Running JTB? with {project-title} v{version}'
-        properties: {}
-        parameters: {}
+#    - '{name}-jtb-0':
+#        name: test
+#        disabled: false
+#        title: 'JTB test'
+#        htmlDescription: 'Testing {project-title} v{version} with JJB'
+#        properties: []
+#        parameters: []
+#
+#    - '{name}-jtb-1':
+#        name: update
+#        disabled: false
+#        title: 'JTB1 update'
+#        htmlDescription: 'Running JTB? with {project-title} v{version}'
+#        properties: []
+#        parameters: []
 
 #    - '{name}-jtb-2':
 #        disabled: true
@@ -107,16 +108,16 @@
     email-to: dev@dotmpe.com
 
 
-- project:
-    name: 'jtb-juc'
-    defaults: jtb-juc
-
-    jobs:
-    - '{name}-gh-travis':
-        disabled: false
-        title: 'Jenkins UserContent'
-        htmlDescription: '{project-title} v{version}'
-        properties: {}
-        parameters: {}
-
-
+#- project:
+#    name: 'jtb-juc'
+#    defaults: jtb-juc
+#
+#    jobs:
+#    - '{name}-gh-travis':
+#        disabled: false
+#        title: 'Jenkins UserContent'
+#        htmlDescription: '{project-title} v{version}'
+#        properties: {}
+#        parameters: {}
+#
+#

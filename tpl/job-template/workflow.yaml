@@ -19,13 +19,18 @@
         cron: "{pollscm-cron}"
     - github
 
+    vendor-repo: github
+
     dsl:
       script-name: '{dsl-script-name}'
 
       scm:
       - 'scm-{vendor-repo}-0':
+          vendor-root: '{vendor-root}'
           vendor-path: '{vendor-path}'
           branch: '{branch}'
           credentials-id: '{credentials-id}'
+          git-browser: '{git-browser}'
+          git-browser-url: '{vendor-root}'
 
 
