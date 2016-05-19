@@ -16,7 +16,7 @@
     unstable-on-warning: true
     publish-on-error: True
 
-    git-url: 'git@github.com:dotmpe/jenkins-templated-builds.git'
+    git-url: 'http://github.com/dotmpe/jenkins-templated-builds.git'
 
     #browser: githubweb
 
