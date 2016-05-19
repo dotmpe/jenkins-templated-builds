@@ -44,8 +44,9 @@ jtb__process_includes()
   test -d "$2" || error "Should be dir: $2" 1
   test -n "$3" || set -- "$1" "$2" "/tmp/${scriptname}"
   test -d "$3" || mkdir -vp "$3"
+  test -z "$4" || error "surplus arguments: '$4'" 1
 
-  relinput="$(relpath "$1" "$2")"
+  relinput=".${1:${#2}}"
   output="$3/$relinput"
   mkdir -vp $3/$(dirname $relinput)
   cp $1 $output

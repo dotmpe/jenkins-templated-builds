@@ -110,21 +110,6 @@ cleanpath()
   }
 }
 
-relpath()
-{
-  test -n "$1" || error "relpath" 1
-  test -n "$2" || set -- "$1" "$(pwd)"
-
-  local path="$(cleanpath "$1")" base="$(cleanpath "$2")" cpath="$(cleanpath)"
-
-  diag "1=$1 path=$path"
-  diag "$(( ${#base} + 1 )) ${#path}"
-
-  local relpath=$(echo ${path} | cut -c $(( ${#base} + 1 ))-${#path} )
-
-  echo .$relpath
-}
-
 trueish()
 {
   test -n "$1" || return 1
