@@ -82,11 +82,13 @@ install_bats()
 {
   echo "Installing bats"
   local pwd=$(pwd)
+  test -n "$bats_branch" || bats_branch=master
   mkdir -vp $SRC_PREFIX
   cd $SRC_PREFIX
   #git clone https://github.com/sstephenson/bats.git
   git clone https://github.com/dotmpe/bats.git
   cd bats
+  git checkout ${bats_branch}
   ${sudo} ./install.sh $HOME/.local
   cd $pwd
 
