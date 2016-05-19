@@ -95,9 +95,12 @@ jtb__update()
   flags=
   #flags="-l debug --ignore-cache "
   flags="--ignore-cache "
-  test -e "$HOME/.jenkins_jobs.ini" && flags="$flags --conf $HOME/.jenkins_jobs.ini"
+  test -e "$HOME/.jenkins_jobs.ini" \
+  	&& flags="$flags --conf $HOME/.jenkins_jobs.ini"
 
-	echo "Using JJB_CONFIG = $JJB_CONFIG"
+	log "Using JJB_CONFIG = $JJB_CONFIG"
+	log "Usings flags = $flags"
+
   #jenkins-jobs --version && {
   test -e $JJB_CONFIG && {
 
