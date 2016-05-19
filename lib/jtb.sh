@@ -14,7 +14,7 @@ jtb__process()
   test -d "$1" || error "Should be dir: $1" 1
   test -d "$2" || error "Should be dir: $2" 1
 
-
+  # Prcess includes on every YAML from $1:src/
   find $1 -iname '*.y*ml' | while read file
   do
 
@@ -46,8 +46,12 @@ jtb__process_includes()
   test -d "$3" || mkdir -vp "$3"
   test -z "$4" || error "surplus arguments: '$4'" 1
 
-  relinput=".${1:${#2}}"
+
+  # Read includes from source
+
+  relinput="$(relpath ${1} ${2})"
   output="$3/$relinput"
+
   mkdir -vp $3/$(dirname $relinput)
   cp $1 $output
 
@@ -63,11 +67,11 @@ jtb__process_includes()
       linenr="$(echo "$proc" | cut -d ':' -f 1)"
       printf -- "\n" > $output
       head -n $(( $linenr - 1 )) $output.tmp >> $output
-      include="$(relpath $2/$pathid)"
-      test -s "$include" && {
-        echo "# Start of include $include {{{" >> $output
-        cat $include >> $output
-        echo "# }}} End of include $include" >> $output
+      input=$2/$pathid
+      test -s "$input" && {
+        echo "# Start of include $input {{{" >> $output
+        cat $input >> $output
+        echo "# }}} End of include $input " >> $output
       } || {
         msg="Warning $0 unable to resolve $2 $pathid"
         warn "$msg"
@@ -96,14 +100,16 @@ jtb__update()
   flags=
   #flags="-l debug --ignore-cache "
   flags="--ignore-cache "
-  test -e "$HOME/.jenkins_jobs.ini" \
-  	&& flags="$flags --conf $HOME/.jenkins_jobs.ini"
 
-	log "Using JJB_CONFIG = $JJB_CONFIG"
-	log "Usings flag = $flags"
+	debug "Usings flag = $flags"
 
   #jenkins-jobs --version && {
   test -e $JJB_CONFIG && {
+	  debug "Using JJB_CONFIG = $JJB_CONFIG"
+
+    # Add additional jenkins_job settings if exists
+    test -e "$HOME/.jenkins_jobs.ini" \
+      && flags="$flags --conf $HOME/.jenkins_jobs.ini"
 
     test "$DRY" != "0" && {
       log " ** Dry-Run ** "

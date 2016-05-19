@@ -96,18 +96,16 @@ std_demo()
     done
 }
 
-
-cleanpath()
+relpath()
 {
-  test -n "$1" || set -- "$(pwd)"
-  test -d "$1" && {
-    cd $1; pwd; return
-  }
-  test -f "$1" && {
-    cd $(dirname $1); echo $(pwd)/$(basename $1); return
-  } || {
-    error "no path $1" 1
-  }
+  test -n "$1" || error "argument expected" 1
+  test -n "$2" || set -- "$1" "$(pwd)"
+  case "$2" in
+    "*/" ) len=${#2};;
+    * )    len=$(( 1 + ${#2} ));;
+  esac
+
+  echo .$(echo "$1" | cut -c $len-)
 }
 
 trueish()
