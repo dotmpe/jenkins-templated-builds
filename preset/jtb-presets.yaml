@@ -22,14 +22,14 @@
 
     branch: master
     git-recursive-init: False
-    credentials-id: ''
+    credentials-id: ""
 
     metadata: []
 
     parameters:
     - string:
         name: jtb_preset_yml_pattern
-        default: '.jtb-*.y[a]*ml'
+        default: .jtb-*.y[a]*ml
     - bool:
         name: jtb_update
         default: false
@@ -43,7 +43,13 @@
           jjb_jobs=/tmp/jenkins-jtb.yml
           test ! -e $jjb_jobs || rm $jjb_jobs
 
-          for jtb_preset in $jtb_preset_yml_pattern
+          presets="$(echo $jtb_preset_yml_pattern)"
+          test "$presets" != "$jtb_preset_yml_pattern" || {{
+            echo "Nothing todo"
+            exit 0
+          }}
+
+          for jtb_preset in $presets
           do
             $JTB_HOME/bin/jtb.sh preset $jtb_preset >> $jjb_jobs
           done
