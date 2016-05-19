@@ -15,8 +15,8 @@ before_script:
 - bats --version
 # TODO: git-versioning
 - test -d dist || mkdir -vp dist
-- echo '[job_builder] ' > $HOME/.jenkins_jobs.ini
-- echo 'allow_empty_variables=True ' >> $HOME/.jenkins_jobs.ini
+#- echo '[job_builder] ' > $HOME/.jenkins_jobs.ini
+#- echo 'allow_empty_variables=True ' >> $HOME/.jenkins_jobs.ini
 
 script:
 - make dist test
