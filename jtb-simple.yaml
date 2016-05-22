@@ -19,7 +19,7 @@
     node: master
 
     display-name: 'JTB [simple]'
-    description: ''
+    description: 'JTB:jtb-simple.yaml'
 
     logrotate:
       daysToKeep: -1

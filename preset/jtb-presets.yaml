@@ -5,7 +5,7 @@
     defaults: std-freestyle-job
 
     title: 'Update JTB projects'
-    htmlDescription: "Checkout and scan for JTB presets. Compile each to JJB, and run jenkins-jobs update. "
+    htmlDescription: "Checkout and scan for JTB presets. Compile each to JJB, and run jenkins-jobs update. JTB:preset/jtb-presets"
     build-summary-image: 'ws/logo.png'
     disabled: true
     concurrent: false

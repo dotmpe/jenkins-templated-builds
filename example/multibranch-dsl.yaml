@@ -2,7 +2,7 @@
 - job:
     name: mb-dsl-test
 
-    description: Test example
+    description: "Test example JTB:example/multibranch-dsl"
 
     project-type: workflow
 

@@ -5,7 +5,7 @@
     defaults: std-freestyle-job
 
     title: 'User Conf - Install'
-    htmlDescription: ""
+    htmlDescription: "Defined in JTB:preset/user-conf-free-git"
     build-summary-image: 'ws/logo.png'
     disabled: true
     concurrent: false

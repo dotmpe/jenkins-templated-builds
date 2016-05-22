@@ -7,7 +7,7 @@
     project-type: freestyle
     display-name: 'Update Projects'
     disabled: true
-    description: 'Update all jobs. '
+    description: 'Update all jobs. JTB:example/update-existing-projects'
     node: master
     concurrent: false
 

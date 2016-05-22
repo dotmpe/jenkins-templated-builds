@@ -4,7 +4,7 @@
     defaults: std-freestyle-job
 
     # Job template vars
-    project-title: 'Jenkins Templated Builds'
+    project-title: 'Jenkins Templated Builds (JTB/jtb.yml)'
     version: 0.0.3-dev # jtb
     #build-summary-image: /userContent/jenkins-build-templates.png
     build-summary-image: 'http://www.tupilabs.com/img/posts/2012-10-31_promoting-material-for-jenkins-user-event/jenkins_no_bg.png'
@@ -89,7 +89,7 @@
     name: jtb-juc
 
     # Job template vars
-    project-title: 'Jenkins User-Content'
+    project-title: 'Jenkins User-Content (JTB/jtb.yml)'
     version: 0.0.0
     build-summary-image: 'http://www.tupilabs.com/img/posts/2012-10-31_promoting-material-for-jenkins-user-event/jenkins_no_bg.png'
 

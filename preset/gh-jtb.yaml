@@ -7,7 +7,7 @@
     disabled: false
     title: 'GH JTB user (re)install'
     build-summary-image: 'ws/logo.png'
-    htmlDescription: "Clone JTB and (re)install"
+    htmlDescription: "Clone JTB and (re)install (JTB:preset/gh-jtb)"
 
     vendor-repo: github
     vendor-path: dotmpe/jenkins-templated-builds

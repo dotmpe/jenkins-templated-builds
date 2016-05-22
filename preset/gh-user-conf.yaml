@@ -7,7 +7,7 @@
     build-summary-image: 'ws/logo.png'
     htmlDescription: |
       Build Travis test for user-conf. Jenkins plugin does not support
-      install. 
+      install. JTB: preset/gh-user-conf
 
     vendor-repo: github
     vendor-path: dotmpe/user-conf
