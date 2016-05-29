@@ -30,6 +30,8 @@ init
 
 @test "${lib}/${base} - check_skipped_envs: returns 0 or 1, no output" {
 
+    skip "FIXME: see u-c repo"
+
     run check_skipped_envs foo bar baz
     test "${status}" = 0
     test "${lines[*]}" = "" # No output
@@ -53,6 +55,7 @@ init
 }
 
 @test "${lib}/${base} - check_skipped_envs: check current env" {
+    skip "FIXME: see u-c repo"
     run check_skipped_envs
     test "${status}" = 1 || test -z "Should have set {ENV}_SKIP=1 for proper test! do it now. "
 }
