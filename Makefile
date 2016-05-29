@@ -7,7 +7,7 @@ test::
 	test -z "$(which git-versioning)" || git-versioning check
 	test -z "$$JTB_HOME" -o "$$(cd $$JTB_HOME; pwd -P)" = "$$(pwd -P)" || { \
 		cd "$$JTB_HOME" \
-			&& echo "Host: $(hostname) User: $(whoami) PWD: $(pwd)" \
+			&& echo "Host: $$(hostname) User: $$(whoami) PWD: $$(pwd)" \
 			&& git remote -v \
 			&& git checkout $(BRANCH) && git pull origin "$(BRANCH)"; \
 	}
