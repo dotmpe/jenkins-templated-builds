@@ -4,7 +4,7 @@
     defaults: std-freestyle-job
 
     # Job template vars
-    project-title: 'Jenkins Templated Builds (JTB/jtb.yml)'
+    project-title: 'Jenkins Templated Builds (\$JTB_HOME jtb.yml)'
     version: 0.0.3-dev # jtb
     #build-summary-image: /userContent/jenkins-build-templates.png
     build-summary-image: 'http://www.tupilabs.com/img/posts/2012-10-31_promoting-material-for-jenkins-user-event/jenkins_no_bg.png'
@@ -33,13 +33,11 @@
     jobs:
     - '{name}-base-0':
         disabled: false
-        title: 'Shell test'
-        htmlDescription: 'Shell Job {project-title} v{version}'
+        title: 'Simple Shell Command'
+        htmlDescription: 'Simple Shell Command - from {project-title} v{version}'
         builders:
         - shell: 'whoami && hostname'
-        triggers:
-        - pollscm:
-            cron: 'H/5 * * * *'
+        triggers: []
         properties: []
         parameters: []
 
