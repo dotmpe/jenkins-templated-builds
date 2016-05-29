@@ -6,7 +6,10 @@ test:: BRANCH := test
 test::
 	test -z "$(which git-versioning)" || git-versioning check
 	test -z "$$JTB_HOME" -o "$$(cd $$JTB_HOME; pwd -P)" = "$$(pwd -P)" || { \
-		cd "$$JTB_HOME" && git checkout $(BRANCH) && git pull origin "$(BRANCH)"; \
+		cd "$$JTB_HOME" \
+			&& echo "Host: $(hostname) User: $(whoami) PWD: $(pwd)" \
+			&& git remote -v \
+			&& git checkout $(BRANCH) && git pull origin "$(BRANCH)"; \
 	}
 	@for preset_path in preset/*.yaml; do \
 		preset=$$(basename $$preset_path .yaml); \
