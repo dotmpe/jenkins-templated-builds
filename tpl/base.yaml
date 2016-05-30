@@ -95,6 +95,12 @@
     <<: *private_gh_co
 
 
+- std_gh_job: &std_gh_job
+    name: std_gh_job
+    <<: *generic_freestyle_job
+    <<: *std_gh_co
+
+
 - gh_job: &gh_job
     name: gh_job
     <<: *generic_freestyle_job

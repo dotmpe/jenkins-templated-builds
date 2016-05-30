@@ -185,7 +185,7 @@
 
 
 - job-template:
-    name: '{name}-local-gh'
+    name: '{name}-local-private-gh'
 
     <<: *restrict_node
     <<: *std_scm_trigger
@@ -195,12 +195,35 @@
 
 
 - job-template:
-    name: '{name}-local-gh-bats'
+    name: '{name}-local-gh'
+
+    <<: *restrict_node
+    <<: *std_scm_trigger
+    # Private uses SSH and requires a key setup
+    <<: *std_gh_job
+    <<: *std_job_parts_prm_prp_mtd_bld_pbl
+
+
+- job-template:
+    name: '{name}-local-private-gh-bats'
 
     <<: *restrict_node
     <<: *std_scm_trigger
     # Private uses SSH and requires a key setup
     <<: *private_gh_job
+    <<: *std_job_parts_prm_prp_mtd_bld
+
+    publishers:
+    - <<: *std_bats_publisher
+
+
+- job-template:
+    name: '{name}-local-gh-bats'
+
+    <<: *restrict_node
+    <<: *std_scm_trigger
+    # Private uses SSH and requires a key setup
+    <<: *std_gh_job
     <<: *std_job_parts_prm_prp_mtd_bld
 
     publishers:
