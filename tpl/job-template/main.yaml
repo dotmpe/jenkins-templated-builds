@@ -117,7 +117,7 @@
 - job-template:
     name: '{name}-gh'
     <<: *restrict_node
-    <<: *gh_job
+    <<: *std_gh_job
     <<: *gh_trigger
 
     builders: '{obj:builders}'
@@ -133,13 +133,33 @@
     <<: *restrict_node
     # NOTE: this would only work with a public server
     <<: *gh_trigger
-    <<: *gh_job
+    <<: *std_gh_job
     <<: *std_console_output_wrapper
 
     builders:
     - jtb-travis-builder-0
 
     <<: *std_job_parts_prm_prp
+
+- job-template:
+    name: '{name}-gh-bats'
+    <<: *restrict_node
+    # NOTE: this would only work with a public server
+    <<: *gh_trigger
+    <<: *std_gh_job
+    <<: *std_console_output_wrapper
+
+    publishers:
+    - <<: *std_bats_publisher
+
+- job-template:
+    name: '{name}-local-gh'
+
+    <<: *restrict_node
+    <<: *std_scm_trigger
+    # Private uses SSH and requires a key setup
+    <<: *std_gh_job
+    <<: *std_job_parts_prm_prp_mtd_bld_pbl
 
 - job-template:
     name: '{name}-local-gh-travis'
@@ -153,6 +173,18 @@
     - jtb-travis-builder-0
 
     <<: *std_job_parts_prm_prp
+
+- job-template:
+    name: '{name}-local-gh-bats'
+
+    <<: *restrict_node
+    <<: *std_scm_trigger
+    # Private uses SSH and requires a key setup
+    <<: *private_gh_job
+    <<: *std_job_parts_prm_prp_mtd_bld
+
+    publishers:
+    - <<: *std_bats_publisher
 
 
 ## Work in JJB builder
@@ -183,51 +215,6 @@
     <<: *std_job_parts_prm_prp_mtd_bld_pbl
 
 
-
-- job-template:
-    name: '{name}-local-private-gh'
-
-    <<: *restrict_node
-    <<: *std_scm_trigger
-    # Private uses SSH and requires a key setup
-    <<: *private_gh_job
-    <<: *std_job_parts_prm_prp_mtd_bld_pbl
-
-
-- job-template:
-    name: '{name}-local-gh'
-
-    <<: *restrict_node
-    <<: *std_scm_trigger
-    # Private uses SSH and requires a key setup
-    <<: *std_gh_job
-    <<: *std_job_parts_prm_prp_mtd_bld_pbl
-
-
-- job-template:
-    name: '{name}-local-private-gh-bats'
-
-    <<: *restrict_node
-    <<: *std_scm_trigger
-    # Private uses SSH and requires a key setup
-    <<: *private_gh_job
-    <<: *std_job_parts_prm_prp_mtd_bld
-
-    publishers:
-    - <<: *std_bats_publisher
-
-
-- job-template:
-    name: '{name}-local-gh-bats'
-
-    <<: *restrict_node
-    <<: *std_scm_trigger
-    # Private uses SSH and requires a key setup
-    <<: *std_gh_job
-    <<: *std_job_parts_prm_prp_mtd_bld
-
-    publishers:
-    - <<: *std_bats_publisher
 
 
 # Id: jtb/0.0.3-dev tpl/job-template/main.yaml
