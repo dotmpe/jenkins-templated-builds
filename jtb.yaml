@@ -1,6 +1,7 @@
 
+
 - project:
-    name: 'jtb'
+    name: 'jnk/jtb/jtb'
     defaults: std-freestyle-job
 
     # Job template vars
@@ -34,7 +35,7 @@
     - '{name}-base-0':
         disabled: false
         title: 'Simple Shell Command'
-        htmlDescription: 'Simple Shell Command - from {project-title} v{version}'
+        htmlDescription: 'Simple Shell Command - from {project-title} v{version} ({vendor-repo}:{vendor-path})'
         builders:
         - shell: 'whoami && hostname'
         triggers: []
@@ -73,7 +74,7 @@
 #        htmlDescription: 'with {project-title} v{version}'
 
     - '{name}-base-0':
-        name: jtb-test-cleanup
+        name: jnk/jtb/jtb-test-cleanup
         title: 'JTB test cleanup'
         builders:
         - shell: jenkins-cli delete-job jtb-base-0
@@ -82,38 +83,5 @@
         properties: {}
         parameters: {}
 
-
-- project:
-    name: jtb-juc
-
-    # Job template vars
-    project-title: 'Jenkins User-Content (JTB/jtb.yml)'
-    version: 0.0.0
-    build-summary-image: 'http://www.tupilabs.com/img/posts/2012-10-31_promoting-material-for-jenkins-user-event/jenkins_no_bg.png'
-
-    ## SCM vars
-    vendor-repo: github
-    vendor-path: dotmpe/jenkins-userContent
-    branch: master
-    git-browser: githubweb
-
-    ## Builder vars
-
-    ## Publisher vars
-
-    # tasks publisher (jtb-inline-tasks-parser)
-    project-src: '*'
-
-    # email publisher (jtd-std-email)
-    email-to: dev@dotmpe.com
-
-
-    jobs:
-    - '{name}-gh-travis':
-        disabled: false
-        title: 'Jenkins UserContent'
-        htmlDescription: '{project-title} v{version}'
-        properties: {}
-        parameters: {}
 
 

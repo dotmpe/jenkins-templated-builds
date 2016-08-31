@@ -3,7 +3,7 @@
 
     name: jtb
     disabled: false
-    title: 'GH JTB user (re)install'
+    title: 'GH JTB user (re)install (Travis file)'
     build-summary-image: 'ws/logo.png'
     htmlDescription: "Clone JTB and (re)install (JTB:preset/gh-jtb)"
 
