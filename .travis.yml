@@ -6,7 +6,7 @@ sudo: false
 install:
 - pip install --user ordereddict 'six>=1.5.2' PyYAML 'python-jenkins>=0.4.1' 'pbr>=0.8.2,<2.0' stevedore==1.8.0
 - mkdir -vp $HOME/{.local/{bin,lib},build}
-- bats_repo=https://github.com/dotmpe/bats.git bats_branch=f_run_index ./install-dependencies.sh
+- ./install-dependencies.sh
 
 before_script:
 - jenkins-jobs --version
@@ -25,5 +25,9 @@ branches:
   - '/^[0-9]*\.[0-9]*\.[0-9]*/'
 
 env:
-  - ENV= PATH=$PATH:$HOME/.local/bin TRAVIS_SKIP=1
+- ENV= \
+    PATH=$PATH:$HOME/.local/bin \
+    TRAVIS_SKIP=1 \
+    BATS_REPO=https://github.com/dotmpe/bats.git BATS_BRANCH=f_run_index \
+    JJB_REPO=https://github.com/dotmpe/jenkins-job-builder.git JJB_BRANCH=f_pipeline_dsl
 
