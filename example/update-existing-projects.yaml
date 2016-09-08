@@ -54,7 +54,6 @@
           map['Redis_Key'] = "jenkins:jobs:"+JOB_NAME
           map['scriptpath'] = JENKINS_HOME + "/bin"
           map['base'] = JOB_NAME
-          map['brix_packages'] = '/opt/annex/brix-packages'
 
           // Return map with settings to inject
           return map

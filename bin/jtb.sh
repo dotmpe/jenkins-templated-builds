@@ -21,9 +21,12 @@ test -n "$verbosity" || verbosity=4
 #PREFIX=$HOME/.local
 
 
-subcmd="$1"
-
-shift 1
+test -n "$1" && {
+  subcmd="$1"
+  shift 1
+} || {
+  subcmd=usage
+}
 
 . $JTB_SH_LIB/util.sh
 . $JTB_SH_LIB/jtb.sh

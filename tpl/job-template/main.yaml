@@ -139,7 +139,10 @@
     builders:
     - jtb-travis-builder-0
 
-    <<: *std_job_parts_prm_prp
+    parameters: '{obj:parameters}'
+    properties: '{obj:properties}'
+    publishers: '{obj:publishers}'
+
 
 - job-template:
     name: '{name}-gh-bats'

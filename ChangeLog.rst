@@ -17,5 +17,10 @@
   - TODO: Improve jtb preset flexibiity. See about some way to wizards and
     guided interactive setups and deal with more and more build options.
 
+  - Documenting commands.
+
+  - BUG: raw travis XML is no longer accepted (Jenkins 2.0). The builder
+    must be added by hand.
+
 
 .. Id: jtb/0.0.3-dev ChangeLog.rst

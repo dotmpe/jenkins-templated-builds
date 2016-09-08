@@ -104,6 +104,7 @@
 - gh_job: &gh_job
     name: gh_job
     <<: *generic_freestyle_job
+    <<: *std_gh_co
 
     git-browser: githubweb
     git-browser-url: '{vendor-root}'
