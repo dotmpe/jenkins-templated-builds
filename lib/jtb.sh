@@ -169,6 +169,29 @@ debugcat()
 }
 
 
+jtb__usage()
+{
+  cat <<EOF
+Jenkins-Templated-Builds (for Jenkins Job Builder).
+
+Usage:
+  jtb.sh vars TPL       Print variable placeholders for template.
+  jtb.sh generate TPL_ID JJB_FILES...
+                        Process JJB tpl. of given name, resolves placeholders
+                        from env.
+  jtb.sh preset PRESET_FILE JJB_FILES...
+                        Generate JJB file from JTB preset file and JJB file(s)
+                        with templates.
+  jtb.sh compile-tpl    XXX: alias for preset?
+  jtb.sh compile-preset PRESET_ID
+                        Like 'preset', but accepts only the basename of a file
+                        in the 'presets' folder. And uses dist/base.yaml as
+                        JJB template file.
+
+
+EOF
+}
+
 jtb__vars()
 {
   python $JTB_SH_BIN/jenkins-template-build.py vars $@ || return $?
@@ -187,7 +210,7 @@ jtb__preset()
 jtb__compile_tpl()
 {
   test -e $1 || exit $?
-  # take preset and JJB source yaml and output
+  # call self; take preset and JJB source yaml and output
   $JTB_SH_BIN/$scriptname preset $@ || return $?
 }
 

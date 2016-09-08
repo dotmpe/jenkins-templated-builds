@@ -17,5 +17,7 @@
   - TODO: Improve jtb preset flexibiity. See about some way to wizards and
     guided interactive setups and deal with more and more build options.
 
+  - Documenting commands.
+
 
 .. Id: jtb/0.0.3-dev ChangeLog.rst
