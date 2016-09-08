@@ -100,11 +100,6 @@
     <<: *generic_freestyle_job
     <<: *std_gh_co
 
-    scm:
-    - 'scm-{vendor-repo}-0':
-        vendor-path: '{vendor-path}'
-        branch: '{branch}'
-        credentials-id: '{credentials-id}'
 
 
 ### At last, JJB templates

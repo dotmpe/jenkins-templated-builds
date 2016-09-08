@@ -19,5 +19,8 @@
 
   - Documenting commands.
 
+  - BUG: raw travis XML is no longer accepted (Jenkins 2.0). The builder
+    must be added by hand.
+
 
 .. Id: jtb/0.0.3-dev ChangeLog.rst
