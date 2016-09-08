@@ -4,10 +4,9 @@
 sudo: false
 
 install:
-- pip install --user ordereddict 'six>=1.5.2' PyYAML 'python-jenkins>=0.4.1' 'pbr>=0.8.2,<2.0' stevedore
-# JJB deps and then JJB itself
+- pip install --user ordereddict 'six>=1.5.2' PyYAML 'python-jenkins>=0.4.1' 'pbr>=0.8.2,<2.0' stevedore==1.8.0
 - mkdir -vp $HOME/{.local/{bin,lib},build}
-- bats_branch=f_run_index ./install-dependencies.sh
+- bats_repo=https://github.com/dotmpe/bats.git bats_branch=f_run_index ./install-dependencies.sh
 
 before_script:
 - jenkins-jobs --version
