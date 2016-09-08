@@ -4,19 +4,18 @@
 sudo: false
 
 install:
-- pip install --user ordereddict 'six>=1.5.2' PyYAML 'python-jenkins>=0.4.1' 'pbr>=0.8.2,<2.0'
+- pip install --user ordereddict 'six>=1.5.2' PyYAML 'python-jenkins>=0.4.1' 'pbr>=0.8.2,<2.0' stevedore
 # JJB deps and then JJB itself
 - mkdir -vp $HOME/{.local/{bin,lib},build}
-- './install-dependencies.sh install_jjb'
-- './install-dependencies.sh install_bats'
+- bats_branch=f_run_index ./install-dependencies.sh
 
 before_script:
 - jenkins-jobs --version
 - bats --version
 # TODO: git-versioning
 - test -d dist || mkdir -vp dist
-- echo '[job_builder] ' > $HOME/.jenkins_jobs.ini
-- echo 'allow_empty_variables=True ' >> $HOME/.jenkins_jobs.ini
+#- echo '[job_builder] ' > $HOME/.jenkins_jobs.ini
+#- echo 'allow_empty_variables=True ' >> $HOME/.jenkins_jobs.ini
 
 script:
 - make dist test
