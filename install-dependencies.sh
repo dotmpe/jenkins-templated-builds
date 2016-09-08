@@ -60,7 +60,7 @@ install_jjb()
     local pwd=$(pwd)
     cd $JJB_HOME
 
-    # Insall requirements
+    # Install requirements
     pip install -r requirements.txt
 
     # Install into ~/..user-packages
@@ -85,10 +85,11 @@ install_bats()
   test -n "$bats_branch" || bats_branch=master
   mkdir -vp $SRC_PREFIX
   cd $SRC_PREFIX
-  #git clone https://github.com/sstephenson/bats.git
-  git clone https://github.com/dotmpe/bats.git
+  test -n "$bats_repo" || bats_repo=https://github.com/sstephenson/bats.git
+  test -n "$bats_branch" || bats_branch=master
+  git clone $bats_repo bats
   cd bats
-  git checkout ${bats_branch}
+  git checkout $bats_branch
   ${sudo} ./install.sh $HOME/.local
   cd $pwd
 
