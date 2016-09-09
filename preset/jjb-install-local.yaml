@@ -5,7 +5,7 @@
     disabled: false
     title: 'JJB'
     build-summary-image: 'ws/logo.png'
-    htmlDescription: "Clone JJB and (re)install"
+    htmlDescription: "Clone JJB and (re)install. JTB:preset/jjb-install-local"
     git: 
     branch: master
     project-src:

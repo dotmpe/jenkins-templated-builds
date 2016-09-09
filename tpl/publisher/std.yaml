@@ -2,7 +2,6 @@
 ## YAML aliases: Build publisher parts
 
 - std_analysis_report: &std_analysis_report
-    name: std_analysis_report
 
     raw:
         xml: |
@@ -37,45 +36,62 @@
             <isWarningsDeactivated>true</isWarningsDeactivated>
           </hudson.plugins.analysis.collector.AnalysisPublisher>
 
+    name: std_analysis_report
+
 
 - std_email_publisher: &std_email_publisher
-    name: std_email_publisher
     jtb-std-email:
         email-every-unstable: '{email-every-unstable}'
         email-individuals: '{email-individuals}'
         email-to: '{email-to}'
+    name: std_email_publisher
 
 
 - std_log_parser: &std_log_parser
-    name: std_log_parser
     jtb-std-log-parser:
         log-parser-rules: '{log-parser-rules}'
         unstable-on-warning: '{unstable-on-warning}'
         fail-on-error: '{fail-on-error}'
+    name: std_log_parser
 
 
 - std_tasks_parser: &std_tasks_parser
-    name: std_tasks_parser
     jtb-inline-tasks-parser:
         project-src: '{project-src}'
+    name: std_tasks_parser
 
 
-
+# XXX: can use taps directly
 - std_bats_publisher: &std_bats_publisher
-    name: std_bats_publisher
     raw:
       xml: |
         <org.tap4j.plugin.TapPublisher plugin="tap@1.23">
-          <testResults>build/test-results.tap</testResults>
-          <failIfNoResults>false</failIfNoResults>
-          <failedTestsMarkBuildAsFailure>false</failedTestsMarkBuildAsFailure>
-          <outputTapToConsole>false</outputTapToConsole>
-          <enableSubtests>false</enableSubtests>
-          <discardOldReports>false</discardOldReports>
-          <todoIsFailure>false</todoIsFailure>
-          <includeCommentDiagnostics>false</includeCommentDiagnostics>
-          <validateNumberOfTests>false</validateNumberOfTests>
-          <planRequired>{require-tap-plan}</planRequired>
-          <verbose>true</verbose>
+          <testResults>{bats-tap-results}</testResults>
+          <failIfNoResults>{bats-tap-require-tests}</failIfNoResults>
+          <failedTestsMarkBuildAsFailure>{bats-tap-fail-build}</failedTestsMarkBuildAsFailure>
+          <outputTapToConsole>{bats-tap-console-output}</outputTapToConsole>
+          <enableSubtests>{bats-tap-enable-subtests}</enableSubtests>
+          <discardOldReports>{bats-tap-discard-old}</discardOldReports>
+          <todoIsFailure>{bats-tap-todo-is-failure}</todoIsFailure>
+          <includeCommentDiagnostics>{bats-tap-include-diagnostics}</includeCommentDiagnostics>
+          <validateNumberOfTests>{bats-tap-validate-test-number}</validateNumberOfTests>
+          <planRequired>{require-bats-tap-plan}</planRequired>
+          <verbose>{bats-tap-verbose}</verbose>
         </org.tap4j.plugin.TapPublisher>
+    name: std_bats_publisher
+
+- publisher:
+    name: std-tap-publisher
+    description: |
+      Current tap in JJB does not support test-plan setting.
+      See raw publisher as alternative.
+    publishers:
+    - tap:
+        results: '{tap-results}'
+
+- publisher:
+    name: bats-tap
+
+    publishers:
+      - <<: *std_bats_publisher
 

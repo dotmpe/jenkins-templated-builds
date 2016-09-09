@@ -16,14 +16,14 @@
 
 
 - git_branchless_co: &git_branchless_co
-    name: git_branchless_co
 
     <<: *git_co
     branches:
     - '{branch}'
 
+    name: git_branchless_co
 
-# FIXME: git-branch-co stopped working at VS1?
+
 - git_branch_co: &git_branch_co
     name: git_branch_co
 
@@ -32,13 +32,24 @@
     - 'origin/{branch}'
     local-branch: '{branch}'
 
+    name: origin
+
 
 - std_git_co: &std_git_co
-    name: std_git_co
 
     scm:
     - git:
         <<: *git_co
+
+    name: std_git_co
+
+
+- std_git_branch_co: &std_git_branch_co
+    name: std_git_branch_co
+
+    scm:
+    - git:
+        <<: *git_branch_co
 
 
 - vnd_git_co: &vnd_git_co
@@ -88,7 +99,7 @@
 - private_gh_co: &private_gh_co
     name: 'private_gh_co'
 
-    <<: *gh_shared_parts
+    #<<: *gh_shared_parts
     git-browser: githubweb
     git-browser-url: 'https://github.com/'
     vendor-root: 'git@github.com:'
@@ -103,10 +114,11 @@
 - std_gh_co: &std_gh_co
     name: 'std_gh_co'
 
-    <<: *gh_shared_parts
+    #<<: *gh_shared_parts
     git-browser: githubweb
-    git-browser-url: 'https://github.com/'
+    git-browser-url: '{vendor-root}'
     vendor-root: 'https://github.com/'
+
     scm:
     - git:
         <<: *git_branchless_co
@@ -126,9 +138,10 @@
 
 
 - std_pollscm: &std_pollscm
-    name: 'std_pollscm'
 
     pollscm: "*/1 * * * *"
+
+    name: 'std_pollscm'
 
 
 - std_scm_trigger: &std_scm_trigger
@@ -136,6 +149,26 @@
 
     triggers:
     - <<: *std_pollscm
+
+
+
+
+
+### Some more JJB Action macros
+
+## SCM macro
+
+- scm:
+    name: 'scm-github-0'
+
+    <<: *std_gh_co
+
+
+# FIXME: test this later, using yaml alias for now
+#    scm:
+#    - 'scm-github-0':
+#vendor-path: '{vendor-path}'
+#    branch: '{branch}'
 
 
 

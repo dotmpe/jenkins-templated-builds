@@ -52,13 +52,21 @@ install_jjb()
 
     mkdir -vp $(dirname $JJB_HOME)
 
+    test -n "$JJB_REPO" \
+      || JJB_REPO=https://git.openstack.org/openstack-infra/jenkins-job-builder
+    test -n "$JJB_BRANCH" || JJB_BRANCH=master
+
     log "Cloning JJB.."
-    git clone https://git.openstack.org/openstack-infra/jenkins-job-builder $JJB_HOME \
+    git clone $JJB_REPO $JJB_HOME \
       || err "Error cloning to $JJB_HOME" 1
 
     log "Installing JJB.."
     local pwd=$(pwd)
     cd $JJB_HOME
+    git checkout $JJB_BRANCH
+
+    # Install requirements
+    pip install -r requirements.txt
 
     # Install into ~/..user-packages
     python setup.py install --user \
@@ -79,13 +87,14 @@ install_bats()
 {
   echo "Installing bats"
   local pwd=$(pwd)
+  test -n "$BATS_BRANCH" || BATS_BRANCH=master
   mkdir -vp $SRC_PREFIX
   cd $SRC_PREFIX
-  test -n "$bats_repo" || bats_repo=https://github.com/sstephenson/bats.git
-  test -n "$bats_branch" || bats_branch=master
-  git clone $bats_repo
+  test -n "$BATS_REPO" || BATS_REPO=https://github.com/sstephenson/bats.git
+  test -n "$BATS_BRANCH" || BATS_BRANCH=master
+  git clone $BATS_REPO bats
   cd bats
-  git checkout $bats_branch
+  git checkout $BATS_BRANCH
   ${sudo} ./install.sh $HOME/.local
   cd $pwd
 

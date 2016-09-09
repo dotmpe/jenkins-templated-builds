@@ -1,0 +1,37 @@
+
+- defaults:
+    name: workflow
+      
+    title: 'Workflow {name}'
+    dsl-script-name: .Jenkinsfile
+    pollscm-cron:  "*/1 * * * *" 
+
+
+- job-template:
+    name: '{name}-gh-wf'
+    defaults: workflow
+      
+    title: '{title}'
+    project-type: workflow
+
+    triggers:
+    - pollscm:
+        cron: "{pollscm-cron}"
+    - github
+
+    vendor-repo: github
+
+    dsl:
+      script-name: '{dsl-script-name}'
+
+      scm:
+      - 'scm-{vendor-repo}-0':
+          vendor-root: '{vendor-root}'
+          vendor-path: '{vendor-path}'
+          branch: '{branch}'
+          credentials-id: '{credentials-id}'
+          git-browser: '{git-browser}'
+          git-browser-url: '{vendor-root}'
+          git-recursive-init: '{git-recursive-init}'
+
+

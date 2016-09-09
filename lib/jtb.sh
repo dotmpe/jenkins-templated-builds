@@ -14,7 +14,7 @@ jtb__process()
   test -d "$1" || error "Should be dir: $1" 1
   test -d "$2" || error "Should be dir: $2" 1
 
-
+  # Process includes on every YAML from $1:src/
   find $1 -iname '*.y*ml' | while read file
   do
 
@@ -44,9 +44,14 @@ jtb__process_includes()
   test -d "$2" || error "Should be dir: $2" 1
   test -n "$3" || set -- "$1" "$2" "/tmp/${scriptname}"
   test -d "$3" || mkdir -vp "$3"
+  test -z "$4" || error "surplus arguments: '$4'" 1
 
-  relinput="$(relpath "$1" "$2")"
+
+  # Read includes from source
+
+  relinput="$(relpath ${1} ${2})"
   output="$3/$relinput"
+
   mkdir -vp $3/$(dirname $relinput)
   cp $1 $output
 
@@ -62,11 +67,11 @@ jtb__process_includes()
       linenr="$(echo "$proc" | cut -d ':' -f 1)"
       printf -- "\n" > $output
       head -n $(( $linenr - 1 )) $output.tmp >> $output
-      include="$(relpath $2/$pathid)"
-      test -s "$include" && {
-        echo "# Start of include $include {{{" >> $output
-        cat $include >> $output
-        echo "# }}} End of include $include" >> $output
+      input=$2/$pathid
+      test -s "$input" && {
+        echo "# Start of include $input {{{" >> $output
+        cat $input >> $output
+        echo "# }}} End of include $input " >> $output
       } || {
         msg="Warning $0 unable to resolve $2 $pathid"
         warn "$msg"
@@ -94,11 +99,19 @@ jtb__update()
 
   flags=
   #flags="-l debug --ignore-cache "
-  flags="--ignore-cache "
-  test -e "$HOME/.jenkins_jobs.ini" && flags="$flags --conf $HOME/.jenkins_jobs.ini"
+  # FIXME --allow-empty-variables should not be needed with proper templates
+  # and would allow for better, more useful tests
+  flags="--ignore-cache --allow-empty-variables"
+
+	debug "Usings flag = $flags"
 
   #jenkins-jobs --version && {
   test -e $JJB_CONFIG && {
+	  debug "Using JJB_CONFIG = $JJB_CONFIG"
+
+    # Add additional jenkins_job settings if exists
+    test -e "$HOME/.jenkins_jobs.ini" \
+      && flags="$flags --conf $HOME/.jenkins_jobs.ini"
 
     test "$DRY" != "0" && {
       log " ** Dry-Run ** "
@@ -169,6 +182,29 @@ debugcat()
 }
 
 
+jtb__usage()
+{
+  cat <<EOF
+Jenkins-Templated-Builds (for Jenkins Job Builder).
+
+Usage:
+  jtb.sh vars TPL       Print variable placeholders for template.
+  jtb.sh generate TPL_ID JJB_FILES...
+                        Process JJB tpl. of given name, resolves placeholders
+                        from env.
+  jtb.sh preset PRESET_FILE JJB_FILES...
+                        Generate JJB file from JTB preset file and JJB file(s)
+                        with templates.
+  jtb.sh compile-tpl    XXX: alias for preset?
+  jtb.sh compile-preset PRESET_ID
+                        Like 'preset', but accepts only the basename of a file
+                        in the 'presets' folder. And uses dist/base.yaml as
+                        JJB template file.
+
+
+EOF
+}
+
 jtb__vars()
 {
   python $JTB_SH_BIN/jenkins-template-build.py vars $@ || return $?
@@ -181,20 +217,22 @@ jtb__generate()
 
 jtb__preset()
 {
+  # take preset and JJB source yaml and output
+  test -e $1 || exit $?
   python $JTB_SH_BIN/jenkins-template-build.py preset $@ || return $?
 }
 
 jtb__compile_tpl()
 {
   test -e $1 || exit $?
-  # take preset and JJB source yaml and output
+  # call self; take preset and JJB source yaml and output
   $JTB_SH_BIN/$scriptname preset $@ || return $?
 }
 
 jtb__compile_preset()
 {
   verbosity=0 \
-    $JTB_SH_BIN/$scriptname compile-tpl $JTB_SHARE/preset/$1.yaml $JTB_JJB_LIB/base.yaml \
+    $JTB_SH_BIN/$scriptname preset $JTB_SHARE/preset/$1.yaml $JTB_JJB_LIB/base.yaml \
           > $1.yaml || return $?
 }
 

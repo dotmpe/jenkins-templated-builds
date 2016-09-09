@@ -1,15 +1,15 @@
 
 - '{name}-gh-travis':
 
-    name: jtb
-    disabled: false
-    title: 'GH JTB user (re)install (Travis file)'
+    name: name-placeholder
+    disabled: true
+    title: 'Generic JTB GitHub-Travis build'
     build-summary-image: 'ws/logo.png'
-    htmlDescription: "Clone JTB and (re)install (JTB:preset/gh-jtb)"
+    htmlDescription: "Clone project from GitHub, and run build defined in .travis.yml file"
 
     vendor-repo: github
-    vendor-path: dotmpe/jenkins-templated-builds
-    branch: test
+    vendor-path: example/project
+    branch: master
     git-browser: githubweb
     project-src: '*.sh,*.yaml,tpl/*.yaml,preset/*.yaml,*.py'
     email-individuals: false

@@ -1,0 +1,105 @@
+
+- '{name}-free-git':
+
+    name: jtb-presets
+    defaults: std-freestyle-job
+
+    title: 'Update JTB projects'
+    htmlDescription: "Checkout and scan for JTB presets. Compile each to JJB, and run jenkins-jobs update. JTB:preset/jtb-presets"
+    build-summary-image: 'ws/logo.png'
+    disabled: true
+    concurrent: false
+
+    email-individuals: false
+    email-to:
+    fail-on-error: true
+    unstable-on-warning: true
+    publish-on-error: True
+
+    git-url: 'http://github.com/dotmpe/jenkins-templated-builds.git'
+
+    #browser: githubweb
+
+    branch: master
+    git-recursive-init: False
+    credentials-id: ""
+
+    metadata: []
+
+    parameters:
+
+    - string:
+        name: repo_url
+        default: http://github.com/dotmpe/jenkins-templated-builds.git
+
+    - string:
+        name: repo_branch
+        default: master
+
+    - text:
+        name: jtb_vars
+        default: |
+          jtb_disabled=true
+          
+    - string:
+        name: jtb_preset_yml_pattern
+        default: .jtb-*.y*ml
+
+    - string:
+        name: job_name_prefix
+        default: jtb-preset/
+
+    - string:
+        name: yaml_exts
+        default: .yaml .yml
+
+    - bool:
+        name: jjb_update
+        default: false
+
+    properties: []
+
+    builders:
+      - shell: |
+          test -n "$JTB_HOME" || exit 12
+
+          git clone $repo_url build/jtb-project --branch $repo_branch
+          cd build/jtb-project
+
+          jjb_jobs=/tmp/jenkins-jtb.yml
+          test ! -e $jjb_jobs || rm $jjb_jobs
+
+          test -n "$jtb_presets" || {{
+            jtb_presets="$(echo $jtb_preset_yml_pattern)"
+            test "$jtb_presets" != "$jtb_preset_yml_pattern" || {{
+              echo "Nothing todo"
+              exit 0
+            }}
+          }}
+
+          for jtb_preset in $jtb_presets
+          do
+            leafname=$jtb_preset
+            for yaml_ext in $yaml_exts
+            do
+              leafname=$(basename $leafname $yaml_ext)
+            done
+
+            export jtb_name=$job_name_prefix$leafname $jtb_vars
+
+            $JTB_HOME/bin/jtb.sh preset $jtb_preset \
+              >> $jjb_jobs
+          done
+
+          test "$jjb_update" = "true" && {{
+            jenkins-jobs update $jjb_jobs:$JTB_HOME/dist/base.yaml
+          }} || {{
+            jenkins-jobs test $jjb_jobs:$JTB_HOME/dist/base.yaml
+          }}
+
+    publishers:
+      - ws-cleanup:
+          delete-ws-after-failure: true
+
+
+

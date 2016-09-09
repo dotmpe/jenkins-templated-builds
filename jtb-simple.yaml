@@ -19,7 +19,7 @@
     node: master
 
     display-name: 'JTB [simple]'
-    description: ''
+    description: 'JTB:jtb-simple.yaml'
 
     logrotate:
       daysToKeep: -1
@@ -71,7 +71,7 @@
     - email:
         notify-every-unstable-build: false
         send-to-individuals: false
-        recipients: berend@brixcrm.nl
+        recipients: dev@dotmpe.com
 
     # Publish combined analysis, nice for a bit extra info
     - raw:

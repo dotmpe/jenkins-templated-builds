@@ -1,13 +1,13 @@
 
 
 - job:
-    name: Jenkins/update-existing-projects
+    name: jnk/update-existing-projects
 
     project-id: jenkins-templated-builds
     project-type: freestyle
     display-name: 'Update Projects'
-    disabled: false
-    description: 'Update all jobs. '
+    disabled: true
+    description: 'Update all jobs. JTB:example/update-existing-projects'
     node: master
     concurrent: false
 
@@ -54,7 +54,6 @@
           map['Redis_Key'] = "jenkins:jobs:"+JOB_NAME
           map['scriptpath'] = JENKINS_HOME + "/bin"
           map['base'] = JOB_NAME
-          map['brix_packages'] = '/opt/annex/brix-packages'
 
           // Return map with settings to inject
           return map

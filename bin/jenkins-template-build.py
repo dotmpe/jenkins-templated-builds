@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 """
 
 Helper to find template from files, return placeholders,
@@ -18,6 +17,7 @@ import re
 import sys
 
 import yaml
+import types
 
 
 version = '0.0.3-dev' # jtb
@@ -42,7 +42,7 @@ def get_preset(path):
     return base[0].items()[0]
 
 
-block_keys = "name parameters properties triggers scm builders publishers wrappers axes".split(' ')
+block_keys = "name metadata parameters properties triggers scm builders publishers wrappers axes".split(' ')
 
 def get_defaults(path, keys, jjb_template_id):
 
@@ -124,6 +124,35 @@ def find_template_vars(obj):
             for y in g:
                 if y: yield y
 
+def parse_value(v):
+    if v.lower() in 'true':
+        return True
+    elif v.lower() in 'false':
+        return False
+    else:
+        return v
+
+def clean_tpl_data(vars, key):
+    if key in block_keys:
+        if key not in vars:
+            vars[key] = []
+        if isinstance(vars[key], basestring) and vars[key].startswith('{obj:'):
+            vars[key] = []
+    if isinstance(vars[key], basestring) and vars[key].startswith('{obj:'):
+        vars[key] = False
+    if isinstance(vars[key], types.NoneType):
+        vars[key] = ''
+
+def resolve_placeholder(key, vars, defaults):
+    if key not in vars:
+        vars[key] = defaults.get(key, None)
+
+    clean_tpl_data( vars, key )
+
+    env_key = "jtb_%s" % key.replace('-', '_')
+    if os.getenv(env_key):
+        vars[key] = parse_value(os.getenv(env_key))
+
 
 def format_job(jjb_template_id, vars):
 
@@ -140,10 +169,9 @@ def format_job(jjb_template_id, vars):
 
     for key in block_keys:
         if key in vars:
+            # Delete default block value
             if isinstance(vars[key], basestring) and vars[key].startswith('{obj:'):
-            	vars[key] = {}
-            else:
-            	del vars[key]
+            	vars[key] = []
 
     jjb_tpld_job = [ { 'project': {
         'name': name,
@@ -164,7 +192,12 @@ def find_template(jjb_template_id, *template_files):
     return path, template
 
 
+
 def run_vars(jjb_template_id, *template_files):
+
+    """
+    Show the JJB placeholders for template ID that have no default values.
+    """
 
     path, template = find_template(jjb_template_id, *template_files)
     placeholders = list(set(find_template_vars(template)))
@@ -172,10 +205,9 @@ def run_vars(jjb_template_id, *template_files):
     defaults = get_defaults(path, placeholders, jjb_template_id)
 
     for key in placeholders:
-        seed[key] = os.getenv(key, defaults.get(key, None))
+        resolve_placeholder( key, seed, defaults)
 
-    for key in placeholders:
-        print key, seed.get(key, None)
+    print yaml.dump(seed, default_flow_style=False)
 
 
 def generate_job(jjb_template_id, *template_files):
@@ -189,27 +221,32 @@ def generate_job(jjb_template_id, *template_files):
 
 def run_generate(jjb_template_id, *template_files):
 
+    """
+    Generate JJB config by loading given job-template ID, and resolving
+    the placeholders from variables in the shell environment.
+    """
+
     placeholders, defaults = generate_job(jjb_template_id, *template_files)
     seed = dict( zip(placeholders, ( [None] * len(placeholders) )) )
 
     for key in placeholders:
-        seed[key] = os.getenv(key, defaults.get(key, None))
-        # TODO: parse some block stuff?
-        if key in block_keys and not seed[key]:
-            seed[key] = {}
+        resolve_placeholder( key, seed, defaults)
 
     print format_job(jjb_template_id, seed)
 
 
 def run_preset(preset_file, *template_files):
 
-    jjb_template_id, seed = get_preset(preset_file)
+    """
+    Generate a job using job-template ID like 'generate', except load
+    the template ID, name and default values from YAML preset file.
+    """
 
+    jjb_template_id, seed = get_preset(preset_file)
     placeholders, defaults = generate_job(jjb_template_id, *template_files)
 
     for key in placeholders:
-        if key not in seed or seed[key] == None:
-            seed[key] = defaults.get(key, None)
+        resolve_placeholder( key, seed, defaults)
 
     print format_job(jjb_template_id, seed)
 

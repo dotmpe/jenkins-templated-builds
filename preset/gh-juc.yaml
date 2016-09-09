@@ -5,7 +5,7 @@
     disabled: false
     title: 'Jenkins JS/CSS'
     build-summary-image: 'ws/logo.png'
-    htmlDescription: ""
+    htmlDescription: "JTB:preset/gh-juc"
     vendor-repo: github
     vendor-path: dotmpe/jenkins-userContent
     branch: master

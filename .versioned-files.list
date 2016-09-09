@@ -1,4 +1,6 @@
 ReadMe.rst
+ChangeLog.rst
+doc/initial-analysis.rst
 jtb.yaml
 jtb-simple.yaml
 tpl/base.yaml

@@ -1,9 +1,11 @@
 
+
 - project:
-    name: 'jtb'
+    name: 'jnk/jtb/jtb'
+    defaults: std-freestyle-job
 
     # Job template vars
-    project-title: 'Jenkins Templated Builds'
+    project-title: 'Jenkins Templated Builds (\$JTB_HOME jtb.yml)'
     version: 0.0.3-dev # jtb
     #build-summary-image: /userContent/jenkins-build-templates.png
     build-summary-image: 'http://www.tupilabs.com/img/posts/2012-10-31_promoting-material-for-jenkins-user-event/jenkins_no_bg.png'
@@ -32,31 +34,29 @@
     jobs:
     - '{name}-base-0':
         disabled: false
-        title: 'Shell test'
-        htmlDescription: 'Shell Job {project-title} v{version}'
+        title: 'Simple Shell Command'
+        htmlDescription: 'Simple Shell Command - from {project-title} v{version} ({vendor-repo}:{vendor-path})'
         builders:
         - shell: 'whoami && hostname'
-        triggers:
-        - pollscm:
-            cron: 'H/5 * * * *'
-        properties: {}
-        parameters: {}
+        triggers: []
+        properties: []
+        parameters: []
 
-    - '{name}-jtb-0':
-        name: test
-        disabled: false
-        title: 'JTB test'
-        htmlDescription: 'Testing {project-title} v{version} with JJB'
-        properties: {}
-        parameters: {}
-
-    - '{name}-jtb-1':
-        name: update
-        disabled: false
-        title: 'JTB1 update'
-        htmlDescription: 'Running JTB? with {project-title} v{version}'
-        properties: {}
-        parameters: {}
+#    - '{name}-jtb-0':
+#        name: test
+#        disabled: false
+#        title: 'JTB test'
+#        htmlDescription: 'Testing {project-title} v{version} with JJB'
+#        properties: []
+#        parameters: []
+#
+#    - '{name}-jtb-1':
+#        name: update
+#        disabled: false
+#        title: 'JTB1 update'
+#        htmlDescription: 'Running JTB? with {project-title} v{version}'
+#        properties: []
+#        parameters: []
 
 #    - '{name}-jtb-2':
 #        disabled: true
@@ -74,7 +74,7 @@
 #        htmlDescription: 'with {project-title} v{version}'
 
     - '{name}-base-0':
-        name: jtb-test-cleanup
+        name: jnk/jtb/jtb-test-cleanup
         title: 'JTB test cleanup'
         builders:
         - shell: jenkins-cli delete-job jtb-base-0
@@ -83,40 +83,5 @@
         properties: {}
         parameters: {}
 
-- defaults:
-    name: jtb-juc
-
-    # Job template vars
-    project-title: 'Jenkins User-Content'
-    version: 0.0.0
-    build-summary-image: 'http://www.tupilabs.com/img/posts/2012-10-31_promoting-material-for-jenkins-user-event/jenkins_no_bg.png'
-
-    ## SCM vars
-    vendor-repo: github
-    vendor-path: dotmpe/jenkins-userContent
-    branch: master
-
-    ## Builder vars
-
-    ## Publisher vars
-
-    # tasks publisher (jtb-inline-tasks-parser)
-    project-src: '*'
-
-    # email publisher (jtd-std-email)
-    email-to: dev@dotmpe.com
-
-
-- project:
-    name: 'jtb-juc'
-    defaults: jtb-juc
-
-    jobs:
-    - '{name}-gh-travis':
-        disabled: false
-        title: 'Jenkins UserContent'
-        htmlDescription: '{project-title} v{version}'
-        properties: {}
-        parameters: {}
 
 
