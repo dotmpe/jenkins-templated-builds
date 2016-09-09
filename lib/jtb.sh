@@ -99,6 +99,8 @@ jtb__update()
 
   flags=
   #flags="-l debug --ignore-cache "
+  # FIXME --allow-empty-variables should not be needed with proper templates
+  # and would allow for better, more useful tests
   flags="--ignore-cache --allow-empty-variables"
 
 	debug "Usings flag = $flags"
