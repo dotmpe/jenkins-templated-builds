@@ -99,7 +99,7 @@ jtb__update()
 
   flags=
   #flags="-l debug --ignore-cache "
-  flags="--ignore-cache "
+  flags="--ignore-cache --allow-empty-variables"
 
 	debug "Usings flag = $flags"
 
