@@ -32,5 +32,6 @@
           credentials-id: '{credentials-id}'
           git-browser: '{git-browser}'
           git-browser-url: '{vendor-root}'
+          git-recursive-init: '{git-recursive-init}'
 
 
