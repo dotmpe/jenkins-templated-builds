@@ -11,24 +11,26 @@ test::
 			&& git remote -v \
 			&& git checkout $(BRANCH) && git pull origin "$(BRANCH)"; \
 	}
-	@failed=/tmp/jtb-test.failed; \
+	@\
+	failed=/tmp/jtb-test.failed; \
 	for preset_path in preset/*.yaml; do \
 		preset=$$(basename $$preset_path .yaml); \
 		./bin/jtb.sh compile-preset $$preset || { \
 			echo jtb:compile-preset:$$preset >>$$failed; \
-			continue; } \
-		DRY=1 files=$$preset.yaml:dist/base.yaml ./bin/jtb.sh update || {
+			continue; }; \
+		DRY=1 files=$$preset.yaml:dist/base.yaml ./bin/jtb.sh update || { \
 			echo jtb:update:dry-run:preset:$$preset >>$$failed; \
 		}; \
 	done; \
-	@for jjb_path in example/*.yaml ./*.yaml; do \
+	for jjb_path in example/*.yaml ./*.yaml; do \
 		DRY=1 files=$$jjb_path:dist/base.yaml ./bin/jtb.sh update \
 		|| echo jtb:update:dry-run:$$jjb_path >>$$failed; \
 	done; \
 	$(shell hostname -s | tr 'a-z' 'A-Z' | sed 's/[^0-9A-Z_]/_/g')_SKIP=1 \
 		./test/*-spec.bats || echo jtb:bats >>$$failed; \
-	test -s "$$failed" && { echo "Failed tests:";cat $$failed;\
-			} || rm -f $$failed
+	test -s "$$failed" && { \
+	  echo "Failed tests:";cat $$failed;\
+	} || rm -f $$failed
 
 	#jenkins-jobs test dist/base.yaml:jtb.yaml
 
