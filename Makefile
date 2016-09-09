@@ -29,10 +29,8 @@ test::
 	$(shell hostname -s | tr 'a-z' 'A-Z' | sed 's/[^0-9A-Z_]/_/g')_SKIP=1 \
 		./test/*-spec.bats || echo jtb:bats >>$$failed; \
 	test -s "$$failed" && { \
-	  echo "Failed tests:";cat $$failed;\
+	  echo "Failed tests:";cat $$failed;exit 1; \
 	} || rm -f $$failed
-
-	#jenkins-jobs test dist/base.yaml:jtb.yaml
 
 update: DRY := 1
 update: FILES := 
