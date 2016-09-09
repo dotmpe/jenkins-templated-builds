@@ -118,4 +118,4 @@ Also on the wishlist: pip, npm, bower, docker, arduino, docs (python docutils, o
 
 
 
-.. Id: jtb/0.0.3-dev
+.. Id: jtb/0.0.3 doc/initial-analysis.rst

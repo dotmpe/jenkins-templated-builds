@@ -10,17 +10,18 @@
   - Added python program to handle compiling JJB templates from a new non-JJB YAML structure.
     Attempting to support generating jobs for other projects, see preset/ directory.
 
-(0.0.3)
+0.0.3
   - Cleaned up the script and doc structure a bit, moving things to separate
     subdirs.
-
-  - TODO: Improve jtb preset flexibiity. See about some way to wizards and
-    guided interactive setups and deal with more and more build options.
 
   - Documenting commands.
 
   - BUG: raw travis XML is no longer accepted (Jenkins 2.0). The builder
     must be added by hand.
 
+[0.0.4]
+  - TODO: Improve jtb preset flexibiity. See about some way to wizards and
+    guided interactive setups and deal with more and more build options.
 
-.. Id: jtb/0.0.3-dev ChangeLog.rst
+
+.. Id: jtb/0.0.3 ChangeLog.rst

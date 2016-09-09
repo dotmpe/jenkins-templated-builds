@@ -3,7 +3,7 @@
 set -e
 
 scriptname=jtb.sh
-version=0.0.3-dev # jtb
+version=0.0.3 # jtb
 
 test -n "$JTB_HOME" || export JTB_HOME=$(dirname $(dirname $0))
 test -n "$JTB_SH_BIN" || export JTB_SH_BIN=$JTB_HOME/bin

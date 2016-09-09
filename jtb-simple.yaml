@@ -5,7 +5,7 @@
 - project:
     name: jtb
 
-    version: 0.0.3-dev # jtb
+    version: 0.0.3 # jtb
 
     jobs:
     - jtb-simple

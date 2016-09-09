@@ -2,7 +2,7 @@
 
 set -e
 
-# Id: jtb/0.0.3-dev lib/user-scripts.sh
+# Id: jtb/0.0.3 lib/user-scripts.sh
 
 
 # XXX: for local dev use, may want multiple source repositories
