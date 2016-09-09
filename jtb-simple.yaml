@@ -18,8 +18,11 @@
     disabled: false
     node: master
 
-    display-name: 'JTB [simple]'
-    description: 'JTB:jtb-simple.yaml'
+    display-name: 'JTB update [simple]'
+    description: |
+      Reconfigures itself.
+
+      (dotmpe/jenkins-templated-builds/jtb-simple.yaml)
 
     logrotate:
       daysToKeep: -1
@@ -44,7 +47,7 @@
     wrappers:
     - timestamps
     - ansicolor:
-        colormap: vga
+        colormap: css
 
     # Add build to environment view
     - raw:
