@@ -20,7 +20,7 @@ import yaml
 import types
 
 
-version = '0.0.3' # jtb
+version = '0.0.4-dev' # jtb
 
 def get_template(path, jjb_template_id):
 

@@ -24,4 +24,4 @@
     guided interactive setups and deal with more and more build options.
 
 
-.. Id: jtb/0.0.3 ChangeLog.rst
+.. Id: jtb/0.0.4-dev ChangeLog.rst
