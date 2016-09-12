@@ -136,11 +136,13 @@
     <<: *std_gh_job
     <<: *std_console_output_wrapper
 
+    parameters: '{obj:parameters}'
+    properties: '{obj:properties}'
+    metadata: '{obj:metadata}'
+
     builders:
     - jtb-travis-builder-0
 
-    parameters: '{obj:parameters}'
-    properties: '{obj:properties}'
     publishers: '{obj:publishers}'
 
 
@@ -152,8 +154,14 @@
     <<: *std_gh_job
     <<: *std_console_output_wrapper
 
+    parameters: '{obj:parameters}'
+    properties: '{obj:properties}'
+    metadata: '{obj:metadata}'
+    builders: '{obj:builders}'
+
     publishers:
     - <<: *std_bats_publisher
+
 
 - job-template:
     name: '{name}-local-gh'
