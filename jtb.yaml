@@ -35,7 +35,10 @@
     - '{name}-base-0':
         disabled: false
         title: 'Simple Shell Command'
-        htmlDescription: 'Simple Shell Command - from {project-title} v{version} ({vendor-repo}:{vendor-path})'
+        htmlDescription: |
+          Job with just one builder: a shell running <code>whoami && hostname</code>.
+    
+          <p>From <code class="muted">{project-title} v{version} ({vendor-repo}:{vendor-path})</code>
         builders:
         - shell: 'whoami && hostname'
         triggers: []
@@ -77,7 +80,7 @@
         name: jnk/jtb/jtb-test-cleanup
         title: 'JTB test cleanup'
         builders:
-        - shell: jenkins-cli delete-job jtb-base-0
+        - shell: jenkins-cli delete-job {name}-base-0
         triggers: {}
 
         properties: {}
