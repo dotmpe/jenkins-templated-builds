@@ -13,6 +13,7 @@ test::
 	}
 	@\
 	failed=/tmp/jtb-test.failed; \
+	test ! -e $$failed || rm $$failed; \
 	for preset_path in preset/*.yaml; do \
 		preset=$$(basename $$preset_path .yaml); \
 		./bin/jtb.sh compile-preset $$preset || { \
