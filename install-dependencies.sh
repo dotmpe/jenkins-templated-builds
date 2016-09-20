@@ -86,37 +86,33 @@ install_git_versioning()
 
 install_jjb()
 {
-  test -d "$JJB_HOME" && {
-
-    log "JJB_HOME exists: $JJB_HOME"
-
-  } || {
+  test -d "$JJB_HOME" || {
 
     mkdir -vp $(dirname $JJB_HOME)
 
     test -n "$JJB_REPO" \
       || JJB_REPO=https://git.openstack.org/openstack-infra/jenkins-job-builder
-    test -n "$JJB_BRANCH" || JJB_BRANCH=master
 
     log "Cloning JJB.."
     git clone $JJB_REPO $JJB_HOME \
       || err "Error cloning to $JJB_HOME" 1
-
-    log "Installing JJB.."
-    local pwd=$(pwd)
-    cd $JJB_HOME
-    git checkout $JJB_BRANCH || return $?
-
-    # Install requirements
-    pip install -r requirements.txt || return $?
-
-    # Install into ~/..user-packages
-    python setup.py install --user \
-      && log "JJB install complete" \
-      || err "Error during JJB installation" 1
-
-    cd $pwd
   }
+
+  log "Installing JJB.."
+  local pwd=$(pwd)
+  cd $JJB_HOME
+  test -n "$JJB_BRANCH" || JJB_BRANCH=master
+  git checkout $JJB_BRANCH || return $?
+
+  # Install requirements
+  pip install -r requirements.txt || return $?
+
+  # Install into ~/..user-packages
+  python setup.py install --user \
+    && log "JJB install complete" \
+    || err "Error during JJB installation" 1
+
+  cd $pwd
 
   jenkins-jobs --version && {
     log "JJB install OK"
