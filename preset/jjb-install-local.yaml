@@ -3,9 +3,10 @@
 
     name: latest
     disabled: false
-    title: 'JJB'
+    title: 'JJB Test'
     build-summary-image: 'ws/logo.png'
-    htmlDescription: "Clone JJB and (re)install. JTB:preset/jjb-install-local"
+    htmlDescription: |
+      Test JJB: run unittests, and run all local templates (preset, exampels).
     git: 
     branch: master
     project-src:
