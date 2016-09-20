@@ -111,7 +111,7 @@ jtb__update()
 
     # Add additional jenkins_job settings if exists
     test -e "$HOME/.jenkins_jobs.ini" \
-      && flags="$flags --conf $HOME/.jenkins_jobs.ini"
+      && flags="$flags --allow-empty-variables --conf $HOME/.jenkins_jobs.ini"
 
     test "$DRY" != "0" && {
       log " ** Dry-Run ** "
