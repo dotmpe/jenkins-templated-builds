@@ -2,22 +2,28 @@
 
 set -e
 
-
-# JTB dep installer for travis
-
-
 test -z "$Build_Debug" || set -x
 
 test -z "$Build_Deps_Default_Paths" || {
-  test -n "$SRC_PREFIX" || SRC_PREFIX=$HOME/build
-  test -n "$PREFIX" || PREFIX=$HOME/.local
-# XXX: test -n "$PREFIX" || PREFIX=/usr/local
+
+  test -n "$SRC_PREFIX" || {
+    test -w /src/ \
+      && SRC_PREFIX=/src/ \
+      || SRC_PREFIX=$HOME/build
+  }
+
+  test -n "$PREFIX" || {
+    test -w /usr/local/ \
+      && PREFIX=/usr/local/ \
+      || PREFIX=$HOME/.local
+  }
 }
 
 test -n "$sudo" || sudo=
 test -z "$sudo" || pref="sudo $pref"
 test -z "$dry_run" || pref="echo $pref"
-test -n "$verbosity" || verbosity=4
+test -n "$verbosity" || verbosity=7
+
 
 test -n "$SRC_PREFIX" || {
   echo "Not sure where checkout"
