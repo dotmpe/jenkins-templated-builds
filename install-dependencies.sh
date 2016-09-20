@@ -105,10 +105,10 @@ install_jjb()
     log "Installing JJB.."
     local pwd=$(pwd)
     cd $JJB_HOME
-    git checkout $JJB_BRANCH
+    git checkout $JJB_BRANCH || return $?
 
     # Install requirements
-    pip install -r requirements.txt
+    pip install -r requirements.txt || return $?
 
     # Install into ~/..user-packages
     python setup.py install --user \
