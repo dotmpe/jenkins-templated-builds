@@ -144,7 +144,6 @@ main_entry()
         install_jjb || return $?; }
     ;; esac
 
-
   echo "OK. All pre-requisites for '$1' checked"
 }
 

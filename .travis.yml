@@ -11,10 +11,8 @@ install:
 before_script:
 - jenkins-jobs --version
 - bats --version
-# TODO: git-versioning
+- git-versioning
 - test -d dist || mkdir -vp dist
-#- echo '[job_builder] ' > $HOME/.jenkins_jobs.ini
-#- echo 'allow_empty_variables=True ' >> $HOME/.jenkins_jobs.ini
 
 script:
 - make dist test
@@ -32,6 +30,6 @@ env:
     BATS_REPO=https://github.com/dotmpe/bats.git
     BATS_BRANCH=f_run_index
     JJB_REPO=https://github.com/dotmpe/jenkins-job-builder.git
-    JJB_BRANCH=master
+    JJB_BRANCH=dotmpe
 
 
