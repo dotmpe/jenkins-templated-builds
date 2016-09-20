@@ -10,7 +10,7 @@ install:
     BATS_REPO=https://github.com/dotmpe/bats.git \
     BATS_BRANCH=f_run_index \
     JJB_REPO=https://github.com/dotmpe/jenkins-job-builder.git \
-    JJB_BRANCH=dotmpe \
+    JJB_BRANCH=master \
     Build_Deps_Default_Paths=1  \
     ./install-dependencies.sh -
 
