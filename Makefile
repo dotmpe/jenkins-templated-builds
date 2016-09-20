@@ -12,6 +12,7 @@ test::
 			&& git checkout $(BRANCH) && git pull origin "$(BRANCH)"; \
 	}
 	@\
+		test -n "$$TERM" || TERM=dumb;\
 	failed=/tmp/jtb-test.failed; \
 	test ! -e $$failed || rm $$failed; \
 	for preset_path in preset/*.yaml; do \
