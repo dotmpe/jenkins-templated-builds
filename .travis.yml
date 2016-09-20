@@ -40,5 +40,6 @@ env:
     ENV= 
     PATH=$PATH:$HOME/.local/bin
     TRAVIS_SKIP=1
+    verbosity=7
 
 
