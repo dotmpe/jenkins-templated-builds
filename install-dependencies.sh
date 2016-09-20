@@ -114,7 +114,7 @@ install_jjb()
   test -n "$JJB_BRANCH" || JJB_BRANCH=master
   git checkout $JJB_BRANCH || return $?
 
-  ${pref} pip install $flags -r requirements.txt . \
+  ${pref} pip install $pip_flags -r requirements.txt . \
     && log "JJB install complete" \
     || err "Error during JJB installation" 1
 
