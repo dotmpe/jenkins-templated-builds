@@ -114,7 +114,8 @@ install_jjb()
   pip install -r requirements.txt || return $?
 
   # Install into ~/..user-packages
-  python setup.py install --user \
+  test -w $PREFIX || flags=--user
+  python setup.py install $flags \
     && log "JJB install complete" \
     || err "Error during JJB installation" 1
 
