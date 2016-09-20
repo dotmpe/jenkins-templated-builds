@@ -5,9 +5,6 @@ set -e
 
 # JTB dep installer for travis
 
-scriptname=$(basename $0)
-. $JTB_SH_LIB/util.sh
-
 
 test -z "$Build_Debug" || set -x
 
@@ -50,6 +47,10 @@ test -n "$JTB_SHARE" || JTB_SHARE=$JTB_HOME
 
 test -n "$JJB_HOME" || JJB_HOME=$SRC_PREFIX/jjb
 test -n "$JTB_HOME" || JTB_HOME=$SRC_PREFIX/jtb
+
+
+scriptname=$(basename $0)
+. $JTB_SH_LIB/util.sh
 
 
 
