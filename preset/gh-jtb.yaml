@@ -3,9 +3,11 @@
 
     name: jtb
     disabled: false
-    title: 'GH JTB user (re)install (Travis file)'
+    title: 'JTB test (GH/Travis)'
     build-summary-image: 'ws/logo.png'
-    htmlDescription: "Clone JTB and (re)install (JTB:preset/gh-jtb)"
+    htmlDescription: |
+      <p>Run all presets, examples. And unittests.</p>
+      <p><code class="muted">JTB:preset/gh-jtb</code></p>
 
     vendor-repo: github
     vendor-path: dotmpe/jenkins-templated-builds
