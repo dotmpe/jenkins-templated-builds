@@ -105,7 +105,7 @@ install_jjb()
   git checkout $JJB_BRANCH || return $?
 
   # Install requirements
-  pip install -r requirements.txt || return $?
+  pip install --upgrade -r requirements.txt || return $?
 
   # Install into ~/..user-packages
   python setup.py install --user \
