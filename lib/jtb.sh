@@ -201,6 +201,14 @@ Usage:
                         in the 'presets' folder. And uses dist/base.yaml as
                         JJB template file.
 
+  jtb.sh update JTB_FILES...
+                        Convenience route to test JTB files, and use the
+                        resulting JJB file with jenkins-job test or update.
+
+  jtb.sh process SRC_DIR DEST_DIR
+                        Process partial JTB files.
+
+
 
 EOF
 }
