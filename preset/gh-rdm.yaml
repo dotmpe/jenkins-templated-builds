@@ -7,5 +7,6 @@
     branch: master
     credentials-id:
 
+    builders: []
     publishers: []
 
