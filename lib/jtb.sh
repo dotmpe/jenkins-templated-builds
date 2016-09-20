@@ -111,7 +111,7 @@ jtb__update()
 
     # Add additional jenkins_job settings if exists
     test -e "$HOME/.jenkins_jobs.ini" \
-      && flags="$flags --conf $HOME/.jenkins_jobs.ini"
+      && flags="$flags --allow-empty-variables --conf $HOME/.jenkins_jobs.ini"
 
     test "$DRY" != "0" && {
       log " ** Dry-Run ** "
@@ -200,6 +200,14 @@ Usage:
                         Like 'preset', but accepts only the basename of a file
                         in the 'presets' folder. And uses dist/base.yaml as
                         JJB template file.
+
+  jtb.sh update JTB_FILES...
+                        Convenience route to test JTB files, and use the
+                        resulting JJB file with jenkins-job test or update.
+
+  jtb.sh process SRC_DIR DEST_DIR
+                        Process partial JTB files.
+
 
 
 EOF

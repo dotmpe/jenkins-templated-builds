@@ -19,6 +19,9 @@ test::
 			echo jtb:compile-preset:$$preset >>$$failed; \
 			continue; }; \
 		DRY=1 files=$$preset.yaml:dist/base.yaml ./bin/jtb.sh update || { \
+			echo "Error processing:";\
+		  cat $$preset.yaml;\
+		  echo;\
 			echo jtb:update:dry-run:preset:$$preset >>$$failed; \
 		}; \
 	done; \
