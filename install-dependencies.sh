@@ -24,6 +24,10 @@ test -z "$sudo" || pref="sudo $pref"
 test -z "$dry_run" || pref="echo $pref"
 test -n "$verbosity" || verbosity=7
 
+test -w /usr/local || {
+  test -n "$sudo" || pip_flags=--user
+}
+
 
 test -n "$SRC_PREFIX" || {
   echo "Not sure where checkout"
@@ -110,12 +114,7 @@ install_jjb()
   test -n "$JJB_BRANCH" || JJB_BRANCH=master
   git checkout $JJB_BRANCH || return $?
 
-  # Install requirements
-  pip install -r requirements.txt || return $?
-
-  # Install into ~/..user-packages
-  test -w $PREFIX || flags=--user
-  python setup.py install $flags \
+  ${pref} pip install $flags -r requirements.txt . \
     && log "JJB install complete" \
     || err "Error during JJB installation" 1
 
