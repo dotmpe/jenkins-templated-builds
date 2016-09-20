@@ -118,4 +118,10 @@ Also on the wishlist: pip, npm, bower, docker, arduino, docs (python docutils, o
 
 
 
+----
+
+- .jenkins.yml research and thoughts [2014] https://gist.github.com/christianchristensen/5519757
+
+
+
 .. Id: jtb/0.0.4-dev doc/initial-analysis.rst
