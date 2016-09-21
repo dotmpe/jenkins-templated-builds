@@ -1,12 +1,22 @@
 
-- job:
+- project:
     name: 'jnk/examples/docker-any-slave-example'
+    version: 0.0.4-dev # jtb
 
+    jobs:
+      - 'jnk/examples/docker-any-slave-example':
+          version: '{version}'
+
+
+- job-template:
+    name: 'jnk/examples/docker-any-slave-example'
 
     project-type: freestyle
     display-name: 'Any Docker Slave Shell Script Demo'
     disabled: false
-    description: 'Execute a little shell script on any slave with label "docker". JTB:example/docker-any-slave-shell-example'
+    description: |
+      <p>Execute a little shell script on any slave with label "docker". </p>
+      <p><code class="muted">JTB/{version} example/docker-any-slave-shell-example</code></p>
     node: docker
     concurrent: false
 
@@ -21,5 +31,6 @@
         whoami
         ping -c4 google.com
         env
+
 
 # Id: jtb/0.0.4-dev

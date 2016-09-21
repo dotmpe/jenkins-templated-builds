@@ -1,13 +1,23 @@
 
+- project:
+    name: jnk/update-existing-projects
+    version: 0.0.4-dev # jtb
 
-- job:
+    jobs:
+      - jnk/update-existing-projects:
+          version: '{version}'
+
+
+- job-template:
     name: jnk/update-existing-projects
 
     project-id: jenkins-templated-builds
     project-type: freestyle
     display-name: 'Update Projects'
     disabled: true
-    description: 'Update all jobs. JTB:example/update-existing-projects'
+    description: |
+      <p>Update all jobs. </p>
+      <p><code class="muted">JTB/{version} example/update-existing-projects</code></p>
     node: master
     concurrent: false
 

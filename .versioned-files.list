@@ -15,3 +15,4 @@ script/prepare-detached-git-version-env.sh
 script/prepare-jenkins-build-display-name.sh
 example/docker-any-slave-shell-example.yaml
 example/update-existing-projects.yaml
+example/multibranch-dsl.yaml

@@ -22,7 +22,7 @@
     description: |
       Reconfigures itself.
 
-      (dotmpe/jenkins-templated-builds/jtb-simple.yaml)
+      (dotmpe/jenkins-templated-builds {version} jtb-simple.yaml)
 
     logrotate:
       daysToKeep: -1

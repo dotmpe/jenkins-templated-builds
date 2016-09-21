@@ -1,8 +1,25 @@
 
-- job:
+# TODO: remove, or move to docs?
+#
+- project:
+    name: mb-dsl-test
+    version: 0.0.4-dev # jtb
+
+    jobs:
+      - mb-dsl-test:
+          version: '{version}'
+
+
+- job-template:
     name: mb-dsl-test
 
-    description: "Test example JTB:example/multibranch-dsl"
+    #project-type: freestyle
+    display-name: 'DSL file example'
+    disabled: true
+
+    description: |
+      <p>Test example. </p>
+      <p><code class="muted">JTB/{version} example/multibranch-dsl</code></p>
 
     project-type: workflow
 
