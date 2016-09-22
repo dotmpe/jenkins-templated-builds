@@ -2,12 +2,28 @@
 - '{name}-gh-travis':
 
     name: jtb
+    version: 0.0.4-dev # jtb
+    jtb-file: preset/gh-jtb.yaml
+
     disabled: false
     title: 'JTB test (GH/Travis)'
     build-summary-image: 'ws/logo.png'
     htmlDescription: |
       <p>Run all presets, examples. And unittests.</p>
-      <p><code class="muted">JTB:preset/gh-jtb</code></p>
+      <p><code class="muted">{name}/{version}</code> <code class="muted">{jtb-file}</code></p>
+
+    parameters:
+
+    - hidden:
+        name: JTB_VERSION
+        default: '{version}'
+    - hidden:
+        name: JTB_FILE
+        default: '{jtb-file}'
+
+    #publishers: FIXME: make test does not create bats test result file
+    #  - bats-tap:
+    #      bats-tap-results: ''
 
     vendor-repo: github
     vendor-path: dotmpe/jenkins-templated-builds

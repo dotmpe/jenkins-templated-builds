@@ -2,10 +2,26 @@
 - '{name}-gh-travis':
 
     name: name-placeholder
+
+    version: 0.0.4-dev # jtb
+    jtb-file: preset/generic-gh-travis.yaml
+
     disabled: true
     title: 'Generic JTB GitHub-Travis build'
     build-summary-image: 'ws/logo.png'
-    htmlDescription: "Clone project from GitHub, and run build defined in .travis.yml file"
+    htmlDescription: |
+      <p>Clone project from GitHub, and run build defined in .travis.yml file.</p>
+      <p><code class="muted">{name}/{version}</code> <code class="muted">{jtb-file}</code></p>
+
+    parameters:
+
+    - hidden:
+        name: JTB_VERSION
+        default: '{version}'
+    - hidden:
+        name: JTB_FILE
+        default: '{jtb-file}'
+
 
     vendor-repo: github
     vendor-path: example/project

@@ -7,6 +7,7 @@
     # Job template vars
     project-title: 'Jenkins Templated Builds (\$JTB_HOME jtb.yml)'
     version: 0.0.4-dev # jtb
+    jtb-file: jtb.yaml
     #build-summary-image: /userContent/jenkins-build-templates.png
     build-summary-image: 'http://www.tupilabs.com/img/posts/2012-10-31_promoting-material-for-jenkins-user-event/jenkins_no_bg.png'
 
@@ -38,7 +39,7 @@
         htmlDescription: |
           Job with just one builder: a shell running <code>whoami && hostname</code>.
     
-          <p>From <code class="muted">{project-title} v{version} ({vendor-repo}:{vendor-path})</code>
+          <p>From <code class="muted">{project-title} v{version} ({vendor-repo}:{vendor-path} {jtb-file})</code>
         builders:
         - shell: 'whoami && hostname'
         triggers: []
@@ -49,7 +50,7 @@
 #        name: test
 #        disabled: false
 #        title: 'JTB test'
-#        htmlDescription: 'Testing {project-title} v{version} with JJB'
+#        htmlDescription: 'Testing {project-title} v{version} with JJB {jtb-file}'
 #        properties: []
 #        parameters: []
 #
@@ -57,28 +58,31 @@
 #        name: update
 #        disabled: false
 #        title: 'JTB1 update'
-#        htmlDescription: 'Running JTB? with {project-title} v{version}'
+#        htmlDescription: 'Running JTB? with {project-title} v{version} {jtb-file}'
 #        properties: []
 #        parameters: []
 
 #    - '{name}-jtb-2':
 #        disabled: true
 #        title: 'JTB2 gen GH'
-#        htmlDescription: 'Generate GitHub job with {project-title} v{version}'
+#        htmlDescription: 'Generate GitHub job with {project-title} v{version} {jtb-file}'
 #
 #    - '{name}-docker-0':
 #        disabled: true
 #        title: 'Docker0 Test Create-Kill-Remove'
-#        htmlDescription: 'with {project-title} v{version}'
+#        htmlDescription: 'with {project-title} v{version} {jtb-file}'
 #
 #    - '{name}-docker-1':
 #        disabled: true
 #        title: 'Docker1 Test Run'
-#        htmlDescription: 'with {project-title} v{version}'
+#        htmlDescription: 'with {project-title} v{version} {jtb-file}'
 
     - '{name}-base-0':
         name: jnk/jtb/jtb-test-cleanup
         title: 'JTB test cleanup'
+        htmlDescription: |
+          <p>Delete job.</p>
+          <p><code class="muted">{name}/{version}</code> <code class="muted">{jtb-file}</code></p>
         builders:
         - shell: jenkins-cli delete-job {name}-base-0
         triggers: {}

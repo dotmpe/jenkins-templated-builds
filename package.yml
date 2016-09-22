@@ -1,0 +1,17 @@
+
+- id: jtb
+  main: jtb
+  version: 0.0.4-dev # jtb
+
+  environments:
+  - dev
+
+  pd-meta:
+    tasks:
+      tags:
+        - XXX
+        - TODO
+        - FIXME
+        - NOTE
+        - BUG
+

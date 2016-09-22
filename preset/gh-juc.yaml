@@ -2,10 +2,15 @@
 - '{name}-gh-travis':
 
     name: jenkins-userContent
+    version: 0.0.4-dev # jtb
+    jtb-file: preset/gh-juc.yaml
+
     disabled: false
     title: 'Jenkins JS/CSS'
     build-summary-image: 'ws/logo.png'
-    htmlDescription: "JTB:preset/gh-juc"
+    htmlDescription: |
+      <p>Boilerplate build config for {name}</p>
+      <p><code class="muted">{name}/{version}</code> <code class="muted">{jtb-file}</code></p>
     vendor-repo: github
     vendor-path: dotmpe/jenkins-userContent
     branch: master

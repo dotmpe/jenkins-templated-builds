@@ -2,7 +2,13 @@
 - '{name}-gh-wf':
 
     name: rdm
+    version: 0.0.4-dev # jtb
+    jtb-file: preset/gh-rdm.yaml
+
     title: "X-Redmine ({branch})"
+    htmlDescription: |
+      <p><code class="muted">{name}/{version}</code> <code class="muted">{jtb-file}</code></p>
+
     vendor-path: dotmpe/x-redmine
     branch: master
     credentials-id:

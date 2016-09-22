@@ -3,9 +3,13 @@
 
     name: jtb-presets
     defaults: std-freestyle-job
+    version: 0.0.4-dev # jtb
+    jtb-file: preset/jtb-presets.yaml
 
     title: 'Update JTB projects'
-    htmlDescription: "Checkout and scan for JTB presets. Compile each to JJB, and run jenkins-jobs update. JTB:preset/jtb-presets"
+    htmlDescription: |
+      <p>Checkout and scan for JTB presets. Compile each to JJB, and run jenkins-jobs update.</p>
+      <p><code class="muted">{name}/{version}</code> <code class="muted">{jtb-file}</code></p>
     build-summary-image: 'ws/logo.png'
     disabled: true
     concurrent: false

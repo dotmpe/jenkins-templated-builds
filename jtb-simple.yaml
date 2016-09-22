@@ -6,9 +6,10 @@
     name: jtb
 
     version: 0.0.4-dev # jtb
+    file: jtb-simple.yaml
 
     jobs:
-    - jtb-simple
+    - jtb-simple: {}
 
 
 - job:
@@ -20,9 +21,9 @@
 
     display-name: 'JTB update [simple]'
     description: |
-      Reconfigures itself.
+      <p>Reconfigures itself. </p>
 
-      (dotmpe/jenkins-templated-builds {version} jtb-simple.yaml)
+      <p><code class="muted">{name}/{version}</code> <code class="muted">{file}</code></p>
 
     logrotate:
       daysToKeep: -1

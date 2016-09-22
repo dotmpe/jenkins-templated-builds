@@ -2,10 +2,15 @@
 - '{name}-free-git':
 
     name: user-conf
+    version: 0.0.4-dev # jtb
+    jtb-file: preset/user-conf-free-git.yaml
     defaults: std-freestyle-job
 
     title: 'User Conf - Install'
-    htmlDescription: "Defined in JTB:preset/user-conf-free-git"
+    htmlDescription: |
+      <p>FIXME: user-conf install</p>
+      <p><code class="muted">{name}/{version}</code> <code class="muted">{jtb-file}</code></p>
+
     build-summary-image: 'ws/logo.png'
     disabled: true
     concurrent: false

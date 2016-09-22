@@ -1,4 +1,5 @@
 ReadMe.rst
+package.yml
 ChangeLog.rst
 doc/initial-analysis.rst
 jtb.yaml
@@ -16,3 +17,11 @@ script/prepare-jenkins-build-display-name.sh
 example/docker-any-slave-shell-example.yaml
 example/update-existing-projects.yaml
 example/multibranch-dsl.yaml
+preset/gh-jtb.yaml
+preset/generic-gh-travis.yaml
+preset/gh-juc.yaml
+preset/gh-rdm.yaml
+preset/gh-user-conf.yaml
+preset/jjb-install-local.yaml
+preset/jtb-presets.yaml
+preset/user-conf-free-git.yaml

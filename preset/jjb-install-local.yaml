@@ -2,11 +2,15 @@
 - '{name}-jjb-local':
 
     name: latest
+    version: 0.0.4-dev # jtb
+    jtb-file: preset/jjb-install-local.yaml
+
     disabled: false
     title: 'JJB Test'
     build-summary-image: 'ws/logo.png'
     htmlDescription: |
-      Test JJB: run unittests, and run all local templates (preset, exampels).
+      <p>Test JJB: run unittests, and run all local templates (preset, exampels).</p>
+      <p><code class="muted">{name}/{version}</code> <code class="muted">{jtb-file}</code></p>
     git: 
     branch: master
     project-src:
