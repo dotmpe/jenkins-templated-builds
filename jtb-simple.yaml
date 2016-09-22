@@ -12,8 +12,8 @@
     - jtb-simple: {}
 
 
-- job:
-    name: jtb-simple
+- job-template:
+    name: 'jtb-simple'
 
     project-type: freestyle
     disabled: false
@@ -56,9 +56,9 @@
           <org.jenkinsci.plugins.environmentdashboard.DashboardBuilder plugin="environment-dashboard@1.1.4">
             <nameOfEnv>jenkins</nameOfEnv>
             <componentName>jenkins-job-builder</componentName>
-            <buildNumber>${BUILD_NUMBER}</buildNumber>
-            <buildJob>${JOB_NAME}</buildJob>
-            <packageName>#${BUILD_NUMBER} [simple]</packageName>
+            <buildNumber>${{BUILD_NUMBER}}</buildNumber>
+            <buildJob>${{JOB_NAME}}</buildJob>
+            <packageName>#${{BUILD_NUMBER}} [simple]</packageName>
             <data/>
             <addColumns>false</addColumns>
           </org.jenkinsci.plugins.environmentdashboard.DashboardBuilder>
@@ -142,7 +142,7 @@
             <low>XXX</low>
             <ignoreCase>false</ignoreCase>
             <asRegexp>false</asRegexp>
-            <pattern>*.{cfg,py,rst,ini},{jenkins_jobs,tests,tools}/**</pattern>
+            <pattern>*.{{cfg,py,rst,ini}},{{jenkins_jobs,tests,tools}}/**</pattern>
             <excludePattern/>
           </hudson.plugins.tasks.TasksPublisher>
 
