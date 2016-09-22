@@ -47,8 +47,8 @@
           name: JTB_VERSION
           default: '{version}'
       - hidden:
-          name: JTB_FILE
-          default: '{jtb-file}'
+          name: JTB_SRC_FILE
+          default: '{file}'
 
     builders:
     - shell: jenkins-jobs update jtb-simple.yaml
