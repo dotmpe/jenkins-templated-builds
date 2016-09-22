@@ -44,7 +44,13 @@
         - shell: 'whoami && hostname'
         triggers: []
         properties: []
-        parameters: []
+        parameters:
+          - hidden:
+              name: JTB_VERSION
+              default: '{version}'
+          - hidden:
+              name: JTB_FILE
+              default: '{jtb-file}'
 
 #    - '{name}-jtb-0':
 #        name: test
@@ -86,9 +92,14 @@
         builders:
         - shell: jenkins-cli delete-job {name}-base-0
         triggers: {}
-
         properties: {}
-        parameters: {}
+        parameters:
+          - hidden:
+              name: JTB_VERSION
+              default: '{version}'
+          - hidden:
+              name: JTB_FILE
+              default: '{jtb-file}'
 
 
 

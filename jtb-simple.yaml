@@ -42,6 +42,14 @@
         branches:
         - 'origin/dev'
 
+    parameters:
+      - hidden:
+          name: JTB_VERSION
+          default: '{version}'
+      - hidden:
+          name: JTB_FILE
+          default: '{jtb-file}'
+
     builders:
     - shell: jenkins-jobs update jtb-simple.yaml
 
