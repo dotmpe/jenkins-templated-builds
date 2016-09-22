@@ -9,7 +9,7 @@
     title: 'JJB Test'
     build-summary-image: 'ws/logo.png'
     htmlDescription: |
-      <p>Test JJB: run unittests, and run all local templates (preset, exampels).</p>
+      <p>TODO: Test JJB</p>
       <p><code class="muted">{name}/{version}</code> <code class="muted">{jtb-file}</code></p>
     git: 
     branch: master
