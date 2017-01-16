@@ -1,5 +1,6 @@
 
-# Config without using any reusable features, JJB YAML all enclosed here
+# Config without using any reusable features, JJB YAML all enclosed here.
+# To get JTB CI/testing going if there is no working JTB..
 
 
 - project:
