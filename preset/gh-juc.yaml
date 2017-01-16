@@ -1,4 +1,7 @@
 
+# XXX: Jenkins 2.0 is somehow no longer accepting Travis builder block. See JTB
+# issues.
+#
 - '{name}-gh-travis':
 
     name: jenkins-userContent
@@ -9,7 +12,11 @@
     title: 'Jenkins JS/CSS'
     build-summary-image: 'ws/logo.png'
     htmlDescription: |
-      <p>Boilerplate build config for {name}</p>
+      <p>
+        Install user content into userContent dir. After successful build.
+        Make sure <code>userContent/userContent.{{css,js}}</code> are configured with the 
+        Jenkins theme plugin.
+      </p>
       <p><code class="muted">{name}/{version}</code> <code class="muted">{jtb-file}</code></p>
     vendor-repo: github
     vendor-path: dotmpe/jenkins-userContent
