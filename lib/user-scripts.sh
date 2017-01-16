@@ -8,6 +8,7 @@ set -e
 # XXX: for local dev use, may want multiple source repositories
 jtb__build()
 {
+  test -z "$1" || error "surplus arguments '$1'" 1
   mkdir -vp dist || return $?
 	# republish from source
 	$JTB_SH_BIN/$scriptname process tpl dist || return $?
@@ -16,6 +17,7 @@ jtb__build()
 jtb__test_preset()
 {
   test -e $1 || exit $?
+  test -z "$2" || error "surplus arguments '$2'" 1
   test dist -nt tpl || {
 		$JTB_SH_BIN/$scriptname build
   }

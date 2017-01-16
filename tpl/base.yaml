@@ -39,6 +39,7 @@
     ## Wrapper vars
     # none
 
+    jtb-files:
     jjb-files:
 
     publish-on-error: true

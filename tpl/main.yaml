@@ -24,6 +24,8 @@
                 </tr> <tr>
                   <th> Project source </th> <td> {project-src} </td>
                 </tr> <tr>
+                  <th> Job source </th> <td> {version} {jtb-files} (JTB) </td>
+                </tr> <tr>
                   <th> E-mail developers </th> <td> {email-individuals} </td>
                 </tr> <tr>
                   <th> Additional Subscribers </th> <td> {email-to} </td>

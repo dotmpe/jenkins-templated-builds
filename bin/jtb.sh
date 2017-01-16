@@ -15,11 +15,6 @@ test -n "$JTB_SHARE" || export JTB_SHARE=$JTB_HOME
 
 test -n "$verbosity" || verbosity=4
 
-#PREFIX=$JTB_HOME
-#PREFIX=/usr/
-#PREFIX=/usr/local/
-#PREFIX=$HOME/.local
-
 
 test -n "$1" && {
   subcmd="$1"

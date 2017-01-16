@@ -152,6 +152,7 @@ def resolve_placeholder(key, vars, defaults):
     env_key = "jtb_%s" % key.replace('-', '_')
     if os.getenv(env_key):
         vars[key] = parse_value(os.getenv(env_key))
+        print "# Using ENV.%s for %s=%r" % ( env_key, key, vars[key] )
 
 
 def format_job(jjb_template_id, vars):

@@ -87,7 +87,12 @@ jtb__process_includes()
 
 jtb__update()
 {
-  test -n "$files" || files=$JTB_JJB_LIB/base.yaml:$JTB_HOME/jtb.yaml
+  test -z "$2" || error "surplus arguments '$2'" 1
+  test -n "$1" && {
+    files=$JTB_JJB_LIB/base.yaml:$1
+  } || {
+    test -n "$files" || files=$JTB_JJB_LIB/base.yaml:$JTB_HOME/jtb.yaml
+  }
   test -n "$test_out" || test_out=/tmp/jtb-test.out
   test -n "$test_err" || test_err=/tmp/jtb-test.err
 
@@ -184,6 +189,7 @@ debugcat()
 
 jtb__usage()
 {
+  test -z "$1" || error "surplus arguments '$1'" 1
   cat <<EOF
 Jenkins-Templated-Builds (for Jenkins Job Builder).
 
@@ -225,6 +231,7 @@ jtb__generate()
 
 jtb__preset()
 {
+  test -n "$1" || error "preset name required '$1'" 1
   # take preset and JJB source yaml and output
   test -e $1 || exit $?
   python $JTB_SH_BIN/jenkins-template-build.py preset $@ || return $?
@@ -239,9 +246,20 @@ jtb__compile_tpl()
 
 jtb__compile_preset()
 {
+  test -n "$1" || error "preset name required '$1'" 1
+  test -z "$2" || error "surplus arguments '$2'" 1
   verbosity=0 \
     $JTB_SH_BIN/$scriptname preset $JTB_SHARE/preset/$1.yaml $JTB_JJB_LIB/base.yaml \
           > $1.yaml || return $?
 }
 
-
+jtb__update_jtb()
+{
+  test -n "$1" -a -e "$1" || error "preset file name required '$1'" 1
+  test -z "$2" || error "surplus arguments '$2'" 1
+  local name="$(basename "$(basename "$1" .yaml)" .yml)"
+  (
+    jtb__preset "$1" > ${name}-jjb.yml
+    jtb__update "${name}-jjb.yml"
+  ) || return $?
+}
