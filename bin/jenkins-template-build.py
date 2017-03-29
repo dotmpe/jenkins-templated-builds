@@ -1,7 +1,7 @@
 """
 
 Helper to find template from files, return placeholders,
-and generate new job definition using template.
+and generate new job definition given a template and a bag of key/values.
 
 Commands:
 
@@ -265,7 +265,9 @@ if __name__ == '__main__':
 
     if len(argv) == 1:
         JTB_JJB_LIB = os.getenv('JTB_JJB_LIB', 'dist')
-        argv.append( os.path.join( JTB_JJB_LIB, 'base.yaml' ) )
+        JTB_LIB_NAME = os.getenv('JTB_LIB_NAME', 'base.yaml')
+        jtb_lib = os.path.join( JTB_JJB_LIB, JTB_LIB_NAME )
+        argv.append( jtb_lib )
 
     locals()["run_"+cmd](*argv)
 

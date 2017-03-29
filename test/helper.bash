@@ -1,9 +1,53 @@
 
+
+type stdfail >/dev/null 2>&1 || {
+  stdfail()
+  {
+    test -n "$1" || set -- "Unexpected. Status"
+    fail "$1: $status, output(${#lines[@]}) is '${lines[*]}'"
+  }
+}
+
+type pass >/dev/null 2>&1 || {
+  pass() # a noop() variant..
+  {
+    return 0
+  }
+}
+
+type test_ok_empty >/dev/null 2>&1 || {
+  test_ok_empty()
+  {
+    test ${status} -eq 0 && test -z "${lines[*]}"
+  }
+}
+
+type test_ok_nonempty >/dev/null 2>&1 || {
+  test_ok_nonempty()
+  {
+    test ${status} -eq 0 && test -n "${lines[*]}" && {
+      test -z "$1" || fnmatch "$1" "${lines[*]}"
+    }
+  }
+}
+
+noop()
+{
+  printf -- ""
+}
+
+
 # Set env and other per-specfile init
 test_init()
 {
   test -n "$base" || exit 12
   test -n "$uname" || uname=$(uname)
+  hostname_init
+}
+
+hostname_init()
+{
+  hostnameid="$(hostname -s | tr 'A-Z.-' 'a-z__')"
 }
 
 # Std test_init and setting script exec var `bin` based on PREFIX
@@ -46,9 +90,13 @@ init()
 # XXX: Hardcorded list of test envs, for use as is-skipped key
 current_test_env()
 {
-  case $(hostname -s | tr 'A-Z' 'a-z') in
-    simza | vs1 | dandy ) hostname -s | tr 'A-Z' 'a-z';;
-    * ) whoami ;;
+  test -n "$TEST_ENV" && { echo $TEST_ENV ; return; }
+  test -n "$hostnameid" || hostname_init
+  case " $test_env_hosts " in
+    *" $hostname "* )
+      echo $hostname ;;
+    * )
+      echo $test_env_other ;;
   esac
 }
 
@@ -92,6 +140,7 @@ next_temp_file()
 
 lines_to_file()
 {
+  # XXX: cleanup
   echo "status=${status}"
   echo "#lines=${#lines[@]}"
   echo "lines=${lines[*]}"

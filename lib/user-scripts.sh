@@ -2,8 +2,6 @@
 
 set -e
 
-# Id: jtb/0.0.4-dev lib/user-scripts.sh
-
 
 # XXX: for local dev use, may want multiple source repositories
 jtb__build()
@@ -25,3 +23,4 @@ jtb__test_preset()
   jenkins-jobs test $1.yaml:$JTB_JJB_LIB/base.yaml || return $?
 }
 
+# Id: jtb/0.0.4-dev lib/user-scripts.sh

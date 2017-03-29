@@ -9,6 +9,8 @@
     restrict-node: ''
     htmlDescription: 'Standard Freestyle build configured from Jenkins Templated Builds'
 
+    jenkins-home: '/var/lib/jenkins'
+
     # email publisher (jtd-std-email)
     email-every-unstable: false
     email-individuals: false
@@ -21,7 +23,7 @@
     publish-on-error: true
 
     # logparser (jtb-std-log-parser)
-    log-parser-rules: $JENKINS_HOME/log-parser-rules.txt
+    log-parser-rules: '{jenkins-home}/log-parser-rules.txt'
     unstable-on-warning: true
     fail-on-error: true
 
@@ -39,6 +41,10 @@
     fail-on-error: '{fail-on-error}'
     <<: *restrict_node
     <<: *std_console_output_wrapper
+
+# XXX: custom workspace job maybe?
+#    jenkins-home: '{jenkins-home}'
+#    workspace: '{workspace}'
 
 
 - std_freestyle_job: &std_freestyle_job

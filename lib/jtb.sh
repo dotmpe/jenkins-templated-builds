@@ -2,7 +2,7 @@
 
 set -e
 
-# Id: jtb/0.0.4-dev lib/jtb.sh
+version=0.0.4-dev # jtb
 
 
 # Process all source files in $1:src/ into $2:dest/
@@ -263,3 +263,5 @@ jtb__update_jtb()
     jtb__update "${name}-jjb.yml"
   ) || return $?
 }
+
+# Id: jtb/0.0.4-dev lib/jtb.sh

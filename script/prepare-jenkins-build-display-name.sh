@@ -26,4 +26,4 @@ info "New Build-Name: $BUILD_DISPLAY_NAME"
 echo $BUILD_DISPLAY_NAME > $1
 
 
-# Id: jtb/0.0.4-dev
+# Id: jtb/0.0.4-dev script/prepare-jenkins-build-display-name.sh

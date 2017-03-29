@@ -15,3 +15,9 @@
         - NOTE
         - BUG
 
+  scripts:
+    test:
+      - make dist test
+    bats:
+      - ./test/*-spec.bats
+

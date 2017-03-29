@@ -129,4 +129,4 @@ do
 done
 
 
-# Id: jtb/0.0.4-dev
+# Id: jtb/0.0.4-dev script/prepare-detached-git-version-env.sh

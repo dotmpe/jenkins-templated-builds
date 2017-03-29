@@ -1,7 +1,5 @@
 #!/bin/sh
 
-# Id: jtb/0.0.4-dev lib/util.sh
-
 
 # stdio/stderr/exit util
 # 1:msg 2:exit
@@ -124,3 +122,4 @@ var_id()
   echo "$@" | sed 's/[^A-Za-z0-9_]/_/g'
 }
 
+# Id: jtb/0.0.4-dev lib/util.sh
