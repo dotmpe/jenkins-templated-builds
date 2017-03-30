@@ -60,7 +60,7 @@ init_bin()
 # Std test_init for script lib var `lib`
 init_lib()
 {
-  # XXX path to shared files
+  # XXX JTB-4: path to shared files
   #test -z "$PREFIX" && share=script || share=$PREFIX/share/misc/jjb/$base/
   #test -z "$PREFIX" && share=dist || share=$PREFIX/share/misc/jjb/$base/
   test -z "$PREFIX" && lib=./lib || lib=$PREFIX/lib/$base/
@@ -78,7 +78,7 @@ init()
   #. $lib/main.sh
   #main_init
 
-  # XXX does this overwrite bats load?
+  # XXX JTB-4: does this overwrite bats load?
   #. main.init.sh
 }
 
@@ -87,7 +87,7 @@ init()
 # currently usage is to mark test as skipped or 'TODO' per test case, based on
 # host. Written into the specs itself.
 
-# XXX: Hardcorded list of test envs, for use as is-skipped key
+# XXX: JTB-4 Hardcorded list of test envs, for use as is-skipped key
 current_test_env()
 {
   test -n "$TEST_ENV" && { echo $TEST_ENV ; return; }
@@ -103,7 +103,6 @@ current_test_env()
 # Check if test is skipped. Currently works based on hostname and above values.
 check_skipped_envs()
 {
-  # XXX hardcoded envs
   local skipped=0
   test -n "$1" || set -- "$(hostname -s | tr 'A-Z_.-' 'a-z___')" "$(whoami)"
   cur_env=$(current_test_env)
@@ -131,28 +130,13 @@ is_skipped()
 
 ### Misc. helper functions
 
+# JTB-u unused code
+
 next_temp_file()
 {
   test -n "$pref" || pref=script-mpe-test-
   local cnt=$(echo $(echo /tmp/${pref}* | wc -l) | cut -d ' ' -f 1)
   next_temp_file=/tmp/$pref$cnt
-}
-
-lines_to_file()
-{
-  # XXX: cleanup
-  echo "status=${status}"
-  echo "#lines=${#lines[@]}"
-  echo "lines=${lines[*]}"
-  test -n "$1" && file=$1
-  test -n "$file" || { next_temp_file; file=$next_temp_file; }
-  echo file=$file
-  local line_out
-  echo "# test/helper.bash $(date)" > $file
-  for line_out in "${lines[@]}"
-  do
-    echo $line_out >> $file
-  done
 }
 
 tmpf()

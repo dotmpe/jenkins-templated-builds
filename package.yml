@@ -1,3 +1,4 @@
+# tasks-ignore-file
 
 - id: jtb
   main: jtb
@@ -14,10 +15,14 @@
         - FIXME
         - NOTE
         - BUG
+      document: todo.txt
+      done: .done.txt
 
   scripts:
     test:
       - make dist test
     bats:
       - ./test/*-spec.bats
+    tasks:
+      - htd tasks --Check-All-Tags --Check-All-Files
 

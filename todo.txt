@@ -1,0 +1,9 @@
+(D) 2017-03-29 JTB-1: TODO several improvements needed on placeholder expansion.
+(C) 2017-03-29 JTB-2: FIXME build is failing b/c/ the hidden parameter is not supported
+(C) 2017-03-29 JTB-3: BUG if my-var: '{obj:my-var}' keeps misbehaving, trace it down
+(F) JTB-4: see SCRIPT-MPE-2 SCRIPT-MPE-5 ./test/helper.bash
+(F) JTB-u: XXX unused code
+(F) JTB-x: XXX code cleanup
+(E) JTB-5: better testing
+(F) JTB-6: improve tooling TODO add feature tags to for differation in build, including the way the src_name:script/prepare-detached-git-version-env.sh src_line:57 _id:script/prepare-detached-git-version-env.sh:57
+JTB-7: TODO use jtb-lib-name iso. base.yaml. Ext also? Both not needed right now. src_name:bin/env.sh src_line:7 _id:bin/env.sh:7

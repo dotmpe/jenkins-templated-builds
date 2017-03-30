@@ -36,6 +36,6 @@ setup()
 }
 
 @test "${bin} preset" "preset/*" {
-  skip "TODO: see jtb-sh-spec.bats"
+  skip "TODO: JTB-5 see jtb-sh-spec.bats"
 }
 

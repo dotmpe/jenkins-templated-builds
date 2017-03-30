@@ -1,0 +1,17 @@
+
+.. _jtb-py: bin/jenkins-template-build.py
+.. _jtb-sh: bin/jtb.sh
+
+.. _Dev docs: doc/dev.rst
+.. _todo list: todo.txt
+
+
+.. |date| date:: %h %d. %Y
+.. |time| date:: %H:%M
+
+.. |copy| unicode:: 0xA9 .. copyright sign
+.. |tm| unicode:: U+02122 .. trademark sign
+
+.. |---| unicode:: U+02014 .. em dash
+   :trim:
+

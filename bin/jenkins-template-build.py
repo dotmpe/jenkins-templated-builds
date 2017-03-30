@@ -194,7 +194,7 @@ def find_template(jjb_template_id, *template_files):
 
 
 
-def run_vars(jjb_template_id, *template_files):
+def cmd__vars(jjb_template_id, *template_files):
 
     """
     Show the JJB placeholders for template ID that have no default values.
@@ -211,7 +211,17 @@ def run_vars(jjb_template_id, *template_files):
     print yaml.dump(seed, default_flow_style=False)
 
 
-def generate_job(jjb_template_id, *template_files):
+def jtb_load(jjb_template_id, *template_files):
+
+    """
+    Helper to:
+
+    - get template yaml
+    - list placeholders
+    - set default variables
+
+    Returns placeholders and defaults for jjb_template_id.
+    """
 
     path, template = find_template(jjb_template_id, *template_files)
     placeholders = list(set(find_template_vars(template)))
@@ -219,24 +229,24 @@ def generate_job(jjb_template_id, *template_files):
 
     return placeholders, defaults
 
-
-def run_generate(jjb_template_id, *template_files):
+def cmd__generate(jjb_template_id, *template_files):
 
     """
-    Generate JJB config by loading given job-template ID, and resolving
-    the placeholders from variables in the shell environment.
+    Generate JJB config by loading given job-template ID, and formatting
+    it with the defaults provided. If the placeholder name is found as ``jtb_%``
+    in the env, it overrides the value.
     """
 
-    placeholders, defaults = generate_job(jjb_template_id, *template_files)
+    placeholders, defaults = jtb_load(jjb_template_id, *template_files)
     seed = dict( zip(placeholders, ( [None] * len(placeholders) )) )
 
     for key in placeholders:
-        resolve_placeholder( key, seed, defaults)
+        resolve_placeholder( key, seed, defaults )
 
     print format_job(jjb_template_id, seed)
 
 
-def run_preset(preset_file, *template_files):
+def cmd__preset(preset_file, *template_files):
 
     """
     Generate a job using job-template ID like 'generate', except load
@@ -244,10 +254,10 @@ def run_preset(preset_file, *template_files):
     """
 
     jjb_template_id, seed = get_preset(preset_file)
-    placeholders, defaults = generate_job(jjb_template_id, *template_files)
+    placeholders, defaults = jtb_load(jjb_template_id, *template_files)
 
     for key in placeholders:
-        resolve_placeholder( key, seed, defaults)
+        resolve_placeholder( key, seed, defaults )
 
     print format_job(jjb_template_id, seed)
 
@@ -269,5 +279,5 @@ if __name__ == '__main__':
         jtb_lib = os.path.join( JTB_JJB_LIB, JTB_LIB_NAME )
         argv.append( jtb_lib )
 
-    locals()["run_"+cmd](*argv)
+    locals()["cmd__"+cmd](*argv)
 

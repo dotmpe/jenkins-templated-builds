@@ -38,9 +38,9 @@
             <shouldDetectModules>false</shouldDetectModules>
             <dontComputeNew>true</dontComputeNew>
             <doNotResolveRelativePaths>false</doNotResolveRelativePaths>
-            <high>FIXME</high>
-            <normal>TODO</normal>
-            <low>XXX</low>
+            <high>FIXME</high> # tasks-ignore
+            <normal>TODO</normal> # tasks-ignore
+            <low>XXX</low> # tasks-ignore
             <ignoreCase>false</ignoreCase>
             <asRegexp>false</asRegexp>
             <pattern>{project-src}</pattern>

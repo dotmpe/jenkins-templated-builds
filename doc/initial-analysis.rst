@@ -1,3 +1,4 @@
+.. include:: ../.default.rst
 
 Intro
 -------
@@ -6,22 +7,33 @@ Besides XML and JSON, it is a format of choice for configuration, and maybe meta
 
 JJB provides a way to declare a build configuration in YAML. Some observations.
 
+Overview
+---------
 At the syntax level, it enables the use of YAML anchors (only within the same file) to assemble YAML objects and attributes from named YAML fragments.
 
 JJB adds ability to use a `action macro` types, `job-group`, and/or `job-template` YAML objects to use variable substitution. Potentially enabling contruction of templated building blocks for project jobs defined, later, in other files.
 
 There are two points to raise after using the JJB generator for a few months.
 
-Each JJB file containing a project or job description ends up with a variable list covering all of its parts (macros and templates). The `defaults` section. It does neither seem to pick up from the original, included files' `defaults` definition and thus repeats everything.
+Each JJB file containing a project or job description ends up with a variable list covering all of its parts (macros and templates). The `defaults` section. Any placeholder in the template needs a default, and so the defaults section for the job may be moved to another file. There does not seem to be a way of overloading. So each job definition either refers to a named defaults section
+in some other file, or carries its own (long) defaults section.
 
-Second, it does not allow for conditional parts. Iow. the job configuration that JJB generates is a static Jenkins XML config. Naturally that file that will not change anymore except in response to build parameters. This leaves everything but the builders section fairly static. Since only the builder section consists of exclusively customized scripts. Although there are (plugin) types that may offer scripting on other parts, such as a Groovy enabled parameter, this is the exception and not the rule.
+Second, it does not allow for dynamic, or conditional parts. Iow. the job configuration that JJB generates is a static Jenkins XML config. Naturally that file that will not change anymore except in response to build parameters. This leaves everything but the builders section fairly static. Since only the builder section consists of exclusively customized scripts. Although there are (plugin) types that may offer scripting on other parts, such as a Groovy enabled parameter, this is the exception and not the rule. This is in part caused by Jenkins itself, and can be relieved by Jenkins extensions. Ie. the conditional-publisher solves a lot of problems.
 
-One more minor detail worth mentioning too, is that the name of each job is tied to the template used. It will change with the template used. This seems transparent, ie. if using an extensive set of (categorized) build scripts and JJB templates, but it does tie the template to the job while there may be cases with other requirements. Ie. for OSS testing using Travis CI it is more appropiate to tie a job to a repository.
+One more minor detail worth mentioning too, is that the name of each job is tied to the template used. It will change with the template used. This seems transparent, ie. if using an extensive set of (categorized) build scripts and JJB templates, but it does tie the template to the job while there may be cases with other requirements. Ie. for OSS testing using Travis CI it is more appropiate to tie a job to a repository. This too is a particular based in Jenkins itself, not JJB. Jenkins has no concept like that beyond job and build. Folders (CloudBees extension) help here to add some organization.
 
-Neither issue raised seems unsurmountable. Since in the `job` or `project` definition file one has full flexibility to re-use the parts needed, and set defaults.
-A job author can even choose to concatenate the files in stead of reading each separate into JJB, and have YAML anchors working across these files for a bit of extra flexibility.
+The last point is more related to project organisation, and is solved by deferring
+some of that to SCM, wiki server or ticket tracker. And is not a problem, but
+the first two really call for a pre-processing of the current state of JJB
+templates. Only static, literals like descriptions can be included. There is a
+raw XML variant, but going for that kind of completely requires to reinvent JJB.
 
-Still, this is a verbose story. Even if templates are accumulated, using them and working around the above produces not only fairly detailed job descriptions, but verbose JJB files too. The first may be presumtuous, unrequired or even unfit, the latter is not preferrabke at all.
+A job author can choose to concatenate the files in stead of reading each separate
+into JJB, and have YAML anchors working across these files for a bit of extra
+flexibility. That is one solution for issue one, which cannot addres two though.
+
+This is a verbose story. Even if templates are accumulated, using them and
+working around the above produces not only fairly detailed job descriptions, but verbose JJB files too. The first may be presumtuous, unrequired or even unfit, the latter is also not preferrable at all.
 Again the former because it cannot conditional leave out bits but inherit and set everything, and the latter because it always end up with a `defaults` and a `project` object but may need a customized `job-template` too. One or more..
 
 Ease of definition and re-use encourages the use of multiple Jenkins jobs per project,
@@ -42,9 +54,13 @@ may be used in particular applications of jenkins. Iow. all of its views are cen
     JJB does introduce the `project` object, but in my current view it can do nothing
     to really add such concept to jenkins. And maybe, it has no business here.
 
-    JJB also uses attribute key `project-type`. Although the basic Jenkins project type 'free-style' corresponds with an ``<project />`` tag, it seems better to think of them as a Job domain object and not a Project. I hope to have outlined that in Intro_.
+    JJB also uses attribute key `project-type`. Although the basic Jenkins project type 'free-style' corresponds with an ``<project />`` tag, it seems better to think of them as a Job domain object and not a Project.
 
     This all seems a bit confused. So I'll write of Jenkis Jobs and not projects (yet). JJB does actually give a sensible map to the parts of each job.
+
+    It feels a bit a bit of a shortcoming, but Jenkins only understands of list
+    items os jobs with status, lastSuccess and other attributes. Not of
+    organisational items,
 
 Jenkins job type are normally free-style. This is the basic type of job, that has all the types of parts that make Jenkins so extensible:
 
@@ -61,6 +77,8 @@ The basic free-style job can generate a trigger for another job and so allows ch
 For more advanced job grouping there is a job type flow, having a simple DSL to define sequential and parrallel builds of other jobs. Multijob does something similar but without a DSL.
 
 Matrix is a plugin job type that builds all jobs of the cartesian product of several 'axis'. E.g. it could combine each branch, with each environment and build all of them.
+j
+TODO: describe a bit about where the jobs com from, and also the new jenkins.io DSL jobs.
 
 
 Prelim. Charter
@@ -90,7 +108,7 @@ Having YAML containing the build recipe along your project is a benefit. But if 
    It this case by meaningless repitition of defaults, and references to external re-usable blocks... Maybe it is a good idea, at some point in a project to start to spec the build environment(s), iow. slap versions and other tags on it. But why pretend all projects are the same..
 
 It would be nice to loosen this coupling, or reduce it to the bare essentials.
-And maybe later arrive at some 'opinionated' choices. Probably based on convention. Iow. adapt to some established use. That would help to establish something generic, like Travis CI has done. Only with Jenkins, it is not bound by a particular environment or provider. To emulated the environment though, you would need to set up a VM or container build "cloud".
+And maybe later arrive at some 'opinionated' choices. Probably based on convention. Iow. adapt to some established use. That would help to establish something generic, like Travis CI has done. Only with Jenkins, it is not bound by a particular environment or provider. To emulate the environment though, you would need to set up a VM or container build "cloud".
 
 
 Plan
@@ -117,6 +135,32 @@ Some "profiles" are obiously called for, and I've planned to build the following
 Also on the wishlist: pip, npm, bower, docker, arduino, docs (python docutils, or pandoc) and probably more.
 
 
+Status
+------
+See also https://storyboard.openstack.org/#!/story/2000342
+
+Whenever JJB 2.0 happens, look back into ditching JTB.py/sh
+
+[2017-03-30] Some of the above text is updated to reflect thoughts since 2015
+[#]_. A bunch of it is not.
+
+The solution written in ``jenkins-template-build.py`` (jtb-py_) is to walk
+the YAML nodes resulting from loading all input files, and pick out the
+templates first, and then all placeholders.
+
+It can then take a template ID, plus a collection of key/values to dynamically
+write a job ('project') instance, using the specified templated and with
+the input values combined with some defaults.
+
+And in addition, it can fill out placeholders by looking in the environment
+for any variable prefixed ``jtb_``.
+
+This at least enables more terse job definitions, ie. compare ``jtb.yaml`` and
+the jtb preset jobs in ``preset/gh-jtb.yaml``. And to set the name and enabled
+bit or other at instantiation (jenkins-job update).
+
+
+.. [#] Initial commit was in 7534bfc ReadMe.rst (Aug 29 19:52:38 2015)
 
 ----
 

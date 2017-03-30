@@ -63,7 +63,6 @@ jtb__process_includes()
     grep -n '^#include' $output | while read proc pathid
     do
       log "Including $pathid into $output"
-      # XXX: bashism, test linenr=${proc//:*}
       linenr="$(echo "$proc" | cut -d ':' -f 1)"
       printf -- "\n" > $output
       head -n $(( $linenr - 1 )) $output.tmp >> $output

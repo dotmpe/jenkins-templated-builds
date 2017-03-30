@@ -54,12 +54,18 @@ done
 SCM_REFS="$(echo $(sort -u $refs))"
 BRANCHES="$(echo $(sort -u $branches))"
 
-# TODO: add feature tags to for differation in build, including the way the
+# TODO: JTB-6 add feature tags to for differation in build, including the way the
 # package version and/or build display name are build up.
 #BUILD_ID=$JOB_NAME
 #BUILD_ID=JTB-Upd
-# FIXME: use git-versioning
-test -n "$BUILD_VERSION" || BUILD_VERSION=$(grep Version ReadMe.rst | sed 's/[^0-9\.]//g')
+
+test -n "$BUILD_VERSION" || {
+  test -x "$(which git-versioning)" && {
+    BUILD_VERSION=$(git-versioning version)
+  } || {
+    BUILD_VERSION=$(grep Version ReadMe.rst | sed 's/[^0-9\.]//g')
+  }
+}
 
 test -z "$BUILD_CAUSE_SCMTRIGGER" && {
 

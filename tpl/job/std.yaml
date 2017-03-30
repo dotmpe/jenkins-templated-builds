@@ -42,9 +42,11 @@
     <<: *restrict_node
     <<: *std_console_output_wrapper
 
-# XXX: custom workspace job maybe?
-#    jenkins-home: '{jenkins-home}'
-#    workspace: '{workspace}'
+
+- generic_freestyle_ws_job: &generic_freestyle_ws_job
+    <<: *generic_freestyle_job
+    jenkins-home: '{jenkins-home}'
+    workspace: '{workspace}'
 
 
 - std_freestyle_job: &std_freestyle_job
