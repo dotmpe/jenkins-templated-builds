@@ -225,6 +225,14 @@
     <<: *std_git_branch_co
     <<: *std_job_parts_prm_prp_mtd_bld_pbl
 
+- job-template:
+    name: '{name}-free-git-ws'
+    <<: *std_freestyle_job
+    jenkins-home: '{jenkins-home}'
+    workspace: '{workspace}'
+    <<: *std_git_branch_co
+    <<: *std_job_parts_prm_prp_mtd_bld_pbl
+
 
 
 

@@ -99,7 +99,10 @@ jtb__update()
   test -d "$(dirname $test_err)" || error "No such dir for $test_err" 1
 
   test -n "$DRY" || DRY=1
-  test -n "$JJB_CONFIG" || JJB_CONFIG=/etc/jenkins_jobs/jenkins_jobs.ini
+  test -n "$JJB_CONFIG" || {
+    test -e "$HOME/.jenkins_jobs.ini" && JJB_CONFIG=~/.jenkins_jobs.ini ||
+    JJB_CONFIG=/etc/jenkins_jobs/jenkins_jobs.ini
+  }
 
   flags=
   #flags="-l debug --ignore-cache "
@@ -112,10 +115,7 @@ jtb__update()
   #jenkins-jobs --version && {
   test -e $JJB_CONFIG && {
 	  debug "Using JJB_CONFIG = $JJB_CONFIG"
-
-    # Add additional jenkins_job settings if exists
-    test -e "$HOME/.jenkins_jobs.ini" \
-      && flags="$flags --conf $HOME/.jenkins_jobs.ini"
+    flags="$flags --conf $JJB_CONFIG"
 
     test "$DRY" != "0" && {
       log " ** Dry-Run ** "
